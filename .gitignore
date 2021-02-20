@@ -1,3 +1,12 @@
+#My Stuff
+*.log
+*.aux
+*.synctex.gz
+*.tar.xf
+*.zip
+*.tar.gz
+
+
 # Prerequisites
 *.d
 
