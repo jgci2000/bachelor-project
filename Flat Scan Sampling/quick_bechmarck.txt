@@ -1,0 +1,50 @@
+JA - Intel NUC
+JI - i5 4590 (single and 2 cores (2C)) / workstation (10 cores)
+
+(skip = N_SPINS / 2)
+----------------------------------------------
+
+        - L = 8
+REP: 10E3
+    JA - q time/E: 0.7716 s
+    JI_single - q time/E: 0.004655 s
+    JI_MPI_2C - q time/E: 0.003348 s
+    JI_MPI_10C - q time/E: 0.001024 s
+
+REP: 10E4
+    JA - q time/E: 6.7299 s
+    JI_single - q time/E: 0.040907 s
+    JI_MPI_2C - q time/E: 0.032774 s
+    JI_MPI_10C - q time/E: 0.008717 s
+
+----------------------------------------------
+
+        - L = 16
+REP: 10E3
+    JA - q time/E: 3.2084 s
+    JI_single - q time/E: 0.035127 s
+    JI_MPI_2C - q time/E: 0.020231 s
+    JI_MPI_10C - q time/E: 0.009336 s
+    
+REP: 10E4
+    JA - q time/E: 32.0565 s
+    JI_single - q time/E: 0.330554 s
+    JI_MPI_2C - q time/E: 0.198365 s
+    JI_MPI_10C - q time/E: 0.040173 s
+
+----------------------------------------------
+
+        - L = 32
+REP: 10E3
+    JA - q time/E: 22.1785 s
+    JI_single - q time/E: 0.415093 s
+    JI_MPI_2C - q time/E: 0.236784 s
+    JI_MPI_10C - q time/E: 0.096022 s
+
+REP: 10E4
+    JA - q time/E: 221.5993 s
+    JI_single - q time/E: 3.650800 s
+    JI_MPI_2C - q time/E: 1.968179 s
+    JI_MPI_10C - q time/E: 0.780286 s
+
+

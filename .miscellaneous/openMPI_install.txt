@@ -1,0 +1,16 @@
+export INSTALLPATH=$HOME/ompi
+
+wget https://download.open-mpi.org/release/hwloc/v2.0/hwloc-2.0.2.tar.bz2
+tar xf hwloc-2.0.2.tar.bz2
+cd hwloc-2.0.2
+./configure --prefix=$INSTALLPATH
+make -j 8 && make install
+cd ..
+
+wget https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.5.tar.bz2
+tar xf openmpi-4.0.5.tar.bz2
+cd openmpi-4.0.5
+./configure --prefix=$INSTALLPATH --with-hwloc=$INSTALLPATH
+make all
+make install
+cd ..
