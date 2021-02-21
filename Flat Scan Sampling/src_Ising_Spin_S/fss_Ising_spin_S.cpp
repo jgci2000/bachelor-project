@@ -282,25 +282,25 @@ int main(int argc, char **argv)
     {
         vector<int> flip_list;
         for (int i = 0; i < N_SPINS; i++)
-            if (SMP[i] <= SZ - x)
+            if (SMP[i] <= SZ - x - 2)
                 flip_list.push_back(i);
         
         for (int flip_idx = 0; flip_idx < flip_list.size(); flip_idx++)
         {
             int SMP_tmp[N_SPINS];
-            std::copy(SMP, SMP + N_SPINS, SMP_tmp);
+            for (int i = 0; i < N_SPINS; i++)
+                SMP_tmp[i] = SMP[i];
 
             int E_tmp1 = 0;
             for (int a = 0; a < NN; a++)
                 E_tmp1 += - pow(Z_spin[SMP[flip_list.at(flip_idx)]], 2);
-                
             
             int E_tmp2 = 0;
             for (int a = 0; a < NN; a++)
                 E_tmp2 += - Z_spin[SMP[flip_list.at(flip_idx)] + x + 1] * Z_spin[SMP[flip_list.at(flip_idx)]]; 
             
             int E_tmp3 =  E_tmp2 - E_tmp1 - max_E;
-            SMP_tmp[flip_list.at(flip_idx)] += x + 1;
+            SMP_tmp[flip_list.at(flip_idx)] = SMP[flip_list.at(flip_idx)] + x + 1;
 
             int counter[SZ] = {0};
             for (int i = 0; i < N_SPINS; i++)
@@ -310,7 +310,7 @@ int main(int argc, char **argv)
             
             int counter2 = 0;
             int idx_sum_Npos_vec;
-            for (idx_sum_Npos_vec = 0; idx_sum_Npos_vec < line_size_sum_Npos[x + 1]; idx_sum_Npos_vec+=3)
+            for (idx_sum_Npos_vec = 0; idx_sum_Npos_vec < line_size_sum_Npos.at(x + 1); idx_sum_Npos_vec += SZ)
             {
                 for (int i = 0; i < SZ; i++)
                     if (counter[i] == sum_Npos[x + 1][i + idx_sum_Npos_vec])
@@ -420,7 +420,7 @@ int main(int argc, char **argv)
 
         int counter2 = 0;
         int idx_sum_Npos_vec;
-        for (idx_sum_Npos_vec = 0; idx_sum_Npos_vec < line_size_sum_Npos.at(q); idx_sum_Npos_vec+=3)
+        for (idx_sum_Npos_vec = 0; idx_sum_Npos_vec < line_size_sum_Npos.at(q); idx_sum_Npos_vec += SZ)
         {
             for (int i = 0; i < SZ; i++)
                 if (counter[i] == sum_Npos[q][i + idx_sum_Npos_vec])
@@ -451,10 +451,16 @@ int main(int argc, char **argv)
 
         for (int x = 0; x < SZ - 1; x++)
         {
+            cout << "x: " << x << endl;
             vector<int> flip_list;
             for (int i = 0; i < N_SPINS; i++)
-                if (SMP[i] <= SZ - x)
+                if (SMP[i] <= SZ - x - 2)
                     flip_list.push_back(i);
+            
+            cout << "flip_list" << endl;
+            for (int i = 0; i < flip_list.size(); i++)
+                cout << flip_list.at(i) << " ";
+            cout << endl;
 
             for (int flip_idx = 0; flip_idx < flip_list.size(); flip_idx++)
             {
@@ -462,16 +468,31 @@ int main(int argc, char **argv)
                 for (int i = 0; i < N_SPINS; i++)
                     SMP_tmp[i] = SMP[i];
                 
+                cout << "SMP_tmp before" << endl;
+                for (int i = 0; i < N_SPINS; i++)
+                    cout << SMP_tmp[i] << " ";
+                cout << endl;
+
                 int E_tmp1 = 0;
                 for (int a = 0; a < NN; a++)
                     E_tmp1 += - spins_vector[flip_list.at(flip_idx)] * spins_vector[NN_table[flip_list.at(flip_idx) * NN + a]];
                 
                 int E_tmp2 = 0;
                 for (int a = 0; a < NN; a++)
-                    E_tmp2 *= - Z_spin[flip_list.at(flip_idx) + x] * spins_vector[NN_table[flip_list.at(flip_idx) * NN + a]];
+                {
+                    E_tmp2 += - Z_spin[SMP[flip_list.at(flip_idx)] + x + 1] * spins_vector[NN_table[flip_list.at(flip_idx) * NN + a]];
+                    cout << "Z_spin idx : " << flip_list.at(flip_idx) + x << endl;
+                }
+                    
                 
                 int E_tmp3 = E_config - E_tmp1 + E_tmp2;
-                SMP_tmp[flip_list.at(flip_idx)] += x;
+                SMP_tmp[flip_list.at(flip_idx)] = SMP[flip_list.at(flip_idx)] + x + 1;
+
+                cout << "E1 " << E_tmp1 << "; E2 " << E_tmp2 << "; E3 " << E_tmp3 << endl;
+                cout << "SMP_tmp after" << endl;
+                for (int i = 0; i < N_SPINS; i++)
+                    cout << SMP_tmp[i] << " ";
+                cout << endl;
 
                 int counter[SZ] = {0};
                 for (int i = 0; i < N_SPINS; i++)
@@ -481,10 +502,10 @@ int main(int argc, char **argv)
 
                 int counter2 = 0;
                 int idx_sum_Npos_vec;
-                for (idx_sum_Npos_vec = 0; idx_sum_Npos_vec < line_size_sum_Npos.at(q); idx_sum_Npos_vec+=3)
+                for (idx_sum_Npos_vec = 0; idx_sum_Npos_vec < line_size_sum_Npos.at(q + x + 1); idx_sum_Npos_vec += SZ)
                 {
                     for (int i = 0; i < SZ; i++)
-                        if (counter[i] == sum_Npos[q][i + idx_sum_Npos_vec])
+                        if (counter[i] == sum_Npos[q + x + 1][i + idx_sum_Npos_vec])
                             counter2++;
 
                     if (counter2 == SZ)
@@ -497,6 +518,7 @@ int main(int argc, char **argv)
                 int idx_E_tmp3 = binary_search(energies, E_tmp3);
                 JDOS_advance[q + x + 1][idx_sum_Npos_vec * NE + idx_E_tmp3] += JDOS_advance[q][prev_Npos_sum_conf_old_idx * NE + prev_idx_E_config] / REP;
             }
+            cout << endl;
         }
         
         for (int idx = 0; idx <= q_max + 1; idx++)
@@ -510,21 +532,21 @@ int main(int argc, char **argv)
             cout << endl;
         }
         
-        for (int i = 0; i < line_size_sum_Npos.at(2); i++)
-        {
-            for (int j = 0; j < NE; j++)
-                cout << JDOS_advance[2][i * NE + j] << " ";
-            cout << endl;
-        }
+        // for (int i = 0; i < line_size_sum_Npos.at(2); i++)
+        // {
+        //     for (int j = 0; j < NE; j++)
+        //         cout << JDOS_advance[2][i * NE + j] << " ";
+        //     cout << endl;
+        // }
 
-        cout << endl; 
+        // cout << endl; 
 
-        for (int i = 0; i < NE; i++)
-        {
-            for (int j = 0; j < line_size_sum_Npos.at(2); j++)
-                cout << JDOS_advance[2][i * line_size_sum_Npos.at(2) + j] << " ";
-            cout << endl;
-        }
+        // for (int i = 0; i < NE; i++)
+        // {
+        //     for (int j = 0; j < line_size_sum_Npos.at(2); j++)
+        //         cout << JDOS_advance[2][i * line_size_sum_Npos.at(2) + j] << " ";
+        //     cout << endl;
+        // }
         
        
 
