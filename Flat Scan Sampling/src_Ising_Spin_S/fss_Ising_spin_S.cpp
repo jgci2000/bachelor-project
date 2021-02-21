@@ -38,7 +38,7 @@ using std::string;
 #define SZ ((2 * S) + 1)
 
 // Lattice size 
-#define L 2
+#define L 4
 // Ineteraction strength 
 #define J 1
 
@@ -505,6 +505,20 @@ int main(int argc, char **argv)
 
         while (min_hist(hist_E_selected, NE * line_size_sum_Npos.at(q)) < REP)
         {
+            // cout << "start ->" << endl;
+            // cout << "spins: " << endl;
+            // for (int i = 0; i < N_SPINS; i++)
+            //     cout << spins_vector[i] << " ";
+            // cout << endl;
+
+            // cout << "SPM: " << endl;
+            // for (int i = 0; i < N_SPINS; i++)
+            //     cout << SPM[i] << " ";
+            // cout << endl;
+
+            // cout << "E: " << E_config << endl;
+            // cout << "idx_sum_Npos: " << idx_sum_Npos_vec << endl;
+
             /* rw_step_at_q */
             array<int, N_SPINS> spins_vector_new = spins_vector;
             int E_config_old = E_config;
@@ -521,17 +535,17 @@ int main(int argc, char **argv)
             for (int a = 0; a < NN; a++)
                 E_old_tmp += - spins_vector_new[flipped_idx_1] * spins_vector_new[NN_table[flipped_idx_1 * NN + a]];
             
-            // vector<int> SPM_end_list;
-            // for (int i = 0; i < SZ; i++)
-            //     if (i != flipped_pos_start)
-            //         SPM_end_list.push_back(i);
+            vector<int> SPM_end_list;
+            for (int i = 0; i < SZ; i++)
+                if (i != flipped_pos_start)
+                    SPM_end_list.push_back(i);
             
-            // int SPM_end = SPM_end_list.at(xorshift64s(&state) % SPM_end_list.size());
+            int SPM_end = SPM_end_list.at(xorshift64s(&state) % SPM_end_list.size());
 
             int SPM_start = SPM[flipped_idx_1];
-            int SPM_end;
-            do SPM_end = xorshift64s(&state) % SZ;
-            while (SPM_end == flipped_idx_1);
+            // int SPM_end;
+            // do SPM_end = xorshift64s(&state) % SZ;
+            // while (SPM_end == flipped_idx_1);
 
             spins_vector_new[flipped_idx_1] = Z_spin[SPM_end];
             SPM_new[flipped_idx_1] = SPM_end;
@@ -543,6 +557,21 @@ int main(int argc, char **argv)
             int SPM_diff = SPM_end - SPM_start;
             E_config = E_config_old - E_old_tmp + E_new_tmp;
 
+            // cout << "after 1st flip ->" << endl;
+            // cout << "spins: " << endl;
+            // for (int i = 0; i < N_SPINS; i++)
+            //     cout << spins_vector_new[i] << " ";
+            // cout << endl;
+
+            // cout << "SPM: " << endl;
+            // for (int i = 0; i < N_SPINS; i++)
+            //     cout << SPM_new[i] << " ";
+            // cout << endl;
+
+            // cout << "E: " << E_config << endl;
+            // cout << "idx_sum_Npos: " << idx_sum_Npos_vec << endl;
+            // cout << "diff: " << SPM_diff << endl;
+
             vector<int> flipped_list;
             for (int i = 0; i < N_SPINS; i++)
                 if (SPM_new[i] - SPM_diff >= 0 && SPM_new[i] - SPM_diff < SZ)
@@ -551,16 +580,18 @@ int main(int argc, char **argv)
             int flipped_idx_2 = flipped_list.at(0);
             if (flipped_list.size() > 1)
                 flipped_idx_2 = flipped_list.at(xorshift64s(&state) % flipped_list.size());
+            // cout << flipped_idx_2 << endl;
 
-            
+            // int flipped_idx_2;
             // do flipped_idx_2 = xorshift64s(&state) % SZ;
-            // while (SPM_new[flipped_idx_2] - SPM_diff >= 0 && SPM_new[flipped_idx_2] - SPM_diff < SZ);
+            // while (SPM_new[flipped_idx_2] - SPM_diff < 0 || SPM_new[flipped_idx_2] - SPM_diff > SZ);
 
             E_old_tmp = 0;
             for (int a = 0; a < NN; a++)
                 E_old_tmp += - spins_vector_new[flipped_idx_2] * spins_vector_new[NN_table[flipped_idx_2 * NN + a]];
 
-            SPM_new[flipped_idx_2] += SPM_diff;
+            SPM_new[flipped_idx_2] += - SPM_diff;
+            // cout << SPM_new[flipped_idx_2] << endl;
             spins_vector_new[flipped_idx_2] = Z_spin[SPM_new[flipped_idx_2]];
 
             E_new_tmp = 0;
@@ -568,6 +599,7 @@ int main(int argc, char **argv)
                 E_new_tmp += - spins_vector_new[flipped_idx_2] * spins_vector_new[NN_table[flipped_idx_2 * NN + a]];
 
             E_config += - E_old_tmp + E_new_tmp;
+            idx_E_config = binary_search(energies, E_config);
 
             int counter[SZ] = {0};
             for (int i = 0; i < N_SPINS; i++)
@@ -589,89 +621,118 @@ int main(int argc, char **argv)
             }
             idx_sum_Npos_vec /= SZ;
 
-            cout << "a" << endl;
+            // cout << "end- >" << endl;
+            // cout << "spins: " << endl;
+            // for (int i = 0; i < N_SPINS; i++)
+            //     cout << spins_vector_new[i] << " ";
+            // cout << endl;
+
+            // cout << "SPM: " << endl;
+            // for (int i = 0; i < N_SPINS; i++)
+            //     cout << SPM_new[i] << " ";
+            // cout << endl;
+
+            // cout << "E: " << E_config << endl;
+            // cout << "idx_sum_Npos: " << idx_sum_Npos_vec << endl;
             
             /* WL_rw_criteria */
-            // double ratio = JDOS_advance[q][idx_sum_Npos_vec * NE + idx_E_config] / JDOS_advance[q][idx_sum_Npos_vec_old * NE + idx_E_config_old];
-            // if (ratio >= 1 || xorshift64s(&state) % 10000 < ratio * 10000 || hist[idx_E_config * line_size_sum_Npos.at(q) + idx_sum_Npos_vec] == 0)
-            // {
-            //     spins_vector = spins_vector_new;
-            //     for (int i = 0; i < N_SPINS; i++)
-            //         SPM[i] = SPM_new[i];
-            // }
-            // else
-            // {
-            //     E_config = E_config_old;
-            //     idx_sum_Npos_vec = idx_sum_Npos_vec_old;
-            // }
+            double ratio = JDOS_advance[q][idx_sum_Npos_vec * NE + idx_E_config] / JDOS_advance[q][idx_sum_Npos_vec_old * NE + idx_E_config_old];
+            if (ratio >= 1 || xorshift64s(&state) % 10000 < ratio * 10000 || hist[idx_E_config * line_size_sum_Npos.at(q) + idx_sum_Npos_vec] == 0)
+            {
+                spins_vector = spins_vector_new;
+                for (int i = 0; i < N_SPINS; i++)
+                    SPM[i] = SPM_new[i];
+            }
+            else
+            {
+                E_config = E_config_old;
+                idx_sum_Npos_vec = idx_sum_Npos_vec_old;
 
-            // hist[idx_E_config * line_size_sum_Npos.at(q) + idx_sum_Npos_vec]++;
+                idx_E_config = idx_E_config_old;
+                idx_sum_Npos_vec = idx_sum_Npos_vec_old;
+            }
 
-            // if (hist_E_selected[idx_E_config * line_size_sum_Npos.at(q) + idx_sum_Npos_vec] < REP && k % skip == 0)
-            // {
-            //     /* scan_norm_correct */
-            //     prev_idx_E_config = idx_E_config;
-            //     prev_Npos_sum_conf_old_idx = idx_sum_Npos_vec;
+            hist[idx_E_config * line_size_sum_Npos.at(q) + idx_sum_Npos_vec]++;
 
-            //     for (int x = 0; x < SZ - 1; x++)
-            //     {
-            //         vector<int> flip_list;
-            //         for (int i = 0; i < N_SPINS; i++)
-            //             if (SPM[i] <= SZ - x - 2)
-            //                 flip_list.push_back(i);
+            if (hist_E_selected[idx_E_config * line_size_sum_Npos.at(q) + idx_sum_Npos_vec] < REP && k % skip == 0)
+            {
+                /* scan_norm_correct */
+                prev_idx_E_config = idx_E_config;
+                prev_Npos_sum_conf_old_idx = idx_sum_Npos_vec;
 
-            //         for (int flip_idx = 0; flip_idx < flip_list.size(); flip_idx++)
-            //         {
-            //             int SPM_tmp[N_SPINS];
-            //             for (int i = 0; i < N_SPINS; i++)
-            //                 SPM_tmp[i] = SPM[i];
+                for (int x = 0; x < SZ - 1; x++)
+                {
+                    vector<int> flip_list;
+                    for (int i = 0; i < N_SPINS; i++)
+                        if (SPM[i] <= SZ - x - 2)
+                            flip_list.push_back(i);
 
-            //             int E_tmp1 = 0;
-            //             for (int a = 0; a < NN; a++)
-            //                 E_tmp1 += - spins_vector[flip_list.at(flip_idx)] * spins_vector[NN_table[flip_list.at(flip_idx) * NN + a]];
+                    for (int flip_idx = 0; flip_idx < flip_list.size(); flip_idx++)
+                    {
+                        int SPM_tmp[N_SPINS];
+                        for (int i = 0; i < N_SPINS; i++)
+                            SPM_tmp[i] = SPM[i];
+
+                        int E_tmp1 = 0;
+                        for (int a = 0; a < NN; a++)
+                            E_tmp1 += - spins_vector[flip_list.at(flip_idx)] * spins_vector[NN_table[flip_list.at(flip_idx) * NN + a]];
                         
-            //             int E_tmp2 = 0;
-            //             for (int a = 0; a < NN; a++)
-            //                 E_tmp2 += - Z_spin[SPM[flip_list.at(flip_idx)] + x + 1] * spins_vector[NN_table[flip_list.at(flip_idx) * NN + a]];                  
+                        int E_tmp2 = 0;
+                        for (int a = 0; a < NN; a++)
+                            E_tmp2 += - Z_spin[SPM[flip_list.at(flip_idx)] + x + 1] * spins_vector[NN_table[flip_list.at(flip_idx) * NN + a]];                  
                         
-            //             int E_tmp3 = E_config - E_tmp1 + E_tmp2;
-            //             SPM_tmp[flip_list.at(flip_idx)] = SPM[flip_list.at(flip_idx)] + x + 1;
+                        int E_tmp3 = E_config - E_tmp1 + E_tmp2;
+                        SPM_tmp[flip_list.at(flip_idx)] = SPM[flip_list.at(flip_idx)] + x + 1;
 
-            //             int counter[SZ] = {0};
-            //             for (int i = 0; i < N_SPINS; i++)
-            //                 for (int j = 0; j < SZ; j++)
-            //                     if (SPM_tmp[i] == j)
-            //                         counter[j]++;
+                        int counter[SZ] = {0};
+                        for (int i = 0; i < N_SPINS; i++)
+                            for (int j = 0; j < SZ; j++)
+                                if (SPM_tmp[i] == j)
+                                    counter[j]++;
 
-            //             int counter2 = 0;
-            //             int idx_sum_Npos_vec;
-            //             for (idx_sum_Npos_vec = 0; idx_sum_Npos_vec < line_size_sum_Npos.at(q + x + 1); idx_sum_Npos_vec += SZ)
-            //             {
-            //                 for (int i = 0; i < SZ; i++)
-            //                     if (counter[i] == sum_Npos[q + x + 1][i + idx_sum_Npos_vec])
-            //                         counter2++;
+                        int counter2 = 0;
+                        int idx_sum_Npos_vec;
+                        for (idx_sum_Npos_vec = 0; idx_sum_Npos_vec < line_size_sum_Npos.at(q + x + 1); idx_sum_Npos_vec += SZ)
+                        {
+                            for (int i = 0; i < SZ; i++)
+                                if (counter[i] == sum_Npos[q + x + 1][i + idx_sum_Npos_vec])
+                                    counter2++;
 
-            //                 if (counter2 == SZ)
-            //                     break;
-            //                 else
-            //                     counter2 = 0;
-            //             }
-            //             idx_sum_Npos_vec /= SZ;
+                            if (counter2 == SZ)
+                                break;
+                            else
+                                counter2 = 0;
+                        }
+                        idx_sum_Npos_vec /= SZ;
 
-            //             int idx_E_tmp3 = binary_search(energies, E_tmp3);
-            //             JDOS_advance[q + x + 1][idx_sum_Npos_vec * NE + idx_E_tmp3] += JDOS_advance[q][prev_Npos_sum_conf_old_idx * NE + prev_idx_E_config] / REP;
-            //         }
-            //     }
+                        int idx_E_tmp3 = binary_search(energies, E_tmp3);
+                        JDOS_advance[q + x + 1][idx_sum_Npos_vec * NE + idx_E_tmp3] += JDOS_advance[q][prev_Npos_sum_conf_old_idx * NE + prev_idx_E_config] / REP;
+                    }
+                }
 
-            //     idx_sum_Npos_vec = prev_Npos_sum_conf_old_idx;
-            //     idx_E_config = prev_idx_E_config;
+                idx_sum_Npos_vec = prev_Npos_sum_conf_old_idx;
+                idx_E_config = prev_idx_E_config;
 
-            //     hist_E_selected[idx_E_config * line_size_sum_Npos.at(q) + idx_sum_Npos_vec]++;
-            // }
+                hist_E_selected[idx_E_config * line_size_sum_Npos.at(q) + idx_sum_Npos_vec]++;
+            }
 
             delete[] SPM_new;
             k++;
         }
+        
+        double sum_JDOS_advance[NE] = {0};
+        double sum_sum_JDOS_advance = 0;
+        for (int i = 0; i < NE; i++)
+        {
+            for (int j = 0; j < line_size_sum_Npos.at(q + 1); j++)
+                sum_JDOS_advance[i] += JDOS_advance[q + 1][j * NE + i];
+            sum_sum_JDOS_advance += sum_JDOS_advance[i];
+        }
+
+        for (int i = 0; i < NE; i++)
+            JDOS[i * NM + q + 1] = sum_JDOS_advance[i] * norm_factor[q + 1] / sum_sum_JDOS_advance;
+
+
         
         // for (int idx = 0; idx <= q_max + 1; idx++)
         // {
@@ -684,6 +745,13 @@ int main(int argc, char **argv)
         //     cout << endl;
         // }
         
+        // for (int i = 0; i < NE; i++)
+        // {
+        //     for (int j = 0; j < NM; j++)
+        //         cout << JDOS[i * NM + j] << " ";
+        //     cout << endl;
+        // }
+
         // for (int i = 0; i < line_size_sum_Npos.at(2); i++)
         // {
         //     for (int j = 0; j < NE; j++)
@@ -709,8 +777,6 @@ int main(int argc, char **argv)
         // cout << endl;
 
         // cout << "idx_sum_Npos_vec: " << idx_sum_Npos_vec << endl;
-
-        return 0;
 
         delete[] hist, hist_E_selected;
 
