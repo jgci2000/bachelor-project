@@ -11,7 +11,7 @@ close all
 %
 rng default
 %
-L = 2;
+L = 4;
 Npos = 3; % (2*S)+1
 %
 % q_max = 11; %ceil((length(-L^2 : 2/(Npos-1) : L^2/2) + 1)/2);
