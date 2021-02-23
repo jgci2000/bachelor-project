@@ -202,8 +202,8 @@ int main(int argc, char **argv)
     JDOS_frac[NM - 1] = 1;
 
     ll *neo_previous = new ll[NE * NE];
-    int *hist_WL = new int[NE];
-    int *hist_E_selected = new int[NE];
+    ll *hist_WL = new ll[NE];
+    ll *hist_E_selected = new ll[NE];
 
     // Start measuring time
     vector<string> console_log;
