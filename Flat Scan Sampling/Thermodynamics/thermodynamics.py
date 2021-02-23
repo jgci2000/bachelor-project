@@ -22,20 +22,20 @@ def main():
     lattice = "SS"
     NN = 4
     
-    L = 4
+    L = 16
     N_SPINS = 1 * L ** 2
     q_max = N_SPINS // 2 + 1
-    REP = 10**3
+    REP = 10**4
     skip = N_SPINS
     
-    run_max = 1000
+    run_max = 50
     
     max_E = (1 / 2) * NN * N_SPINS
     max_M = N_SPINS
 
     NE = int(1 + (max_E / 2))
     NM = N_SPINS + 1
-    NT = 100                         # Number of temperatures
+    NT = 50                         # Number of temperatures
     
     energies = np.linspace(- max_E, max_E, NE)
     magnetizations = np.linspace(- max_M, max_M, NM)
@@ -109,6 +109,7 @@ def main():
     
     # Tc -> approximation
     # Second derivative = 0 (...)
+    
     h = 0.0001
     temperatures_interp = np.arange(min(temperatures) + h, max(temperatures), h)
     M_min_F_interp = interpolate.interp1d(temperatures, M_min_F, kind='cubic')
@@ -146,41 +147,48 @@ def main():
     #     if M_min_F_sd[i - 1] != 0 and M_min_F_sd[i + 1] != 0 and M_min_F_sd[i] == 0:
     #         Tc = temperatures[i]
     #         break
-     
     return
-    # Get error bars for the M vs T and M_minF vs T
-    error_bar = np.zeros(len(temperatures))
+    # print(M_min_F)
+    # for i in range(0, len(temperatures)):
+    #     if M_min_F[i] == 0:
+    #         Tc = temperatures[i]
+    #         break
     
-    for i in range(0, len(temperatures)):
-        M_min_F_error = np.zeros(run_max)
+    # Get error bars for the M vs T and M_minF vs T
+    if L == 4 and lattice == "SS":
+        error_bar = np.zeros(len(temperatures))
         
-        for run in range(1, run_max + 1):
-            JDOS = JDOS_all[run - 1]
+        for i in range(0, len(temperatures)):
+            M_min_F_error = np.zeros(run_max)
             
-            F_T = np.zeros(NM)
-            Z_M_T = np.zeros(NM)
-            Z_T = 0
-            
-            for q in range(0, NM):
-                hits = np.where(JDOS[:, q] != 0)[0]
-
-                for j in range(0, len(hits)):
-                    Z_M_T[q] += JDOS[hits[j], q] * np.exp(- beta_vals[i] * energies[hits[j]])
+            for run in range(1, run_max + 1):
+                JDOS = JDOS_all[run - 1]
                 
-                Z_T += Z_M_T[q]
-                F_T[q] = - kB * temperatures[i] * np.log(Z_M_T[q])
+                F_T = np.zeros(NM)
+                Z_M_T = np.zeros(NM)
+                Z_T = 0
+                
+                for q in range(0, NM):
+                    hits = np.where(JDOS[:, q] != 0)[0]
+
+                    for j in range(0, len(hits)):
+                        Z_M_T[q] += JDOS[hits[j], q] * np.exp(- beta_vals[i] * energies[hits[j]])
+                    
+                    Z_T += Z_M_T[q]
+                    F_T[q] = - kB * temperatures[i] * np.log(Z_M_T[q])
+                
+                min_M_T = F_T[0]
+                for q in range(0, len(magnetizations)):
+                    if F_T[q] < min_M_T:
+                        min_M_T = F_T[q]
+                
+                q = np.where(F_T == min_M_T)[0]
+                M_min_F_error[run - 1] = np.abs(magnetizations[q[0]])
             
-            min_M_T = F_T[0]
-            for q in range(0, len(magnetizations)):
-                if F_T[q] < min_M_T:
-                    min_M_T = F_T[q]
-            
-            q = np.where(F_T == min_M_T)[0]
-            M_min_F_error[run - 1] = np.abs(magnetizations[q[0]])
-        
-        # print(M_min_F_error)
-        (mu, sigma) = norm.fit(M_min_F_error)
-        error_bar[i] = sigma
+            # print(M_min_F_error)
+            (mu, sigma) = norm.fit(M_min_F_error)
+            error_bar[i] = sigma
+            # print(i)
     
     print("Tc[L{:d}]: {:.4f}".format(L, Tc))
 
@@ -195,7 +203,7 @@ def main():
     
     plt.figure(2)
     for i in range(0, len(temperatures)):
-        plt.plot(magnetizations / N_SPINS, F[:, i] / N_SPINS, '-b', lw=0.5)
+        plt.plot(magnetizations / N_SPINS, F[:, i] / N_SPINS, '.-b', ms=5)
         plt.plot(M_min_F[i] / N_SPINS, min_F[i] / N_SPINS, '.b', ms=7.5)
     
     plt.xlabel("M")
@@ -203,8 +211,10 @@ def main():
     plt.title("Helmholtz Free Energy as a function of M and T | L = " + str(L) + " | REP = " + str(int(np.log10(REP))))
     
     plt.figure(3)
-    # plt.plot(temperatures / Tc, M_min_F / N_SPINS, '.-b')
-    plt.errorbar(temperatures / Tc, M_min_F / N_SPINS, yerr=error_bar, fmt='.-b')
+    if L != 4 or lattice != "SS":
+        plt.plot(temperatures / Tc, M_min_F / N_SPINS, '.-b')
+    else:
+        plt.errorbar(temperatures / Tc, M_min_F / N_SPINS, yerr=error_bar, fmt='.-b')
     
     plt.xlabel("T/Tc")
     plt.ylabel("M minF")
