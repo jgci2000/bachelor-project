@@ -154,8 +154,8 @@ int main(int argc, char **argv)
     long double *norm_factor;
 
     ll *neo_previous;
-    int *hist_WL;
-    int *hist_E_selected;
+    ll *hist_WL;
+    ll *hist_E_selected;
 
     ll *neo_previous_root = 0;
     ll accept_counter_root = 0;
@@ -409,8 +409,8 @@ int main(int argc, char **argv)
             {
                 JDOS = new double[NE * NM];
                 neo_previous = new ll[NE * NE];
-                hist_WL = new int[NE];
-                hist_E_selected = new int[NE];
+                hist_WL = new ll[NE];
+                hist_E_selected = new ll[NE];
 
                 neo_previous_root = new ll[NE * NE];
             }
