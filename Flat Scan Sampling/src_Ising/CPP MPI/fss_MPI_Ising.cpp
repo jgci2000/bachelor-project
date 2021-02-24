@@ -67,8 +67,8 @@ using std::string;
 #       define N_SPINS L * L * L
         /* Number os nearest neughbours */
 #       define NN 6
-#       define DIM "2D"
-#       define LATTICE "SS"
+#       define DIM "3D"
+#       define LATTICE "SC"
 
 #       define NORM_FILE "./coefficients/coefficients_" + std::to_string(N_SPINS) + "d" + std::to_string(SZ) + ".txt"
 #       define NEIGH_FILE "./neighbour_tables/neighbour_table_3D_SC_6NN_L" + std::to_string(L) + ".txt"
@@ -79,8 +79,8 @@ using std::string;
 #       define N_SPINS 2 * L * L * L
         /* Number os nearest neughbours */
 #       define NN 8
-#       define DIM "2D"
-#       define LATTICE "SS"
+#       define DIM "3D"
+#       define LATTICE "BCC"
 
 #       define NORM_FILE "./coefficients/coefficients_" + std::to_string(N_SPINS) + "d" + std::to_string(SZ) + ".txt"
 #       define NEIGH_FILE "./neighbour_tables/neighbour_table_3D_BCC_8NN_L" + std::to_string(L) + ".txt"
@@ -91,8 +91,8 @@ using std::string;
 #       define N_SPINS 4 * L * L * L
         /* Number os nearest neughbours */
 #       define NN 12
-#       define DIM "2D"
-#       define LATTICE "SS"
+#       define DIM "3D"
+#       define LATTICE "FCC"
 
 #       define NORM_FILE "./coefficients/coefficients_" + std::to_string(N_SPINS) + "d" + std::to_string(SZ) + ".txt"
 #       define NEIGH_FILE "./neighbour_tables/neighbour_table_3D_FCC_12NN_L" + std::to_string(L) + ".txt"
@@ -103,8 +103,8 @@ using std::string;
 #       define N_SPINS 2 * L * L * L
         /* Number os nearest neughbours */
 #       define NN 12
-#       define DIM "2D"
-#       define LATTICE "SS"
+#       define DIM "3D"
+#       define LATTICE "HCP"
 
 #       define NORM_FILE "./coefficients/coefficients_" + std::to_string(N_SPINS) + "d" + std::to_string(SZ) + ".txt"
 #       define NEIGH_FILE "./neighbour_tables/neighbour_table_3D_HCP_12NN_L" + std::to_string(L) + ".txt"
@@ -115,8 +115,8 @@ using std::string;
 #       define N_SPINS L * L * L
         /* Number os nearest neughbours */
 #       define NN 8
-#       define DIM "2D"
-#       define LATTICE "SS"
+#       define DIM "3D"
+#       define LATTICE "Hex"
 
 #       define NORM_FILE "./coefficients/coefficients_" + std::to_string(N_SPINS) + "d" + std::to_string(SZ) + ".txt"
 #       define NEIGH_FILE "./neighbour_tables/neighbour_table_3D_Hex_8NN_L" + std::to_string(L) + ".txt"
