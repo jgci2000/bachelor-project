@@ -30,16 +30,16 @@ using std::string;
 #define SEED 0
 
 /* LATTICE -> 1 - SS; 2 - SC; 3 - BCC; 4 - FCC; 5 - HCP; 6 - Hex */
-#define LATTICE 1
+#define LATTICE_NUM 1
 /* DIM -> 1 - 2D; 2 - 3D */
-#define DIM 1
+#define DIM_NUM 1
 /* S-Spins particles */
 #define S 1/2
 /* Number of spin projections */
 #define SZ 2 * (S + 1)
 
 /* Lattice size */
-#define L 4
+#define L 8
 /* Ineteraction strength */
 #define J 1
 
@@ -48,58 +48,76 @@ using std::string;
 /* Saving directory for the JDOS file */
 #define SAVE_DIR "./Data/"
 
-#if DIM == 1 && LATTICE == 1
+#if DIM_NUM == 1 && LATTICE_NUM == 1
     /* Number of particles */
 #   define N_SPINS L * L
     /* Number os nearest neughbours */
 #   define NN 4
+#   define DIM "2D"
+#   define LATTICE "SS"
+
 #   define NORM_FILE "./coefficients/coefficients_" + std::to_string(N_SPINS) + "d" + std::to_string(SZ) + ".txt"
 #   define NEIGH_FILE "./neighbour_tables/neighbour_table_2D_SS_4NN_L" + std::to_string(L) + ".txt"
 #   define SAVE_FILE(REP, skip) "JDOS_FSS_Ising_2D_SS_L" + std::to_string(L) + "_REP_1E" + std::to_string((int) log10(REP)) + "_skip_" + std::to_string(skip)
 #endif
 
-#if DIM == 2 && LATTICE > 1 && LATTICE  < 7
-#   if LATTICE == 2
+#if DIM_NUM == 2 && LATTICE_NUM > 1 && LATTICE_NUM  < 7
+#   if LATTICE_NUM == 2
         /* Number of particles */
 #       define N_SPINS L * L * L
         /* Number os nearest neughbours */
 #       define NN 6
+#       define DIM "2D"
+#       define LATTICE "SS"
+
 #       define NORM_FILE "./coefficients/coefficients_" + std::to_string(N_SPINS) + "d" + std::to_string(SZ) + ".txt"
 #       define NEIGH_FILE "./neighbour_tables/neighbour_table_3D_SC_6NN_L" + std::to_string(L) + ".txt"
 #       define SAVE_FILE(REP, skip) "JDOS_FSS_Ising_3D_SC_L" + std::to_string(L) + "_REP_1E" + std::to_string((int) log10(REP)) + "_skip_" + std::to_string(skip)
 #   endif
-#   if LATTICE == 3
+#   if LATTICE_NUM == 3
         /* Number of particles */
 #       define N_SPINS 2 * L * L * L
         /* Number os nearest neughbours */
 #       define NN 8
+#       define DIM "2D"
+#       define LATTICE "SS"
+
 #       define NORM_FILE "./coefficients/coefficients_" + std::to_string(N_SPINS) + "d" + std::to_string(SZ) + ".txt"
 #       define NEIGH_FILE "./neighbour_tables/neighbour_table_3D_BCC_8NN_L" + std::to_string(L) + ".txt"
 #       define SAVE_FILE(REP, skip) "JDOS_FSS_Ising_3D_BCC_L" + std::to_string(L) + "_REP_1E" + std::to_string((int) log10(REP)) + "_skip_" + std::to_string(skip)
 #   endif
-#   if LATTICE == 4
+#   if LATTICE_NUM == 4
         /* Number of particles */
 #       define N_SPINS 4 * L * L * L
         /* Number os nearest neughbours */
 #       define NN 12
+#       define DIM "2D"
+#       define LATTICE "SS"
+
 #       define NORM_FILE "./coefficients/coefficients_" + std::to_string(N_SPINS) + "d" + std::to_string(SZ) + ".txt"
 #       define NEIGH_FILE "./neighbour_tables/neighbour_table_3D_FCC_12NN_L" + std::to_string(L) + ".txt"
 #       define SAVE_FILE(REP, skip) "JDOS_FSS_Ising_3D_FCC_L" + std::to_string(L) + "_REP_1E" + std::to_string((int) log10(REP)) + "_skip_" + std::to_string(skip)
 #   endif
-#   if LATTICE == 5
+#   if LATTICE_NUM == 5
         /* Number of particles */
 #       define N_SPINS 2 * L * L * L
         /* Number os nearest neughbours */
 #       define NN 12
+#       define DIM "2D"
+#       define LATTICE "SS"
+
 #       define NORM_FILE "./coefficients/coefficients_" + std::to_string(N_SPINS) + "d" + std::to_string(SZ) + ".txt"
 #       define NEIGH_FILE "./neighbour_tables/neighbour_table_3D_HCP_12NN_L" + std::to_string(L) + ".txt"
 #       define SAVE_FILE(REP, skip) "JDOS_FSS_Ising_3D_HCP_L" + std::to_string(L) + "_REP_1E" + std::to_string((int) log10(REP)) + "_skip_" + std::to_string(skip)
 #   endif
-#   if LATTICE == 6
+#   if LATTICE_NUM == 6
         /* Number of particles */
 #       define N_SPINS L * L * L
         /* Number os nearest neughbours */
 #       define NN 8
+#       define DIM "2D"
+#       define LATTICE "SS"
+
 #       define NORM_FILE "./coefficients/coefficients_" + std::to_string(N_SPINS) + "d" + std::to_string(SZ) + ".txt"
 #       define NEIGH_FILE "./neighbour_tables/neighbour_table_3D_Hex_8NN_L" + std::to_string(L) + ".txt"
 #       define SAVE_FILE(REP, skip) "JDOS_FSS_Ising_3D_Hex_L" + std::to_string(L) + "_REP_1E" + std::to_string((int) log10(REP)) + "_skip_" + std::to_string(skip)
@@ -264,7 +282,9 @@ int main(int argc, char **argv)
         now = time(0);
         t = ctime(&now); t.pop_back();
 
-        string console_output = "L: " + std::to_string(L) + " | REP: " + std::to_string(REP) + " | skip: " + std::to_string(skip) + " | workers: " + std::to_string(size - 1) + " (+1 root) | REP per worker " + std::to_string(REP_per_worker);
+        string console_output = "L: " + std::to_string(L) + " | REP: " + std::to_string(REP) + " | skip: " + std::to_string(skip) + 
+        " | workers: " + std::to_string(size - 1) + " (+1 root) | REP per worker " + std::to_string(REP_per_worker) +
+        " | dim: " + DIM + " | lattie: " + LATTICE;
         console_log.push_back(console_output);
 
         cout << endl;
