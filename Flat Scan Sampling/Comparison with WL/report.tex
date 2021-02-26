@@ -21,7 +21,7 @@
 	\maketitle
 	
 	
-	I present a comparison between a popular Monte Carlo method to  calculate the Joint Density of States(JDOS), with modest accuracy and speed, the Wang Landau sampling(WL), and the Flat Scan Sampling(FSS), a new method to obtain the JDOS by making random walks in the Density of States at a given magnetization and weighing the states given by those configurations in the flip of one spin. I describe how both methods wor, validate my C++ implementation and compare them by statistical errors and computation times.
+	I present a comparison between a popular Monte Carlo method to  calculate the Joint Density of States(JDOS), with modest accuracy and speed, the Wang Landau sampling(WL), and the Flat Scan Sampling(FSS), a new method to obtain the JDOS by making random walks in the Density of States at a given magnetization and weighing the states given by those configurations in the flip of one spin. I describe how both methods work, validate my C++ implementation and compare them by statistical errors and computation times.
 	
 	From past experience, the WL method is better for fast but not too precise computations and the FSS is better for really precise calculations with a relatively higher run time.
 	
@@ -33,7 +33,7 @@
 	\begin{equation*}
 		H=-J\sum_{<i,j>}S_i \cdot S_j
 	\end{equation*}
-	where $J$ is the interaction force constant between two neighbouring particles, and the sum is conducted over neighbour particles, hence the notation $<i,j>$. If $J>0$, the system will have a ferromagnetic behaviour, and if $J<0$, the system will behave in an anti-ferromagnetic way.
+	where $J$ is the interaction force constant between two neighboring particles, and the sum is conducted over neighbor particles, hence the notation $<i,j>$. If $J>0$, the system will have a ferromagnetic behavior, and if $J<0$, the system will behave in an anti-ferromagnetic way.
 	
 	\subsection{Wang Landau}
 	
@@ -50,9 +50,9 @@
 	If the flip occurs, then we update the histogram and set $g(E_i)$ to $g(E_i)\times f$, where $f$ is called the modification factor, initially grater than 1. This is repeated until the histogram reaches the desired flatness (it is impossible to be $100\%$ flat).
 	After we update the modification factor to a lower value, usually by getting it's square root, and use the last iteration's estimated DOS. This continues until the modification factor converges to $1$, $\sim 1 + 10^{-8}$.
 
-	Our natural interest is to obtain the JDOS\cite{JDOS_easy, JDOS_diff}, $g(E, M)$, since the magnetizations are energy dependant, and this way we can get more thermodynamic variables out of the calculation.
+	Our natural interest is to obtain the JDOS\cite{JDOS_easy, JDOS_diff}, $g(E, M)$, since the magnetizations are energy dependent, and this way we can get more thermodynamic variables out of the calculation.
 	
-	\subsection{New Random Path Sampling}
+	\subsection{Flat Scan Sampling}
 	
 	\begin{figure}[b]
 		\includegraphics[scale=0.26]{scheme_new_rps.png}
@@ -65,10 +65,10 @@
 	
 	This algorithm is based on the observation that if we know the DOS of a magnetization $q$, and if we have enough statistically good configurations($N$ per value of energy), by performing a spin flip we can get an approximation of the DOS at the next value of magnetization, $q+1$. This is possible by keeping track of how many configurations go from one value of energy at $q$ to another value of energy at $q+1$, fig. 1.
 	
-	We start with a clean JDOS, $g(E, M)=0$, and a clean weight matrix, that will give us the fractions of the configuraions that go to a certain energy in the $q+1$ magnetization. For each magnetization, we get an initial configuration and preform a scan, this is, flip down a spin at a time and register in the weight matrix the number of configurations that went from the initial energy $E_i$ to the final energy of the flipped configuration.
+	We start with a clean JDOS, $g(E, M)=0$, and a clean weight matrix, that will give us the fractions of the configurations that go to a certain energy in the $q+1$ magnetization. For each magnetization, we get an initial configuration and preform a scan, this is, flip down a spin at a time and register in the weight matrix the number of configurations that went from the initial energy $E_i$ to the final energy of the flipped configuration.
 	Now that we have an initial configuration, we flip one spin up and another one down to get the most possible different configurations at magnetization $q$, to reduce statistical error. 
 	
-	Using the WL acceptance criteria, we can accept the configuration or not, another way to reduce error. If we accept it, we keep the changed sites and do a scan each skip times, where skip is a parameter used to count only configurations that differ more from each other than just a spin flip. After we compute the JDOS buy knowing the faction of configurations that went from $(E_i, q)$ to $(E_j, q + 1)$. We do this part until all of the values of the DOS at magnetization $q$ have been scanned at least REP times, where REP is another parameter of the method that significantly affects both performance and precision, and we repeat these steps until at least half of the JDOS is covered.
+	Using the WL acceptance criteria, we can accept the configuration or not, another way to reduce error. If we accept it, we keep the changed sites and do a scan each skip times, where skip is a parameter used to count only configurations that differ more from each other than just a spin flip. After we compute the JDOS by knowing the faction of configurations that went from $(E_i, q)$ to $(E_j, q + 1)$. We do this part until all of the values of the DOS at magnetization $q$ have been scanned at least REP times, where REP is another parameter of the method that significantly affects both performance and precision, and we repeat these steps until at least half of the JDOS is covered.
 	\newpage
 	
 	\section{Results and Discussion}
@@ -93,9 +93,9 @@
 	
 	These histograms represent a normal distribution fit to the values for the $1000$ JDOS computed, but for only $3$ distinct configurations, the checker-board, slice and zero-zero, being more important the first two. 
 	
-	The checker-board is a configuration in which all of the spins form a pattern like a chess board, one spin up has all its neighbours facing down, for a square lattice there is always two configurations like these. The slice, has a row of spins up and a row of spins down. The row can vary its size, and there are only $2*L$ slice configurations, for $L=2$ there are $8$ slice configurations. The zero-zero of the configuration with $E=0$ and $M=0$. For the $L=4$ size, we have $4356$ different configurations, this is also the state with the most configurations.
+	The checker-board is a configuration in which all of the spins form a pattern like a chess board, one spin up has all its neighbors facing down, for a square lattice there is always two configurations like these. The slice, has a row of spins up and a row of spins down. The row can vary its size, and there are only $2*L$ slice configurations, for $L=2$ there are $8$ slice configurations. The zero-zero of the configuration with $E=0$ and $M=0$. For the $L=4$ size, we have $4356$ different configurations, this is also the state with the most configurations.
 	
-	Analysing the histograms (figs. 2 and 3) we can see that for each method, the values for those three configurations lie on a normal distribution with an expected value close to the exact one.
+	Analyzing the histograms (figs. 2 and 3) we can see that for each method, the values for those three configurations lie on a normal distribution with an expected value close to the exact one.
 	
 	\begin{figure}[h]
 		\includegraphics[scale=0.3]{mu_WL}
@@ -110,7 +110,7 @@
 	\end{figure}
 
 	
-	Looking at figures 4 and 5, we can see that the expected values for each configuration tends to the exact value. But the expected value does not give us all of the important information. It is needed that ir converges to the exact one, but the variance of this value will tell us the precision and consistency of the method (figs. 6 and 7).
+	Looking at figures 4 and 5, we can see that the expected values for each configuration tends to the exact value. But the expected value does not give us all of the important information. It is needed that it converges to the exact one, but the variance of this value will tell us the precision and consistency of the method (figs. 6 and 7).
 	
 	\newpage
 
