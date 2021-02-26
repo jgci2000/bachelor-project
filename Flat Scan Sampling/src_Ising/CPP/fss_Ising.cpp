@@ -206,8 +206,8 @@ int main(int argc, char **argv)
     create_vector(energies, - max_E, max_E, 4);
     create_vector(magnetizations, - max_M, max_M, 2);
     
-    double *JDOS = new double[NE * NM];
-    double *JDOS_frac = new double[NE * NM];
+    long double *JDOS = new long double[NE * NM];
+    long double *JDOS_frac = new long double[NE * NM];
 
     for (int i = 0; i < NE * NM; i++)
     {

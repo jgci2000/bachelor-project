@@ -158,8 +158,8 @@ int main(int argc, char **argv)
     array<int, NE> energies;
     array<int, NM> magnetizations;
 
-    double *JDOS;
-    double *JDOS_frac;
+    long double *JDOS;
+    long double *JDOS_frac;
     int q;
 
     ll accept_counter = 0;
@@ -242,8 +242,8 @@ int main(int argc, char **argv)
 
     if (rank == root)
     {
-        JDOS = new double[NE * NM];
-        JDOS_frac = new double[NE * NM];
+        JDOS = new long double[NE * NM];
+        JDOS_frac = new long double[NE * NM];
 
         for (int i = 0; i < NE * NM; i++)
         {
@@ -427,7 +427,7 @@ int main(int argc, char **argv)
             MPI_Bcast(&q, 1, MPI_INT, root, MPI_COMM_WORLD);
             if (q == 0)
             {
-                JDOS = new double[NE * NM];
+                JDOS = new long double[NE * NM];
                 neo_previous = new ll[NE * NE];
                 hist_WL = new ll[NE];
                 hist_E_selected = new ll[NE];
