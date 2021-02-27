@@ -14,7 +14,7 @@ of States.
 ## TODO
 
 * Fix the precision error in the FSS SC and MPI code
-* Degub Ising Spin S code
+* Debug Ising Spin S code
 * Improve thermodynamics script
 * Study the thermodynamics from different lattices
 * Learn and study the critical exponents from lattices
