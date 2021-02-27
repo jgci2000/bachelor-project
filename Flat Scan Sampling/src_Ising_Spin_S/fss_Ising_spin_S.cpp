@@ -33,12 +33,12 @@ using std::string;
 // DIM -> 1 - 2D; 2 - 3D 
 #define DIM 1
 // Spin-S particles 
-#define S 1
+#define S 1/2
 // Number of spin projections 
 #define SZ ((2 * S) + 1)
 
 // Lattice size 
-#define L 4
+#define L 2
 // Ineteraction strength 
 #define J 1
 
@@ -232,10 +232,10 @@ int main(int argc, char **argv)
     array<int, SZ> Z_spin;
     create_vector(Z_spin, - 2 * S, 2 * S, 2);
 
-    double **JDOS_advance = new double*[NM];
+    long double **JDOS_advance = new long double*[NM];
     
     for (int i = 0; i < NM; i++)
-        JDOS_advance[i] = new double[line_size_sum_Npos.at(i) * NE];
+        JDOS_advance[i] = new long double[line_size_sum_Npos.at(i) * NE];
     
     for (int i = 0; i < NM; i++)
         for (int j = 0; j < NE * line_size_sum_Npos.at(i); j++)
@@ -243,7 +243,7 @@ int main(int argc, char **argv)
     JDOS_advance[0][0] = 1;
     JDOS_advance[NM - 1][0] = 1;
     
-    double *JDOS = new double[NE * NM];
+    long double *JDOS = new long double[NE * NM];
     
     for (int i = 0; i < NE * NM; i++)
         JDOS[i] = 0;
@@ -364,15 +364,15 @@ int main(int argc, char **argv)
     
     cout << console_output << endl;
 
-    int *hist;
-    int *hist_E_selected;
+    ll *hist;
+    ll *hist_E_selected;
 
     for (int q = 1; q <= q_max; q++) 
     {
         auto q_start = std::chrono::steady_clock::now();
         
-        hist = new int[NE * line_size_sum_Npos.at(q)];
-        hist_E_selected = new int[NE * line_size_sum_Npos.at(q)];
+        hist = new ll[NE * line_size_sum_Npos.at(q)];
+        hist_E_selected = new ll[NE * line_size_sum_Npos.at(q)];
 
         for (int i = 0; i < NE * line_size_sum_Npos.at(q); i++)
         {
