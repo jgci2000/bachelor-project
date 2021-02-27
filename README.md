@@ -13,8 +13,10 @@ of States.
 
 ## TODO
 
+* Fix the precision error in the FSS SC and MPI code
 * Degub Ising Spin S code
-* Improve my Thermodynamics Script
-* Get Thermodynamics from different Lattices
-
+* Improve thermodynamics script
+* Study the thermodynamics from different lattices
+* Learn and study the critical exponents from lattices
+* Learn about simd instructions
 
