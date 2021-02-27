@@ -14,7 +14,7 @@ of States.
 ## TODO
 
 * Fix the precision error in the FSS SC and MPI code
-* Debug Ising Spin S code
+* Debug Ising Spin S code -> functions working: scan_at_q1, random_config_at_q, WK_rw_criteria; where the problem could be -> scan or rw_step_at_q
 * Improve thermodynamics script
 * Study the thermodynamics from different lattices
 * Learn and study the critical exponents from lattices
