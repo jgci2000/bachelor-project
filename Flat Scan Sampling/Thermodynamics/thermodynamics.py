@@ -200,12 +200,12 @@ def main():
     # plt.title("Mean Heat Capacity per spin as a function of T | L = " + str(L) + " | REP = 1E" + str(int(np.log10(REP))))
     
     fig, axs = plt.subplots(2, 2)
-    axs[0, 0].plot(temperatures, mod_M / N_SPINS, '.-b')
+    axs[0, 0].plot(temperatures / Tc, mod_M / N_SPINS, '.-b')
     # axs[0, 0].xlabel("T")
     # axs[0, 0].ylabel("<|M|>")
     axs[0, 0].set_title("<|M|> as a function of T | L = " + str(L) + " | REP = " + str(int(np.log10(REP))))
     
-    axs[0, 1].plot(temperatures, E / N_SPINS, '.-b')
+    axs[0, 1].plot(temperatures / Tc, E / N_SPINS, '.-b')
     # axs[0, 1].xlabel("T")
     # axs[0, 1].ylabel("<E>")
     axs[0, 1].set_title("<E> as a function of T | L = " + str(L) + " | REP = " + str(int(np.log10(REP))))
