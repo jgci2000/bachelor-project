@@ -222,17 +222,23 @@ def main():
     # axs[1, 1].ylabel("F")
     axs[1, 1].set_title("F as a function of M and T | L = " + str(L) + " | REP = " + str(int(np.log10(REP))))
     
-    fig, axs = plt.subplots(2, 1)
+    fig, axs = plt.subplots(2, 2)
     
-    axs[0].plot(temperatures / Tc, C / N_SPINS)
+    axs[0, 0].plot(temperatures / Tc, C / N_SPINS, '.-b')
     # axs[0, 0].xlabel("T/Tc")
     # axs[0, 0].ylabel("C")
-    axs[0].set_title("Heat Capacity per spin as a function of T | L = " + str(L) + " | REP = 1E" + str(int(np.log10(REP))))
+    axs[0, 0].set_title("Heat Capacity per spin as a function of T | L = " + str(L) + " | REP = 1E" + str(int(np.log10(REP))))
     
-    axs[1].plot(temperatures / Tc, mean_C / N_SPINS)
+    axs[1, 0].plot(temperatures / Tc, mean_C / N_SPINS, '.-b')
     # axs[1, 0].xlabel("T/Tc")
     # axs[1, 0].ylabel("<C>")
-    axs[1].set_title("Mean Heat Capacity per spin as a function of T | L = " + str(L) + " | REP = 1E" + str(int(np.log10(REP))))
+    axs[1, 0].set_title("Mean Heat Capacity per spin as a function of T | L = " + str(L) + " | REP = 1E" + str(int(np.log10(REP))))
+    
+    axs[0, 1].plot(temperatures / Tc, mean_X / N_SPINS, '.-b')
+    axs[0, 1].set_title("Mean Magnetic Susceptability per spin as a function of T | L = " + str(L) + " | REP = 1E" + str(int(np.log10(REP))))
+    
+    axs[1, 1].plot(temperatures / Tc, mean_S / N_SPINS, '.-b')
+    axs[1, 1].set_title("Mean Entropy per spin as a function of T | L = " + str(L) + " | REP = 1E" + str(int(np.log10(REP))))
     
     print("Script runtime: {:.4f}s".format(time.process_time() - start))
     plt.show()
