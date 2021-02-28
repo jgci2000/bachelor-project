@@ -38,7 +38,7 @@ using std::string;
 #define SZ 2 * (S + 1)
 
 /* Lattice size */
-#define L 8
+#define L 2
 /* Ineteraction strength */
 #define J 1
 
@@ -311,7 +311,7 @@ int main(int argc, char **argv)
         ll k_saved = 1;
         ll k = 2;
         
-        while (min_hist(hist_E_selected, NE) < REP)
+        while (min_hist(hist_E_selected, NE) <= REP)
         {
             int idx_pos = xorshift64s(&state) % pos.size();
             int flipped_pos = pos.at(idx_pos);
@@ -352,7 +352,7 @@ int main(int argc, char **argv)
 
                 accept_counter++;
 
-                if (k >= k_saved + skip && hist_E_selected[idx_E_WL_old] <= REP || hist_WL[idx_E_WL_new] == 0) 
+                if (k >= k_saved + skip && hist_E_selected[idx_E_WL_old] <= REP || hist_E_selected[idx_E_WL_new] == 0)
                 {
                     hist_E_selected[idx_E_WL_old]++;
                     k_saved = k;
@@ -381,7 +381,7 @@ int main(int argc, char **argv)
 
                 reject_counter++;
 
-                if (k >= k_saved + skip && hist_E_selected[idx_E_WL_old] <= REP) 
+                if (k >= k_saved + skip && hist_E_selected[idx_E_WL_old] <= REP)
                 {
                     hist_E_selected[idx_E_WL_old]++;
                     k_saved = k;
@@ -433,6 +433,13 @@ int main(int argc, char **argv)
         data.push_back(data_line);
 
         cout << console_output << endl;
+
+        if (q == 20)
+        {
+            for (int i = 0; i < NE; i++)
+                cout << JDOS[i * NM + q + 1] << endl;
+            return 0;
+        }
     }
     
     // Stop mesuring time
