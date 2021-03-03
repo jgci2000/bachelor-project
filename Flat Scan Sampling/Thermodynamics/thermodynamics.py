@@ -148,56 +148,12 @@ def main():
     Tc_mod_M = temperatures[np.where(mod_M_fd == min(mod_M_fd))[0][0]]
     Tc = Tc_M_min_F
     
-    # Outputs
+    # Plots
     print("Method computation time: {:.2f}s".format(run_time))
     print("Tc_M_min_F [L{:d}]: {:.3f}".format(L, Tc_M_min_F))
     print("Tc_mod_M [L{:d}]: {:.3f}".format(L, Tc_mod_M))
 
     plt.style.use('seaborn-whitegrid')
-    
-    # plt.figure(1)
-    # plt.plot(temperatures, mod_M / N_SPINS, '.-b')
-
-    # plt.xlabel("T")
-    # plt.ylabel("<|M|>")
-    # plt.title("<|M|> as a function of T | L = " + str(L) + " | REP = " + str(int(np.log10(REP))))
-    
-    # plt.figure(2)
-    # plt.plot(temperatures, E / N_SPINS, '.-b')
-    
-    # plt.xlabel("T")
-    # plt.ylabel("<E>")
-    # plt.title("<E> as a function of T | L = " + str(L) + " | REP = " + str(int(np.log10(REP))))
-    
-    # plt.figure(3)
-    # for i in range(0, len(temperatures)):
-    #     plt.plot(magnetizations / N_SPINS, F[:, i] / N_SPINS, '-b', lw=1)
-    #     plt.plot(M_min_F[i] / N_SPINS, min_F[i] / N_SPINS, '.b', ms=7.5)
-    
-    # plt.xlabel("M")
-    # plt.ylabel("F")
-    # plt.title("F as a function of M and T | L = " + str(L) + " | REP = " + str(int(np.log10(REP))))
-    
-    # plt.figure(4)
-    # plt.plot(temperatures / Tc, M_min_F / N_SPINS, '.-b')
-    
-    # plt.xlabel("T/Tc")
-    # plt.ylabel("M minF")
-    # plt.title("Magnetization for F minina as a function of T | L = " + str(L) + " | REP = 1E" + str(int(np.log10(REP))))
-    
-    # plt.figure(5)
-    # plt.plot(temperatures / Tc, C / N_SPINS)
-    
-    # plt.xlabel("T/Tc")
-    # plt.ylabel("C")
-    # plt.title("Heat Capacity per spin as a function of T | L = " + str(L) + " | REP = 1E" + str(int(np.log10(REP))))
-    
-    # plt.figure(6)
-    # plt.plot(temperatures / Tc, mean_C / N_SPINS)
-    
-    # plt.xlabel("T/Tc")
-    # plt.ylabel("<C>")
-    # plt.title("Mean Heat Capacity per spin as a function of T | L = " + str(L) + " | REP = 1E" + str(int(np.log10(REP))))
     
     fig, axs = plt.subplots(2, 2)
     axs[0, 0].plot(temperatures / Tc, mod_M / N_SPINS, '.-b')
