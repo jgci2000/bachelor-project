@@ -11,6 +11,10 @@ of States.
 * Random Path Sampling
 * Flat Scan Sampling
 
+## Objectives
+* Week 1:
+- dsda
+
 ## TODO
 
 * Fix the precision error in the FSS SC and MPI code
