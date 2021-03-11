@@ -11,9 +11,9 @@ of States.
 * Random Path Sampling
 * Flat Scan Sampling
 
-## Objectives
-* Week 1:
-- dsda
+# Objectives
+## Week 1:
+* dasd
 
 ## TODO
 
