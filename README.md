@@ -18,6 +18,10 @@ of States.
 * Install MATLAB of the ryzen JA
 * Run FSS MATLAB code for 3D SC L8 system
 
+## Week 2: 
+* Debug the FSS Ising Spin S code
+* Submit a job in the cluster
+
 ## TODO
 
 * Fix the precision error in the FSS SC and MPI code
