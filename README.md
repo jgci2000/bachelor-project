@@ -19,7 +19,7 @@ of States.
 * Run FSS MATLAB code for 3D SC L8 system
 
 ## Week 2: 
-* Debug the FSS Ising Spin S code
+* Debug the FSS Ising-1/2 code
 * Submit a job in the cluster
 
 ## TODO
