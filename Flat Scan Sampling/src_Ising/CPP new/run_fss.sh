@@ -1,16 +1,27 @@
 #!/bin/bash
-#set -x
 
+#
+# Script to compile and run FSS method
+# João Inácio, Mar. 25th, 2021
+#
+
+
+# Compiler
 CC=g++
+
+# File names
 input_file=$1
-shift # pull off first arg
-args="$*"
 filename=${input_file%%.cpp}
 
+# Runtime arguments
+shift
+args="$*"
 
-$CC -o $filename $CFLAGS $input_file -O3 -m64 -march=native -msse4.2 -mavx2
+# Compilation
+$CC -o $filename -O3 -m64 -march=native -msse4.2 -mavx2 $input_file Ising.cpp Fss_Fcuntions.cpp
 rc=$?
 
+# Run the program
 if [[ $rc == 0 ]]; then
    ./$filename $args
    exit $?
