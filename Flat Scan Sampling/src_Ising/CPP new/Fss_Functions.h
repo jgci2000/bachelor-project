@@ -1,14 +1,21 @@
+//
+// Header file for FSS method functions.
+// João Inácio, Mar. 25th, 2021
+//
+
+
 #ifndef FSS_FUNCTIONS_H
 #define FSS_FUNCTIONS_H
 
 template<typename T>
 T min_hist(T *, int);
 
-template<typename T>
-int binary_search(T *, int, T);
+int binary_search(int *, int, int);
 
 template<typename T, size_t N>
 int binary_search(std::array<T, N> &, T);
+
+int binary_search(std::vector<int> &, int);
 
 template<typename T, size_t N>
 void create_vector(std::array<T, N> &, T, T, int);
@@ -27,5 +34,4 @@ void shuffle(std::array<T, N> &, long long, std::vector<T> &, std::vector<T> &, 
 
 std::vector<std::string> split(const std::string& , char);
 
-
-#endif
+#endif // FSS_FUNCTIONS_H

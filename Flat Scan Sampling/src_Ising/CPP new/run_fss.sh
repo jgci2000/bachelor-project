@@ -18,7 +18,7 @@ shift
 args="$*"
 
 # Compilation
-$CC -o $filename -O3 -m64 -march=native -msse4.2 -mavx2 $input_file Ising.cpp Fss_Fcuntions.cpp
+$CC -o $filename -O3 -std=c++20 $input_file Ising.cpp Fss_Functions.cpp
 rc=$?
 
 # Run the program

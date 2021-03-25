@@ -1,8 +1,15 @@
+//
+// Source file for FSS method functions.
+// João Inácio, Mar. 25th, 2021
+//
+
+
 #include <climits>
 #include <array>
 #include <vector>
+#include <string>
 
-#include "fss_functions.h"
+#include "Fss_Functions.h"
 
 
 // Finds the minimum value for the histogram, using C arrays.
@@ -17,8 +24,7 @@ T min_hist(T *hist, int size)
 }
 
 // Improved binary search algorithm, using C array.
-template<typename T>
-int binary_search(T *arr, int size, T num)
+int binary_search(int *arr, int size, int num)
 {
     int idx_low = -1; 
     int idx_high = size; 
@@ -50,6 +56,23 @@ int binary_search(std::array<T, N> &arr, T num)
             idx_high = idx_middle;
     }
     return (idx_high >= arr.size() || arr[idx_high] != num) ? -1 : idx_high;
+}
+
+// Improved binary search algorithm, using C++ std::vector.
+int binary_search(std::vector<int> &arr, int num)
+{
+    int idx_low = -1; 
+    int idx_high = arr.size(); 
+    int idx_middle;
+    while(idx_low + 1 != idx_high)
+    {
+        idx_middle = (idx_low + idx_high) / 2;
+        if(arr.at(idx_middle) < num)
+            idx_low = idx_middle;
+        else
+            idx_high = idx_middle;
+    }
+    return (idx_high >= arr.size() || arr.at(idx_high) != num) ? -1 : idx_high;
 }
 
 // Creates a vector "in" with values from "init" to "final" with a certain step.
