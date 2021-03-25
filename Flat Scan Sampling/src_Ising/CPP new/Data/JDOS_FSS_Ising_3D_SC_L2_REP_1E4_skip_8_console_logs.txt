@@ -1,0 +1,5 @@
+L: 2 | REP: 10000 | skip: 8 | dim: 3D | lattie: SC
+Sat Feb 27 15:28:08 2021 | q: 0/3 | q_time: 0.004718s | E: 1 | q_time/E: 0.004718s | shuffle time: 0.000000s
+Sat Feb 27 15:28:08 2021 | q: 1/3 | q_time: 0.005952s | E: 1 | q_time/E: 0.005952s | shuffle time: 0.000495s
+Sat Feb 27 15:28:08 2021 | q: 2/3 | q_time: 0.014106s | E: 2 | q_time/E: 0.007053s | shuffle time: 0.000515s
+Sat Feb 27 15:28:08 2021 | q: 3/3 | q_time: 0.020854s | E: 3 | q_time/E: 0.006951s | shuffle time: 0.000523s
