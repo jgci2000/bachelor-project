@@ -10,7 +10,8 @@ close all
 % v49 - vectorized scan - no real speedup
 % v50 - shorten code
 %
-rng default
+% rng default
+RandStream.setGlobalStream( RandStream.create('mt19937ar','seed',100) );
 %
 L = 8;
 q_max = L^2/2 + 1;
@@ -63,6 +64,7 @@ tStart = tic;
 for q = 1:(q_max-1)
     %
     tic
+    count = 0;
     %
     neo_previous = zeros(length(E_list), length(E_list)); % old new
     WL_log_DOS = log(JDOS_aprox_frac(:, q)); % DOS values start as the estimate from scan at q-1
@@ -79,7 +81,9 @@ for q = 1:(q_max-1)
         for index = 1:(q-1)
             %
             pos = find(S_vector_WL(:,1) == 1);
-            flipped_pos = randsample(pos,1);
+%             flipped_pos = randsample(pos,1);
+            flipped_pos = pos( rem(fix(rand * 10000), length(pos)) + 1);
+            count = count + 1;
             %
             S_vector_WL(flipped_pos,1) = -1;
             %
@@ -111,7 +115,9 @@ for q = 1:(q_max-1)
         % choose an up and down spin to flip
         %
         pos = find(S_vector_WL(:,1) == 1);
-        flipped_pos = randsample(pos,1);
+%         flipped_pos = randsample(pos,1);
+        flipped_pos = pos( rem(fix(rand * 10000), length(pos)) + 1);
+        count = count + 1;
         %
         S_vector_WL(flipped_pos,1) = -1;
         %
@@ -125,11 +131,13 @@ for q = 1:(q_max-1)
         %
         neg = find(S_vector_WL(:,1) == -1);
         %
-        if length(neg) > 1
-            flipped_neg = randsample(neg,1);
-        else
-            flipped_neg = neg;
-        end
+        flipped_neg = neg( rem(fix(rand * 10000), length(neg)) + 1 );
+%         if length(neg) > 1
+%             flipped_neg = neg(fix(rem(rand * 10000, length(pos))));
+%         else
+%             flipped_neg = neg;
+%         end
+        count = count + 1;
         %
         S_vector_WL(flipped_neg,1) = 1;
         %
@@ -141,14 +149,15 @@ for q = 1:(q_max-1)
         %
         E_WL_new = E_WL_new + 2*delta_E;
         %
-        if rand < min( [ exp(WL_log_DOS(E_list == E_WL_old, 1) - WL_log_DOS(E_list == E_WL_new, 1)), 1]) % accept
+        count = count + 1;
+        if rand < min( [ exp(WL_log_DOS(E_list == E_WL_old, 1) - WL_log_DOS(E_list == E_WL_new, 1)), 1]) || hist_WL(E_list == E_WL_new) == 0 % accept
             %
             E_WL_old = E_WL_new;
             hist_WL(E_list == E_WL_new, 1) = hist_WL( E_list == E_WL_new, 1) + 1; % update histogram
             %
             accept_counter = accept_counter + 1;
             %
-            if k >= k_saved + skip && hist_E_selected_S_vector(E_list == E_WL_new, 1) < REP
+            if k >= k_saved + skip && hist_E_selected_S_vector(E_list == E_WL_new, 1) < REP || hist_E_selected_S_vector(E_list == E_WL_new, 1) == 0
                 %
                 hist_E_selected_S_vector(E_list == E_WL_new, 1) = hist_E_selected_S_vector(E_list == E_WL_new, 1) + 1;
                 k_saved = k;
@@ -208,6 +217,7 @@ for q = 1:(q_max-1)
     %
     disp(q)
     q_timer = toc;
+    disp(count)
     %
 end
 %

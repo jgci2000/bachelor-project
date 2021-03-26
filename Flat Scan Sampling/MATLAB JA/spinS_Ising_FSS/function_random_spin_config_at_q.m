@@ -10,7 +10,7 @@ for q_function = 2:q
     %
     flipped_pos = find(SPM < Npos);
     flipped_pos_index = randsample(flipped_pos,1);
-%     flipped_pos_index = randi(length(flipped_pos));
+    %flipped_pos_index = randi(length(flipped_pos));
     %
     % CALC ENERGY BEFORE SPIN CHANGE
     E_z_old_temp = 0;

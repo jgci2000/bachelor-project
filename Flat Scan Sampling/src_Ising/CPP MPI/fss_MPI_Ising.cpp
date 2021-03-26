@@ -30,9 +30,9 @@ using std::string;
 #define SEED 0
 
 /* LATTICE -> 1 - SS; 2 - SC; 3 - BCC; 4 - FCC; 5 - HCP; 6 - Hex */
-#define LATTICE_NUM 1
+#define LATTICE_NUM 2
 /* DIM -> 1 - 2D; 2 - 3D */
-#define DIM_NUM 1
+#define DIM_NUM 2
 /* S-Spins particles */
 #define S 1/2
 /* Number of spin projections */
@@ -127,7 +127,7 @@ using std::string;
 
 const int q_max = N_SPINS / 2 + 1;      // Max index of the magnetization computed (N_SPINS / 2 + 1 for half of the JDOS)
 const int skip = N_SPINS;               // Scan a configuration each skip times to get more random results
-const ll REP = pow(10, 6);              // Number of sampled configurations in one energy
+const ll REP = pow(10, 4);              // Number of sampled configurations in one energy
 
 const int max_E = (1.0 / 2.0) * NN * N_SPINS;
 const int max_M = N_SPINS;
@@ -307,6 +307,14 @@ int main(int argc, char **argv)
                 neo_previous_root[i] = 0;
                 neo_previous[i] = 0;
             }
+
+            hist_WL = new ll[NE];
+            for (int i = 0; i < NE; i++)
+                hist_WL[i] = 0;
+
+            ll *hist_WL_root = new ll[NE];
+            for (int i = 0; i < NE; i++)
+                hist_WL_root[i] = 0;
             
             accept_counter_root = 0;
             reject_counter_root = 0;
@@ -344,6 +352,10 @@ int main(int argc, char **argv)
 
                 MPI_Recv(&hits, 1, MPI_LONG_LONG_INT, MPI_ANY_SOURCE, statuses.MPI_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
                 hits_root += hits;
+
+                MPI_Recv(hist_WL, NE, MPI_LONG_LONG_INT, MPI_ANY_SOURCE, statuses.MPI_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                for (int j = 0; j < NE; j++)
+                    hist_WL_root[j] += hist_WL[j];
 
                 if (hits > max_hits) max_hits = hits;
                 if (hits < max_hits) cout << "hello" << endl;
@@ -384,6 +396,10 @@ int main(int argc, char **argv)
             data.push_back(data_line);
 
             cout << console_output << endl;
+
+            for (int i = 0; i < NE; i++)
+                cout << hist_WL_root[i] << " ";
+            cout << endl;
         }
 
         // Stop mesuring time
@@ -603,6 +619,8 @@ int main(int argc, char **argv)
             MPI_Send(&k_saved, 1, MPI_LONG_LONG_INT, root, rank, MPI_COMM_WORLD);
             MPI_Send(&sampled_ratio, 1, MPI_LONG_LONG_INT, root, rank, MPI_COMM_WORLD);
             MPI_Send(&hits, 1, MPI_LONG_LONG_INT, root, rank, MPI_COMM_WORLD);
+
+            MPI_Send(hist_WL, NE, MPI_LONG_LONG_INT, root, rank, MPI_COMM_WORLD);
             
             if (rank == root + 1)
                 MPI_Send(&shuffle_time, 1, MPI_DOUBLE_PRECISION, root, 99, MPI_COMM_WORLD);

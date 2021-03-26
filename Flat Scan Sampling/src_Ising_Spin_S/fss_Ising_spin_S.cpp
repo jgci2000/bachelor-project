@@ -33,12 +33,12 @@ using std::string;
 // DIM -> 1 - 2D; 2 - 3D 
 #define DIM 1
 // Spin-S particles 
-#define S 1/2
+#define S 1
 // Number of spin projections 
 #define SZ ((2 * S) + 1)
 
 // Lattice size 
-#define L 2
+#define L 3
 // Ineteraction strength 
 #define J 1
 
@@ -391,13 +391,29 @@ int main(int argc, char **argv)
         {
             vector<int> flip_list;
             for (int i = 0; i < N_SPINS; i++)
-                if (SPM[i] < SZ)
+                if (SPM[i] < SZ - 1)
                     flip_list.push_back(i);
 
-            int flip_list_idx;
-            do flip_list_idx = xorshift64s(&state) % flip_list.size();
-            while (SPM[flip_list_idx] + 1 >= SZ);
+            // HERE
+            int flip_list_idx = flip_list.at(xorshift64s(&state) % flip_list.size());
+            // do flip_list_idx = flip_list.at(xorshift64s(&state) % flip_list.size());
+            // while (SPM[flip_list_idx] >= SZ);
+
+            // if (q == 6)
+            // {
+            //     for (int i = 0; i < N_SPINS; i++)
+            //         cout << SPM[i] << " ";
+            //     cout << endl;
+
+            //     for (int i = 0; i < flip_list.size(); i++)
+            //         cout << flip_list.at(i) << " ";
+            //     cout << endl;
+
+            //     cout << flip_list_idx << endl;
+            // }
             
+            
+
             int E_z_old_tmp = 0;
             for (int a = 0; a < NN; a++)
                 E_z_old_tmp += - spins_vector[flip_list_idx] * spins_vector[NN_table[flip_list_idx * NN + a]];
@@ -411,6 +427,17 @@ int main(int argc, char **argv)
 
             E_config += E_z_new_tmp - E_z_old_tmp;
         }
+
+        // if (q == 6)
+        //     return 0;
+
+        // for (int i = 0; i < N_SPINS; i++)
+        //     cout << spins_vector[i] << " ";
+        // cout << endl;
+
+        // for (int i = 0; i < N_SPINS; i++)
+        //     cout << SPM[i] << " ";
+        // cout << endl; 
 
         int counter[SZ] = {0};
         for (int i = 0; i < N_SPINS; i++)
@@ -453,8 +480,12 @@ int main(int argc, char **argv)
         {
             vector<int> flip_list;
             for (int i = 0; i < N_SPINS; i++)
-                if (SPM[i] <= SZ - x - 2)
+                if (SPM[i] < SZ - x - 1)
                     flip_list.push_back(i);
+            
+            // for (int i = 0; i < flip_list.size(); i++)
+            //     cout << flip_list.at(i) << " ";
+            // cout << endl;
 
             for (int flip_idx = 0; flip_idx < flip_list.size(); flip_idx++)
             {
@@ -498,11 +529,25 @@ int main(int argc, char **argv)
                 JDOS_advance[q + x + 1][idx_sum_Npos_vec * NE + idx_E_tmp3] += JDOS_advance[q][prev_Npos_sum_conf_old_idx * NE + prev_idx_E_config] / REP;
             }
         }
-
+        
         idx_sum_Npos_vec = prev_Npos_sum_conf_old_idx;
         idx_E_config = prev_idx_E_config;
         ll k = 1;
 
+        // for (int idx = 0; idx <= 5; idx++)
+        // {
+        //     for (int i = 0; i < line_size_sum_Npos.at(idx); i++)
+        //     {
+        //         for (int j = 0; j < NE; j++)
+        //             cout << JDOS_advance[idx][i * NE + j] << " ";
+        //         cout << endl;
+        //     }
+        //     cout << endl;
+        // }
+
+        // return 0;
+
+        int  c = 0;
         while (min_hist(hist_E_selected, NE * line_size_sum_Npos.at(q)) < REP)
         {
             // cout << "start ->" << endl;
@@ -525,7 +570,7 @@ int main(int argc, char **argv)
             int idx_E_config_old = idx_E_config;
             int idx_sum_Npos_vec_old = idx_sum_Npos_vec;
 
-            int *SPM_new = new int[N_SPINS];
+            int SPM_new[N_SPINS];
             for (int i = 0; i < N_SPINS; i++)
                 SPM_new[i] = SPM[i];
 
@@ -621,6 +666,45 @@ int main(int argc, char **argv)
             }
             idx_sum_Npos_vec /= SZ;
 
+            // if (q == 4)
+            // {
+            //     cout << "-----------------------------------------------------------" << endl;
+
+            //     cout << "BEFORE: " << endl;
+            //     for (int i = 0; i < N_SPINS; i++)
+            //         cout << spins_vector[i] << " ";
+            //     cout << endl;
+
+            //     for (int i = 0; i < N_SPINS; i++)
+            //         cout << SPM[i] << " ";
+            //     cout << endl;
+
+            //     cout << "E: " << E_config_old << "; idx: " << idx_E_config_old << endl;
+            //     cout << "idx_sum_Npos: " << idx_sum_Npos_vec_old << endl;
+
+
+            //     cout << "AFTER: " << endl;
+            //     for (int i = 0; i < N_SPINS; i++)
+            //         cout << spins_vector_new[i] << " ";
+            //     cout << endl;
+
+            //     for (int i = 0; i < N_SPINS; i++)
+            //         cout << SPM_new[i] << " ";
+            //     cout << endl;
+
+            //     cout << "E: " << E_config << "; idx: " << idx_E_config << endl;
+            //     cout << "idx_sum_Npos: " << idx_sum_Npos_vec << endl;
+
+            //     for (int i = 0; i < NE; i++)
+            //         cout << energies[i] << " ";
+            //     cout << endl;
+                
+            //     cout << "-----------------------------------------------------------" << endl;
+            //     c++;
+            //     if (c == 100000)
+            //     return 0;
+            // }
+
             // cout << "end- >" << endl;
             // cout << "spins: " << endl;
             // for (int i = 0; i < N_SPINS; i++)
@@ -637,7 +721,7 @@ int main(int argc, char **argv)
             
             /* WL_rw_criteria */
             double ratio = JDOS_advance[q][idx_sum_Npos_vec * NE + idx_E_config] / JDOS_advance[q][idx_sum_Npos_vec_old * NE + idx_E_config_old];
-            if (ratio >= 1 || xorshift64s(&state) % 10000 < ratio * 10000 || hist[idx_E_config * line_size_sum_Npos.at(q) + idx_sum_Npos_vec] == 0)
+            if (ratio >= 1 || xorshift64s(&state) % 10000 < ratio * 10000 || hist_E_selected[idx_E_config * line_size_sum_Npos.at(q) + idx_sum_Npos_vec] == 0)
             {
                 spins_vector = spins_vector_new;
                 for (int i = 0; i < N_SPINS; i++)
@@ -649,7 +733,7 @@ int main(int argc, char **argv)
                 idx_sum_Npos_vec = idx_sum_Npos_vec_old;
 
                 idx_E_config = idx_E_config_old;
-                idx_sum_Npos_vec = idx_sum_Npos_vec_old;
+                // idx_sum_Npos_vec = idx_sum_Npos_vec_old;
             }
 
             hist[idx_E_config * line_size_sum_Npos.at(q) + idx_sum_Npos_vec]++;
@@ -716,10 +800,14 @@ int main(int argc, char **argv)
                 hist_E_selected[idx_E_config * line_size_sum_Npos.at(q) + idx_sum_Npos_vec]++;
             }
 
-            delete[] SPM_new;
             k++;
         }
+
         
+        
+
+        // return 0;
+
         double sum_JDOS_advance[NE] = {0};
         double sum_sum_JDOS_advance = 0;
         for (int i = 0; i < NE; i++)
@@ -729,10 +817,39 @@ int main(int argc, char **argv)
             sum_sum_JDOS_advance += sum_JDOS_advance[i];
         }
 
+        for (int j = 0; j < line_size_sum_Npos.at(q + 1); j++)
+            for (int i = 0; i < NE; i++)
+                JDOS_advance[q + 1][j * NE + i] = JDOS_advance[q + 1][j * NE + i] * norm_factor[q + 1] / sum_sum_JDOS_advance;
+        
+        
+        for (int i = 0; i < NE; i++)
+            sum_JDOS_advance[i] = 0;
+        // double sum_JDOS_advance[NE] = {0};
+        sum_sum_JDOS_advance = 0;
+        for (int i = 0; i < NE; i++)
+        {
+            for (int j = 0; j < line_size_sum_Npos.at(q + 1); j++)
+                sum_JDOS_advance[i] += JDOS_advance[q + 1][j * NE + i];
+            sum_sum_JDOS_advance += sum_JDOS_advance[i];
+        }
+
+        // if (q == 1)
+        // {
+        //     cout << sum_sum_JDOS_advance << endl;
+
+        //     for (int i = 0; i < NE; i++)
+        //         cout << sum_JDOS_advance[i] << " ";
+        //     cout << endl;
+        // } 
+
         for (int i = 0; i < NE; i++)
             JDOS[i * NM + q + 1] = sum_JDOS_advance[i] * norm_factor[q + 1] / sum_sum_JDOS_advance;
 
-
+        int hits = 0;
+        for (int j = 0; j < line_size_sum_Npos.at(q); j++)
+            for (int i = 0; i < NE; i++)
+                if (JDOS_advance[q][j * NE + i] > 0)
+                    hits++;
         
         // for (int idx = 0; idx <= q_max + 1; idx++)
         // {
@@ -744,13 +861,39 @@ int main(int argc, char **argv)
         //     }
         //     cout << endl;
         // }
-        
-        // for (int i = 0; i < NE; i++)
+
+        // if (q == 6)
         // {
-        //     for (int j = 0; j < NM; j++)
-        //         cout << JDOS[i * NM + j] << " ";
-        //     cout << endl;
+        //     for (int idx = 0; idx <= 5; idx++)
+        //     {
+        //         for (int i = 0; i < line_size_sum_Npos.at(idx); i++)
+        //         {
+        //             for (int j = 0; j < NE; j++)
+        //                 cout << JDOS_advance[idx][i * NE + j] << " ";
+        //             cout << endl;
+        //         }
+        //         cout << endl;
+        //     }
         // }
+
+        // if (q == 6)
+        // {
+        //     for (int i = 0; i < NE; i++)
+        //     {
+        //         for (int j = 0; j < NM; j++)
+        //             cout << JDOS[i * NM + j] << " ";
+        //         cout << endl;
+        //     }
+
+        //     cout << endl;
+
+        //     for (int i = 0; i < NE; i++)
+        //         cout << JDOS[i * NM + q + 1] << " ";
+        //     cout << endl;
+
+        //     return 0;
+        // }
+        
 
         // for (int i = 0; i < line_size_sum_Npos.at(2); i++)
         // {
@@ -786,7 +929,7 @@ int main(int argc, char **argv)
         now = time(0);
         t = ctime(&now); t.pop_back();
 
-        console_output = t + " | q: " + std::to_string(q) + "/" + std::to_string(q_max) + " | q_time: " + std::to_string(q_time); //+ "s | E: " + std::to_string(hits) + " | q_time/E: " + std::to_string(q_time / hits) + "s | shuffle time: " + std::to_string(shuffle_time) + "s";
+        console_output = t + " | q: " + std::to_string(q) + "/" + std::to_string(q_max) + " | q_time: " + std::to_string(q_time) + "s | E: " + std::to_string(hits) + " | q_time/E: " + std::to_string(q_time / hits); // + "s | shuffle time: " + std::to_string(shuffle_time) + "s";
         // data_line = std::to_string(q) + " " + std::to_string(q_max - 2) + " " + std::to_string(q_time) + " " + std::to_string(hits) + " " + std::to_string(q_time / hits) +
         // + " " + std::to_string(k) + " " + std::to_string(accept_counter) + " " + std::to_string(reject_counter);
         

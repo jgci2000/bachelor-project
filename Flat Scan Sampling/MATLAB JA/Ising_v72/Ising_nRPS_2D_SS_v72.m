@@ -3,9 +3,10 @@ close all
 %
 % v72 - from Ising spin S 2D SS v7
 %
-rng default
+% rng default
+RandStream.setGlobalStream( RandStream.create('mt19937ar','seed',100) );
 %
-L = 8;
+L = 4;
 %
 % q_max = 9;
 %
@@ -117,7 +118,7 @@ for q = 2:q_max
     q_timer = toc(q_timer);
     %
     output(q,:) = [q, q_timer, hits, q_timer/hits, k];
-    disp([datestr(now,'dd/mm/yyyy HH:MM:SS'), ' | q: ', int2str(q), '/', int2str(q_max), ' | time: ', num2str(q_timer), ' secs | E pts: ', int2str(hits), ' | time per E pt: ', num2str(q_timer/hits), ' secs | rw steps: ', int2str(k)])
+    disp([datestr(now,'dd/mm/yyyy HH:MM:SS'), ' | q: ' int2str(q), '/', int2str(q_max), ' | time: ', num2str(q_timer), ' secs | E pts: ', int2str(hits), ' | time per E pt: ', num2str(q_timer/hits), ' secs | rw steps: ', int2str(k)])
     %
 end
 %

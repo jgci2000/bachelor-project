@@ -16,13 +16,13 @@ def main():
     lattice = "SS"
     NN = 4
     
-    L = 8
+    L = 16
     N_SPINS = 1 * L ** 2
     q_max = N_SPINS // 2 + 1
-    REP = 10**6
+    REP = 10**4
     skip = N_SPINS
     
-    run_max = 1000
+    run_max = 50
     
     max_E = (1 / 2) * NN * N_SPINS
     max_M = N_SPINS
@@ -148,6 +148,18 @@ def main():
     Tc_mod_M = temperatures[np.where(mod_M_fd == min(mod_M_fd))[0][0]]
     Tc = Tc_M_min_F
     
+    # Normalize computations
+    magnetizations /= N_SPINS
+    mod_M /= N_SPINS
+    E /= N_SPINS
+    M_min_F /= N_SPINS
+    F /= N_SPINS
+    min_F /= N_SPINS
+    C /= N_SPINS
+    mean_C /= N_SPINS
+    mean_X /= N_SPINS
+    mean_S /= N_SPINS
+    
     # Plots
     print("Method computation time: {:.2f}s".format(run_time))
     print("Tc_M_min_F [L{:d}]: {:.3f}".format(L, Tc_M_min_F))
@@ -156,44 +168,44 @@ def main():
     plt.style.use('seaborn-whitegrid')
     
     fig, axs = plt.subplots(2, 2)
-    axs[0, 0].plot(temperatures / Tc, mod_M / N_SPINS, '.-b')
+    axs[0, 0].plot(temperatures, mod_M, '.-b')
     # axs[0, 0].xlabel("T")
     # axs[0, 0].ylabel("<|M|>")
     axs[0, 0].set_title("<|M|> as a function of T | L = " + str(L) + " | REP = " + str(int(np.log10(REP))))
     
-    axs[0, 1].plot(temperatures / Tc, E / N_SPINS, '.-b')
+    axs[0, 1].plot(temperatures, E, '.-b')
     # axs[0, 1].xlabel("T")
     # axs[0, 1].ylabel("<E>")
     axs[0, 1].set_title("<E> as a function of T | L = " + str(L) + " | REP = " + str(int(np.log10(REP))))
     
-    axs[1, 0].plot(temperatures / Tc, M_min_F / N_SPINS, '.-b')
+    axs[1, 0].plot(temperatures, M_min_F, '.-b')
     # axs[1, 0].xlabel("T/Tc")
     # axs[1, 0].ylabel("M minF")
     axs[1, 0].set_title("Magnetization for F minina as a function of T | L = " + str(L) + " | REP = 1E" + str(int(np.log10(REP))))
     
     for i in range(0, len(temperatures)):
-        axs[1, 1].plot(magnetizations / N_SPINS, F[:, i] / N_SPINS, '-b', lw=1)
-        axs[1, 1].plot(M_min_F[i] / N_SPINS, min_F[i] / N_SPINS, '.b', ms=7.5)
+        axs[1, 1].plot(magnetizations, F[:, i], '-b', lw=1)
+        axs[1, 1].plot(M_min_F[i], min_F[i], '.b', ms=7.5)
     # axs[1, 1].xlabel("M")
     # axs[1, 1].ylabel("F")
     axs[1, 1].set_title("F as a function of M and T | L = " + str(L) + " | REP = " + str(int(np.log10(REP))))
     
     fig, axs = plt.subplots(2, 2)
     
-    axs[0, 0].plot(temperatures / Tc, C / N_SPINS, '.-b')
+    axs[0, 0].plot(temperatures, C, '.-b')
     # axs[0, 0].xlabel("T/Tc")
     # axs[0, 0].ylabel("C")
     axs[0, 0].set_title("Heat Capacity per spin as a function of T | L = " + str(L) + " | REP = 1E" + str(int(np.log10(REP))))
     
-    axs[1, 0].plot(temperatures / Tc, mean_C / N_SPINS, '.-b')
+    axs[1, 0].plot(temperatures, mean_C, '.-b')
     # axs[1, 0].xlabel("T/Tc")
     # axs[1, 0].ylabel("<C>")
     axs[1, 0].set_title("Mean Heat Capacity per spin as a function of T | L = " + str(L) + " | REP = 1E" + str(int(np.log10(REP))))
     
-    axs[0, 1].plot(temperatures / Tc, mean_X / N_SPINS, '.-b')
+    axs[0, 1].plot(temperatures, mean_X, '.-b')
     axs[0, 1].set_title("Mean Magnetic Susceptability per spin as a function of T | L = " + str(L) + " | REP = 1E" + str(int(np.log10(REP))))
     
-    axs[1, 1].plot(temperatures / Tc, mean_S / N_SPINS, '.-b')
+    axs[1, 1].plot(temperatures, mean_S, '.-b')
     axs[1, 1].set_title("Mean Entropy per spin as a function of T | L = " + str(L) + " | REP = 1E" + str(int(np.log10(REP))))
     
     print("Script runtime: {:.4f}s".format(time.process_time() - start))
