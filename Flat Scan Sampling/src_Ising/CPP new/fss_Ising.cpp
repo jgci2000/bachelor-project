@@ -28,11 +28,11 @@ using std::string;
 #define SEED        0
 
 // Size of the Ising Lattice
-#define L_LATTICE   4
+#define L_LATTICE   8
 // LATTICE_NUM -> 1 - SS; 2 - SC; 3 - BCC; 4 - FCC; 5 - HCP; 6 - Hex 
-#define LATTICE_NUM 1
+#define LATTICE_NUM 2
 
-// Output location and name
+// Output location
 #define SAVE_DIR    "./Data/"
 
 
@@ -74,7 +74,7 @@ int main(int argc, char **argv)
 
     for (int i = 0; i < ising.NE * ising.NM; i++)
         JDOS[i] = 0;
-    JDOS[0] = 1;   
+    JDOS[0] = 1;
 
     // Start measuring time
     vector<string> console_log;
@@ -121,6 +121,11 @@ int main(int argc, char **argv)
     for (int i = 0; i < ising.NE; i++)
         JDOS[i * ising.NM + 1] = JDOS[i * ising.NM + 1] * ising.norm_factor[1] / sum_JDOS;
 
+    console_output = t + " | q: " + std::to_string(0) + "/" + std::to_string(q_max);
+    console_log.push_back(console_output);
+
+    cout << console_output << endl;
+
     // Main Loop    
     for (int q = 1; q <= q_max; q++)
     {
@@ -137,11 +142,241 @@ int main(int argc, char **argv)
             ising.spins_vector[i] = 1;
         ising.set_E_config(- ising.max_E);
 
+        array<vector<int>, 2> flip_list;
+        for (int i = 0; i < ising.N_atm; i++)
+            flip_list[0].push_back(i);
+
         for (int idx = 1; idx <= q; idx++)
         {
+            int idx_tmp = rand_xoshiro256pp() % flip_list[0].size();
+            int flipped_idx = flip_list[0].at(idx_tmp);
+            ising.spins_vector[flipped_idx] = - 1;
+
+            flip_list[1].push_back(flipped_idx);
+            flip_list[0].erase(flip_list[0].begin() + idx_tmp);
             
+            int delta_E = 0;
+            for (int a = 0; a < ising.NN; a++)
+                delta_E += - ising.spins_vector[flipped_idx] * ising.spins_vector[ising.NN_table[flipped_idx * ising.NN + a]];
+            
+            ising.set_E_config(ising.E_config + 2 * delta_E);
         }
 
+        // Update Histograms
+        hist[ising.idx_E_config]++;
+        hist_E_selected[ising.idx_E_config]++;
+
+        // Scan the first config
+        for (int flip_idx = 0; flip_idx < flip_list[0].size(); flip_idx++)
+        {
+            int delta_E = 0;
+            for (int a = 0; a < ising.NN; a++)
+                delta_E += ising.spins_vector[flip_list[0].at(flip_idx)] * ising.spins_vector[ising.NN_table[flip_list[0].at(flip_idx) * ising.NN + a]];
+
+            int E_tmp = ising.E_config + 2 * delta_E;
+            int idx_E_tmp = binary_search(ising.energies, E_tmp);
+
+            JDOS[idx_E_tmp * ising.NM + q + 1] += JDOS[ising.idx_E_config * ising.NM + q] / REP;
+        }
+
+        // if (q == 7)
+        // {
+        //     for (int i = 0; i < ising.NE; i++)
+        //         cout << hist[i] << " ";
+        //     cout << endl;
+
+        //     for (int i = 0; i < ising.NE; i++)
+        //         cout << JDOS[i * ising.NM + q + 1] << " ";
+        //     cout << endl << endl;
+
+        //     for (int i = 0; i < ising.N_atm; i++)
+        //         cout << ising.spins_vector[i] << " ";
+        //     cout << endl;
+
+        //     for (int i = 0; i < flip_list[0].size(); i++)
+        //         cout << flip_list[0].at(i) << " ";
+        //     cout << endl;
+
+        //     for (int i = 0; i < flip_list[1].size(); i++)
+        //         cout << flip_list[1].at(i) << " ";
+        //     cout << endl;
+
+        //     cout << ising.idx_E_config << endl;
+        //     cout << ising.idx_E_config * ising.NM + q << endl;
+        //     cout << ising.NM * ising.NE << endl;
+        //     cout << JDOS[ising.idx_E_config * ising.NM + q] << endl;
+
+        //     return 1;
+        // }
+
+        ll k = 1;
+        int *new_spins_vector = new int[ising.N_atm];
+
+        // Where the magic happens
+        while (min_hist(hist_E_selected, ising.NE) < REP)
+        {
+            // Get a new random condig at magnetization q
+            for (int i = 0; i < ising.N_atm; i++)
+                new_spins_vector[i] =  ising.spins_vector[i];
+            int new_E_config = 0;
+            int new_idx_E_config = 0;
+
+            array<vector<int>, 2> new_flip_list = flip_list;
+
+
+            // if (q == 7)
+            // {
+            //     for (int i = 0; i < ising.N_atm; i++)
+            //         cout << new_spins_vector[i] << " ";
+            //     cout << endl;
+
+            //     for (int i = 0; i < new_flip_list[0].size(); i++)
+            //         cout << new_flip_list[0].at(i) << " ";
+            //     cout << endl;
+
+            //     for (int i = 0; i < new_flip_list[1].size(); i++)
+            //         cout << new_flip_list[1].at(i) << " ";
+            //     cout << endl;
+            // }
+            
+
+            // Flip a positive spin to a negative
+            int idx_tmp1 = rand_xoshiro256pp() % new_flip_list[0].size();
+            int flipped_idx1 = new_flip_list[0].at(idx_tmp1);
+            new_spins_vector[flipped_idx1] = - 1;
+
+            new_flip_list[1].push_back(flipped_idx1);
+            new_flip_list[0].erase(new_flip_list[0].begin() + idx_tmp1);
+
+            int delta_E = 0;
+            for (int a = 0; a < ising.NN; a++)
+                delta_E += - new_spins_vector[flipped_idx1] * new_spins_vector[ising.NN_table[flipped_idx1 * ising.NN + a]];
+            new_E_config = ising.E_config + 2 * delta_E;
+
+            // Flip a negative spin to a positive
+            int idx_tmp2 = rand_xoshiro256pp() % new_flip_list[1].size();
+            int flipped_idx2 = new_flip_list[1].at(idx_tmp2);
+            new_spins_vector[flipped_idx2] = 1;
+
+            new_flip_list[0].push_back(flipped_idx2);
+            new_flip_list[1].erase(new_flip_list[1].begin() + idx_tmp2);
+
+            delta_E = 0;
+            for (int a = 0; a < ising.NN; a++)
+                delta_E += - new_spins_vector[flipped_idx2] * new_spins_vector[ising.NN_table[flipped_idx2 * ising.NN + a]];
+            new_E_config = new_E_config + 2 * delta_E;
+
+            // if (q == 7)
+            // {
+            //     for (int i = 0; i < ising.N_atm; i++)
+            //         cout << new_spins_vector[i] << " ";
+            //     cout << endl;
+
+            //     for (int i = 0; i < new_flip_list[0].size(); i++)
+            //         cout << new_flip_list[0].at(i) << " ";
+            //     cout << endl;
+
+            //     for (int i = 0; i < new_flip_list[1].size(); i++)
+            //         cout << new_flip_list[1].at(i) << " ";
+            //     cout << endl;
+            // }
+            
+
+
+            // Wang Landau criteria
+            new_idx_E_config = binary_search(ising.energies, new_E_config);
+            ld ratio = JDOS[ising.idx_E_config * ising.NM + q] / JDOS[new_idx_E_config * ising.NM + q];
+
+            if (ratio >= 1 || ((ld) (rand_xoshiro256pp() % 10000)) < (ratio * 10000))
+            {
+                for (int i = 0; i < ising.N_atm; i++)
+                    ising.spins_vector[i] = new_spins_vector[i];
+
+                ising.set_E_config(new_E_config);
+                flip_list = new_flip_list;
+            }
+
+            hist[ising.idx_E_config]++;
+
+            // Scan configuration
+            if (hist_E_selected[ising.idx_E_config] < REP && k % skip == 0)
+            {
+                for (int flip_idx = 0; flip_idx < flip_list[0].size(); flip_idx++)
+                {
+                    int delta_E = 0;
+                    for (int a = 0; a < ising.NN; a++)
+                        delta_E += ising.spins_vector[flip_list[0].at(flip_idx)] * ising.spins_vector[ising.NN_table[flip_list[0].at(flip_idx) * ising.NN + a]];
+
+                    int E_tmp = ising.E_config + 2 * delta_E;
+                    int idx_E_tmp = binary_search(ising.energies, E_tmp);
+
+                    JDOS[idx_E_tmp * ising.NM + q + 1] += JDOS[ising.idx_E_config * ising.NM + q] / REP;
+                }
+
+                hist_E_selected[ising.idx_E_config]++;
+            }
+
+            k++;
+
+            // if (q == 7)
+            // {
+            //     for (int i = 0; i < ising.NE; i++)
+            //         cout << hist[i] << " ";
+            //     cout << endl;
+
+            //     for (int i = 0; i < ising.NE; i++)
+            //         cout << JDOS[i * ising.NM + q + 1] << " ";
+            //     cout << endl << endl;
+
+            //     if (k == 10)
+            //     {
+            //         for (int i = 0; i < ising.NE; i++)
+            //         {
+            //             for (int j = 0; j <= q; j++)
+            //                 cout << JDOS[i * ising.NM + j] << " ";
+            //             cout << endl;
+            //         }
+            //         return 1;
+            //     }
+            // }
+        }
+
+        delete[] new_spins_vector;
+
+        // if (q == 6)
+        // {
+        //     for (int i = 0; i < 18; i++) 
+        //     {
+        //         for (int j = 0; j < q + 3; j++) 
+        //             cout << JDOS[i * ising.NM + j] << " ";
+        //         cout << endl;
+        //     }
+        // }
+
+        ld sum_JDOS = 0;
+        for (int i = 0; i < ising.NE; i++)
+            if (JDOS[i * ising.NM + q + 1] > 0)
+                sum_JDOS += JDOS[i * ising.NM + q + 1];
+
+                
+
+        for (int i = 0; i < ising.NE; i++)
+            JDOS[i * ising.NM + q + 1] = JDOS[i * ising.NM + q + 1] * ising.norm_factor[q + 1] / sum_JDOS;
+
+        int hits = 0;
+        for (int i = 0; i < ising.NE; i++)
+            if (JDOS[i * ising.NE + q] > 0)
+                hits++;
+
+        // if (q == 6)
+        // {
+        //     for (int i = 0; i < 18; i++) 
+        //     {
+        //         for (int j = 0; j < q + 3; j++) 
+        //             cout << JDOS[i * ising.NM + j] << " ";
+        //         cout << endl;
+        //     }
+        // }
 
         auto q_end = std::chrono::steady_clock::now();
         double q_time = (double) (std::chrono::duration_cast<std::chrono::microseconds> (q_end - q_start).count()) * pow(10, -6);
@@ -149,24 +384,24 @@ int main(int argc, char **argv)
         now = time(0);
         t = ctime(&now); t.pop_back();
 
-        // string console_output = t + " | q: " + std::to_string(q) + "/" + std::to_string(q_max - 2) + " | q_time: " + std::to_string(q_time) + "s | E: " + std::to_string(hits) + " | q_time/E: " + std::to_string(q_time / hits) + "s | shuffle time: " + std::to_string(shuffle_time) + "s";
-        // string data_line = std::to_string(q) + " " + std::to_string(q_max - 2) + " " + std::to_string(q_time) + " " + std::to_string(hits) + " " + std::to_string(q_time / hits) +
-        // + " " + std::to_string(k) + " " + std::to_string(accept_counter) + " " + std::to_string(reject_counter);
+        console_output = t + " | q: " + std::to_string(q) + "/" + std::to_string(q_max) + " | q_time: " + std::to_string(q_time) + "s | E: " + std::to_string(hits) + " | q_time/E: " + std::to_string(q_time / hits) + "s";
+        string data_line = std::to_string(q) + " " + std::to_string(q_max) + " " + std::to_string(q_time) + " " + std::to_string(hits) + " " + std::to_string(q_time / hits) +
+        + " " + std::to_string(k);
         
-        // console_log.push_back(console_output);
-        // data.push_back(data_line);
+        console_log.push_back(console_output);
+        data.push_back(data_line);
 
-        // cout << console_output << endl;
+        cout << console_output << endl;
+
+        for (int i = 0; i < ising.NE; i++)
+            if (JDOS[i * ising.NM + q + 1] > 0) cout << JDOS[i * ising.NM + q + 1] << " ";
+        cout << endl;
+
+        for (int i = 0; i < ising.NE; i++)
+            if (hist[i] > 0) cout << hist[i] << " ";
+        cout << endl;
     }
     
-
-
-
-
-
-
-
-
     // Stop mesuring time
     auto method_end = std::chrono::steady_clock::now();
     double runtime = (double) (std::chrono::duration_cast<std::chrono::microseconds> (method_end - method_start).count()) * pow(10, -6);
@@ -176,8 +411,30 @@ int main(int argc, char **argv)
     cout << endl;
     cout << "Runtime: " << std::setw(8) << runtime << " seconds." << endl;
     cout << "Simulation ended at: " << t << endl;
+
+    // Write JDOS to file
+    std::ofstream file1((string) SAVE_DIR + save_file + ".txt");
+    for (int i = 0; i < ising.NE; i++) 
+    {
+        for (int j = 0; j < ising.NM; j++) 
+            file1 << JDOS[i * ising.NM + j] << " ";
+        file1 << "\n";
+    }
+    file1.close();
+
+    std::ofstream file2((string) SAVE_DIR + save_file + "_data.txt");
+    file2 << "q q_max q_time hits q_time/hits k \n"; 
+    for (int i = 0; i < data.size(); i++)
+        file2 << data[i] << "\n";
+    file2 << runtime << "\n";
+    file2.close();
+
+    std::ofstream file3((string) SAVE_DIR + save_file + "_console_logs.txt");
+    for (int i = 0; i < console_log.size(); i++)
+        file3 << console_log.at(i) << "\n";
+    file3.close();
     
-    delete[] JDOS;
+    delete[] JDOS, hist, hist_E_selected;
 
     return 0;
 }

@@ -7,8 +7,7 @@
 #ifndef FSS_FUNCTIONS_H
 #define FSS_FUNCTIONS_H
 
-template<typename T>
-T min_hist(T *, int);
+long long min_hist(long long *, int);
 
 int binary_search(int *, int, int);
 

@@ -1,3 +1,3 @@
 L: 2 | REP: 10000 | skip: 4 | dim: 2D | lattie: SS
-Sat Feb 27 15:28:48 2021 | q: 0/1 | q_time: 0.002009s | E: 1 | q_time/E: 0.002009s | shuffle time: 0.000000s
-Sat Feb 27 15:28:48 2021 | q: 1/1 | q_time: 0.003086s | E: 1 | q_time/E: 0.003086s | shuffle time: 0.000456s
+Sun Mar 28 19:44:28 2021 | q: 0/1
+Sun Mar 28 19:44:28 2021 | q: 1/1 | q_time: 0.007735s | E: 1 | q_time/E: 0.007735s

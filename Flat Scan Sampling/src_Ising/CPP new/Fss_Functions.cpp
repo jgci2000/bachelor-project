@@ -13,10 +13,9 @@
 
 
 // Finds the minimum value for the histogram, using C arrays.
-template<typename T>
-T min_hist(T *hist, int size) 
+long long min_hist(long long *hist, int size) 
 {
-    int min = INT_MAX;
+    long long min = LONG_LONG_MAX;
     for (int i = 0; i < size; i++) 
         if (hist[i] != 0 && hist[i] < min)
             min = hist[i];
