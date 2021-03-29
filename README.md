@@ -14,7 +14,7 @@ of States.
 # Objectives
 ## Week 1:
 * Compile code at the HCP
-* Degub the FSS C++ code for large systems (check the histogram)
+* Debug the FSS C++ code for large systems (check the histogram)
 * Install MATLAB of the ryzen JA
 * Run FSS MATLAB code for 3D SC L8 system
 
