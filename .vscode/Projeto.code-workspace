@@ -63,7 +63,11 @@
 			"cstring": "cpp",
 			"thread": "cpp",
 			"condition_variable": "cpp",
-			"mutex": "cpp"
+			"mutex": "cpp",
+			"compare": "cpp",
+			"concepts": "cpp",
+			"unordered_set": "cpp",
+			"ranges": "cpp"
 		}
 	}
 }
