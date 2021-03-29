@@ -22,12 +22,17 @@ of States.
 * Debug the FSS Ising-1/2 code
 * Submit a job in the cluster
 
+## Week 5:
+* Optimize new FSS Ising-1/2 implementation
+* Implement MPI version of my new FSS Ising-1/2 implementation
+* Run simulations to validate my implementation
+* Make a jupyter notebook for last point
+
+
 ## TODO
 
-* Fix the precision error in the FSS SC and MPI code
 * Debug Ising Spin S code -> functions working: scan_at_q1, random_config_at_q, WK_rw_criteria; where the problem could be -> scan or rw_step_at_q
 * Improve thermodynamics script
 * Study the thermodynamics from different lattices
 * Learn and study the critical exponents from lattices
-* Learn about simd instructions
 
