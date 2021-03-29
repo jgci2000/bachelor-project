@@ -1,9 +1,0 @@
-run: 471 | L: 4 | REP: 100000 | skip: 16 | workers: 3 (+1 root) | REP per worker 33333 | Lattice SS
-Sun Feb  7 16:43:46 2021 | q: 0/7 | q_time: 0.090533s | E: 1 | q_time/E: 0.090533s | shuffle time: 0.000000s
-Sun Feb  7 16:43:46 2021 | q: 1/7 | q_time: 0.079242s | E: 1 | q_time/E: 0.079242s | shuffle time: 0.004002s
-Sun Feb  7 16:43:46 2021 | q: 2/7 | q_time: 0.154443s | E: 2 | q_time/E: 0.077221s | shuffle time: 0.004282s
-Sun Feb  7 16:43:46 2021 | q: 3/7 | q_time: 0.227508s | E: 3 | q_time/E: 0.075836s | shuffle time: 0.004209s
-Sun Feb  7 16:43:46 2021 | q: 4/7 | q_time: 0.224744s | E: 5 | q_time/E: 0.044949s | shuffle time: 0.004301s
-Sun Feb  7 16:43:47 2021 | q: 5/7 | q_time: 0.257560s | E: 6 | q_time/E: 0.042927s | shuffle time: 0.004176s
-Sun Feb  7 16:43:47 2021 | q: 6/7 | q_time: 0.391600s | E: 8 | q_time/E: 0.048950s | shuffle time: 0.004274s
-Sun Feb  7 16:43:47 2021 | q: 7/7 | q_time: 0.413553s | E: 9 | q_time/E: 0.045950s | shuffle time: 0.004184s
