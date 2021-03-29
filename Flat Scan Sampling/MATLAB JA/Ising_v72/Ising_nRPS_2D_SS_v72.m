@@ -14,7 +14,7 @@ dim = '2D';
 lattice_type = 'SS';
 neighbours = '1NN';
 %
-REP = 1E3; % number of desired configurations per (E,M) pair
+REP = 1E4; % number of desired configurations per (E,M) pair
 skip = L^2; % 1 for no skip
 %
 % END OF USER INPUT
