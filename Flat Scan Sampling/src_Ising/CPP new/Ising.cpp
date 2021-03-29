@@ -11,6 +11,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <map>
 
 #include "Ising.h"
 #include "Fss_Functions.h"
@@ -52,18 +53,29 @@ void Ising::read_norm_factor(std::string file_name)
         std::cout << "Unable to open normalization factor file. Invalid lattice size or the file isn't on the correct directory." << std::endl;
 }
 
+std::map<int, int> Ising::create_map(int init, int final, int step)
+{
+    std::map<int, int> out;
+    int i = 0;
+    while (init <= final)
+    {
+        out.insert(std::pair<int, int>(init, i));
+        init += step;
+        i++;
+    }
+    return out;
+}
 
 void Ising::set_E_config(int E_config)
 {
     this->E_config = E_config;
-    this->idx_E_config = binary_search(this->energies, this->E_config);
+    this->idx_E_config = this->energies[E_config];
 }
-
 
 void Ising::set_M_config(int M_config)
 {
     this->M_config = M_config;
-    this->idx_M_config = binary_search(this->magnetizations, this->M_config);
+    this->idx_M_config = this->magnetizations[M_config];
 }
 
 

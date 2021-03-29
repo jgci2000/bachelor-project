@@ -24,6 +24,7 @@ class Ising {
         int lattice_num;
 
         std::vector<int> create_vector(int, int, int);
+        std::map<int, int> create_map(int, int, int);
         system_info get_system(int, int);
 
     public:
@@ -37,8 +38,8 @@ class Ising {
         int max_E;
         int max_M;
         
-        std::vector<int> energies;
-        std::vector<int> magnetizations;
+        std::map<int, int> energies;
+        std::map<int, int> magnetizations;
 
         int dim;
         std::string lattice;
@@ -73,8 +74,8 @@ class Ising {
             this->NN_table = new int[this->N_atm * this->NN];
             this->norm_factor = new long double[this->NM];
 
-            this->energies = create_vector(- max_E, max_E, 4);
-            this->magnetizations = create_vector(- max_M, max_M, 2);
+            this->energies = create_map(- max_E, max_E, 4);
+            this->magnetizations = create_map(- max_M, max_M, 2);
         }
 
         void read_NN_talbe(std::string);
