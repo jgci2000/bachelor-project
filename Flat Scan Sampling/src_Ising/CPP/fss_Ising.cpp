@@ -29,16 +29,16 @@ using std::string;
 #define SEED 0
 
 /* LATTICE -> 1 - SS; 2 - SC; 3 - BCC; 4 - FCC; 5 - HCP; 6 - Hex */
-#define LATTICE_NUM 2
+#define LATTICE_NUM 1
 /* DIM -> 1 - 2D; 2 - 3D */
-#define DIM_NUM 2
+#define DIM_NUM 1
 /* S-Spins particles */
 #define S 1/2
 /* Number of spin projections */
 #define SZ 2 * (S + 1)
 
 /* Lattice size */
-#define L 8
+#define L 4
 /* Ineteraction strength */
 #define J 1
 
@@ -346,7 +346,7 @@ int main(int argc, char **argv)
 
             double ratio = exp(WL_log_DOS[idx_E_WL_old] - WL_log_DOS[idx_E_WL_new]);
             
-            if (ratio >= 1 || (ratio * 10000) > ((double) (xorshift64s(&state) % 10000)) || hist_E_selected[idx_E_WL_new] == 0)
+            if (ratio >= 1 || ratio > ((long double) xorshift64s(&state) / (long double) UINT64_MAX) || hist_E_selected[idx_E_WL_new] == 0)
             {
                 E_WL_old = E_WL_new;
                 idx_E_WL_old = idx_E_WL_new;
@@ -435,21 +435,6 @@ int main(int argc, char **argv)
         data.push_back(data_line);
 
         cout << console_output << endl;
-
-//        for (int i = 0; i < NE; i++)
-//            cout << hist_E_selected[i] << " ";
-//        cout << endl;
-
-        for (int i = 0; i < NE; i++)
-            cout << hist_WL[i] << " ";
-        cout << endl;
-
-//        if (q == 15)
-//        {
-//            for (int i = 0; i < NE / 4; i++)
-//                cout << JDOS[i * NM + q + 1] << endl;
-//            return 0;
-//        }
     }
     
     // Stop mesuring time

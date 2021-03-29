@@ -30,16 +30,16 @@ using std::string;
 #define SEED 0
 
 /* LATTICE -> 1 - SS; 2 - SC; 3 - BCC; 4 - FCC; 5 - HCP; 6 - Hex */
-#define LATTICE_NUM 2
+#define LATTICE 1
 /* DIM -> 1 - 2D; 2 - 3D */
-#define DIM_NUM 2
+#define DIM 1
 /* S-Spins particles */
 #define S 1/2
 /* Number of spin projections */
 #define SZ 2 * (S + 1)
 
 /* Lattice size */
-#define L 8
+#define L 4
 /* Ineteraction strength */
 #define J 1
 
@@ -48,76 +48,58 @@ using std::string;
 /* Saving directory for the JDOS file */
 #define SAVE_DIR "./Data/"
 
-#if DIM_NUM == 1 && LATTICE_NUM == 1
+#if DIM == 1 && LATTICE == 1
     /* Number of particles */
 #   define N_SPINS L * L
     /* Number os nearest neughbours */
 #   define NN 4
-#   define DIM "2D"
-#   define LATTICE "SS"
-
 #   define NORM_FILE "./coefficients/coefficients_" + std::to_string(N_SPINS) + "d" + std::to_string(SZ) + ".txt"
 #   define NEIGH_FILE "./neighbour_tables/neighbour_table_2D_SS_4NN_L" + std::to_string(L) + ".txt"
 #   define SAVE_FILE(REP, skip) "JDOS_FSS_Ising_2D_SS_L" + std::to_string(L) + "_REP_1E" + std::to_string((int) log10(REP)) + "_skip_" + std::to_string(skip)
 #endif
 
-#if DIM_NUM == 2 && LATTICE_NUM > 1 && LATTICE_NUM  < 7
-#   if LATTICE_NUM == 2
+#if DIM == 2 && LATTICE > 1 && LATTICE  < 7
+#   if LATTICE == 2
         /* Number of particles */
 #       define N_SPINS L * L * L
         /* Number os nearest neughbours */
 #       define NN 6
-#       define DIM "3D"
-#       define LATTICE "SC"
-
 #       define NORM_FILE "./coefficients/coefficients_" + std::to_string(N_SPINS) + "d" + std::to_string(SZ) + ".txt"
 #       define NEIGH_FILE "./neighbour_tables/neighbour_table_3D_SC_6NN_L" + std::to_string(L) + ".txt"
 #       define SAVE_FILE(REP, skip) "JDOS_FSS_Ising_3D_SC_L" + std::to_string(L) + "_REP_1E" + std::to_string((int) log10(REP)) + "_skip_" + std::to_string(skip)
 #   endif
-#   if LATTICE_NUM == 3
+#   if LATTICE == 3
         /* Number of particles */
 #       define N_SPINS 2 * L * L * L
         /* Number os nearest neughbours */
 #       define NN 8
-#       define DIM "3D"
-#       define LATTICE "BCC"
-
 #       define NORM_FILE "./coefficients/coefficients_" + std::to_string(N_SPINS) + "d" + std::to_string(SZ) + ".txt"
 #       define NEIGH_FILE "./neighbour_tables/neighbour_table_3D_BCC_8NN_L" + std::to_string(L) + ".txt"
 #       define SAVE_FILE(REP, skip) "JDOS_FSS_Ising_3D_BCC_L" + std::to_string(L) + "_REP_1E" + std::to_string((int) log10(REP)) + "_skip_" + std::to_string(skip)
 #   endif
-#   if LATTICE_NUM == 4
+#   if LATTICE == 4
         /* Number of particles */
 #       define N_SPINS 4 * L * L * L
         /* Number os nearest neughbours */
 #       define NN 12
-#       define DIM "3D"
-#       define LATTICE "FCC"
-
 #       define NORM_FILE "./coefficients/coefficients_" + std::to_string(N_SPINS) + "d" + std::to_string(SZ) + ".txt"
 #       define NEIGH_FILE "./neighbour_tables/neighbour_table_3D_FCC_12NN_L" + std::to_string(L) + ".txt"
 #       define SAVE_FILE(REP, skip) "JDOS_FSS_Ising_3D_FCC_L" + std::to_string(L) + "_REP_1E" + std::to_string((int) log10(REP)) + "_skip_" + std::to_string(skip)
 #   endif
-#   if LATTICE_NUM == 5
+#   if LATTICE == 5
         /* Number of particles */
 #       define N_SPINS 2 * L * L * L
         /* Number os nearest neughbours */
 #       define NN 12
-#       define DIM "3D"
-#       define LATTICE "HCP"
-
 #       define NORM_FILE "./coefficients/coefficients_" + std::to_string(N_SPINS) + "d" + std::to_string(SZ) + ".txt"
 #       define NEIGH_FILE "./neighbour_tables/neighbour_table_3D_HCP_12NN_L" + std::to_string(L) + ".txt"
 #       define SAVE_FILE(REP, skip) "JDOS_FSS_Ising_3D_HCP_L" + std::to_string(L) + "_REP_1E" + std::to_string((int) log10(REP)) + "_skip_" + std::to_string(skip)
 #   endif
-#   if LATTICE_NUM == 6
+#   if LATTICE == 6
         /* Number of particles */
 #       define N_SPINS L * L * L
         /* Number os nearest neughbours */
 #       define NN 8
-#       define DIM "3D"
-#       define LATTICE "Hex"
-
 #       define NORM_FILE "./coefficients/coefficients_" + std::to_string(N_SPINS) + "d" + std::to_string(SZ) + ".txt"
 #       define NEIGH_FILE "./neighbour_tables/neighbour_table_3D_Hex_8NN_L" + std::to_string(L) + ".txt"
 #       define SAVE_FILE(REP, skip) "JDOS_FSS_Ising_3D_Hex_L" + std::to_string(L) + "_REP_1E" + std::to_string((int) log10(REP)) + "_skip_" + std::to_string(skip)
@@ -282,9 +264,7 @@ int main(int argc, char **argv)
         now = time(0);
         t = ctime(&now); t.pop_back();
 
-        string console_output = "L: " + std::to_string(L) + " | REP: " + std::to_string(REP) + " | skip: " + std::to_string(skip) + 
-        " | workers: " + std::to_string(size - 1) + " (+1 root) | REP per worker " + std::to_string(REP_per_worker) +
-        " | dim: " + DIM + " | lattie: " + LATTICE;
+        string console_output = "L: " + std::to_string(L) + " | REP: " + std::to_string(REP) + " | skip: " + std::to_string(skip) + " | workers: " + std::to_string(size - 1) + " (+1 root) | REP per worker " + std::to_string(REP_per_worker);
         console_log.push_back(console_output);
 
         cout << endl;
@@ -296,7 +276,7 @@ int main(int argc, char **argv)
         for (q = 0; q < q_max - 1; q++)
         {
             MPI_Bcast(&q, 1, MPI_INT, root, MPI_COMM_WORLD);
-            MPI_Bcast(JDOS, NE * NM, MPI_DOUBLE_PRECISION, root, MPI_COMM_WORLD);
+            MPI_Bcast(JDOS, NE * NM, MPI_LONG_DOUBLE, root, MPI_COMM_WORLD);
             
             auto q_start = std::chrono::steady_clock::now();
 
@@ -307,14 +287,6 @@ int main(int argc, char **argv)
                 neo_previous_root[i] = 0;
                 neo_previous[i] = 0;
             }
-
-            hist_WL = new ll[NE];
-            for (int i = 0; i < NE; i++)
-                hist_WL[i] = 0;
-
-            ll *hist_WL_root = new ll[NE];
-            for (int i = 0; i < NE; i++)
-                hist_WL_root[i] = 0;
             
             accept_counter_root = 0;
             reject_counter_root = 0;
@@ -324,8 +296,7 @@ int main(int argc, char **argv)
             sampled_ratio_root = 0;
 
             MPI_Status statuses;
-            double shuffle_time = 0;
-
+            
             int repeat[size] = {0};
             int max_hits = 0;
             
@@ -352,16 +323,6 @@ int main(int argc, char **argv)
 
                 MPI_Recv(&hits, 1, MPI_LONG_LONG_INT, MPI_ANY_SOURCE, statuses.MPI_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
                 hits_root += hits;
-
-                MPI_Recv(hist_WL, NE, MPI_LONG_LONG_INT, MPI_ANY_SOURCE, statuses.MPI_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-                for (int j = 0; j < NE; j++)
-                    hist_WL_root[j] += hist_WL[j];
-
-                if (hits > max_hits) max_hits = hits;
-                if (hits < max_hits) cout << "hello" << endl;
-
-                if (statuses.MPI_SOURCE == root + 1)
-                    MPI_Recv(&shuffle_time, 1, MPI_DOUBLE_PRECISION, root + 1, 99, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
             }
             
             for (int i = 0; i < NE * NE; i++)
@@ -388,7 +349,7 @@ int main(int argc, char **argv)
             now = time(0);
             t = ctime(&now); t.pop_back();
 
-            string console_output = t + " | q: " + std::to_string(q) + "/" + std::to_string(q_max - 2) + " | q_time: " + std::to_string(q_time) + "s | E: " + std::to_string(hits_root / (size - 1)) + " | q_time/E: " + std::to_string((size - 1) * q_time / hits_root) + "s | shuffle time: " + std::to_string(shuffle_time) + "s";
+            string console_output = t + " | q: " + std::to_string(q) + "/" + std::to_string(q_max - 2) + " | q_time: " + std::to_string(q_time) + "s | E: " + std::to_string(hits_root / (size - 1)) + " | q_time/E: " + std::to_string((size - 1) * q_time / hits_root) + "s";
             string data_line = std::to_string(q) + " " + std::to_string(q_max - 2) + " " + std::to_string(q_time) + " " + std::to_string(hits_root / (size - 1)) + " " + std::to_string((size - 1) * q_time / hits_root) +
             + " " + std::to_string(k_root) + " " + std::to_string(accept_counter_root) + " " + std::to_string(reject_counter_root) + " " + std::to_string(sampled_ratio_root / (size - 1));
             
@@ -396,10 +357,6 @@ int main(int argc, char **argv)
             data.push_back(data_line);
 
             cout << console_output << endl;
-
-            for (int i = 0; i < NE; i++)
-                cout << hist_WL_root[i] << " ";
-            cout << endl;
         }
 
         // Stop mesuring time
@@ -450,7 +407,7 @@ int main(int argc, char **argv)
 
                 neo_previous_root = new ll[NE * NE];
             }
-            MPI_Bcast(JDOS, NE * NM, MPI_DOUBLE_PRECISION, root, MPI_COMM_WORLD);
+            MPI_Bcast(JDOS, NE * NM, MPI_LONG_DOUBLE, root, MPI_COMM_WORLD);
             
             for (int i = 0; i < NE * NE; i++)
             {
@@ -464,7 +421,7 @@ int main(int argc, char **argv)
                 hist_E_selected[i] = 0;
             }
             
-            array<double, NE> WL_log_DOS;
+            array<long double, NE> WL_log_DOS;
             for (int i = 0; i < WL_log_DOS.size(); i++)
                 WL_log_DOS[i] = log(JDOS[i * NM + q]);
             
@@ -476,8 +433,6 @@ int main(int argc, char **argv)
             for (int i = 0; i < N_SPINS; i++)
                 pos.push_back(i);
             
-            double shuffle_time = 0;
-
             if (q >= 1)
             {
                 for (int idx = 0; idx < q; idx++)
@@ -497,12 +452,7 @@ int main(int argc, char **argv)
                     int delta_E = - J * spins_WL[flipped_pos] * sum_nei;
                     E_WL_old += 2 * delta_E;
                 }
-
-                auto shuffle_start = std::chrono::high_resolution_clock::now();
-                // shuffle(spins_WL, REP, pos, neg, E_WL_old, NN_table, NN, J);
-                auto shuffle_end = std::chrono::high_resolution_clock::now();
-
-                shuffle_time = (double) (std::chrono::duration_cast<std::chrono::microseconds> (shuffle_end - shuffle_start).count()) * pow(10, -6);
+                shuffle(spins_WL, REP, pos, neg, E_WL_old, NN_table, NN, J);
             }
 
             int idx_E_WL_old = binary_search(energies, E_WL_old);
@@ -551,9 +501,9 @@ int main(int argc, char **argv)
                 E_WL_new += 2 * delta_E;
                 int idx_E_WL_new = binary_search(energies, E_WL_new);
 
-                double ratio = exp(WL_log_DOS[idx_E_WL_old] - WL_log_DOS[idx_E_WL_new]);
+                long double ratio = exp(WL_log_DOS[idx_E_WL_old] - WL_log_DOS[idx_E_WL_new]);
 
-                if (ratio >= 1 || (ratio * 10000) > ((double) (xorshift64s(&state) % 10000)))// || hist_WL[idx_E_WL_new] == 0)
+                if (ratio >= 1 || ratio > ((long double) xorshift64s(&state) / (long double) UINT64_MAX) || hist_E_selected[idx_E_WL_new] == 0)
                 {
                     E_WL_old = E_WL_new;
                     idx_E_WL_old = idx_E_WL_new;
@@ -561,7 +511,7 @@ int main(int argc, char **argv)
 
                     accept_counter++;
 
-                    if (k >= k_saved + skip && hist_E_selected[idx_E_WL_old] <= REP_per_worker)// || hist_WL[idx_E_WL_new] == 0) 
+                    if (k >= k_saved + skip && hist_E_selected[idx_E_WL_old] < REP_per_worker || hist_E_selected[idx_E_WL_new] == 0) 
                     {
                         hist_E_selected[idx_E_WL_old]++;
                         k_saved = k;
@@ -590,7 +540,7 @@ int main(int argc, char **argv)
 
                     reject_counter++;
 
-                    if (k >= k_saved + skip && hist_E_selected[idx_E_WL_old] <= REP_per_worker) 
+                    if (k >= k_saved + skip && hist_E_selected[idx_E_WL_old] < REP_per_worker) 
                     {
                         hist_E_selected[idx_E_WL_old]++;
                         k_saved = k;
@@ -606,9 +556,9 @@ int main(int argc, char **argv)
             }
 
             hits = 0;
-            for (int i = 0; i < NE; i++)
-                if (JDOS[i * NM + q] > 0)
-                    hits++;
+                for (int i = 0; i < NE; i++)
+                    if (JDOS[i * NM + q] > 0)
+                        hits++;
 
             sampled_ratio = REP_per_worker * hits * skip / k;
 
@@ -619,11 +569,6 @@ int main(int argc, char **argv)
             MPI_Send(&k_saved, 1, MPI_LONG_LONG_INT, root, rank, MPI_COMM_WORLD);
             MPI_Send(&sampled_ratio, 1, MPI_LONG_LONG_INT, root, rank, MPI_COMM_WORLD);
             MPI_Send(&hits, 1, MPI_LONG_LONG_INT, root, rank, MPI_COMM_WORLD);
-
-            MPI_Send(hist_WL, NE, MPI_LONG_LONG_INT, root, rank, MPI_COMM_WORLD);
-            
-            if (rank == root + 1)
-                MPI_Send(&shuffle_time, 1, MPI_DOUBLE_PRECISION, root, 99, MPI_COMM_WORLD);
         } while (q != q_max - 2);
     }
 
@@ -634,5 +579,4 @@ int main(int argc, char **argv)
 
     return 0;
 }
-
 
