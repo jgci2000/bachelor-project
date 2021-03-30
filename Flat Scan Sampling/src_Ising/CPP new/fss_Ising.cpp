@@ -1,3 +1,10 @@
+//
+// Flat Scan Sampling for the Ising 1/2 Model 
+//  João Inácio, Mar. 30th, 2021
+//
+// This version is single core and makes use the Ising class
+//
+
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -184,24 +191,25 @@ int main(int argc, char **argv)
 
         ll k = 1;
         int *new_spins_vector = new int[ising.N_atm];
+        bool accepted = false;
 
         // Where the magic happens
         while (min_hist(hist_E_selected, ising.NE) < REP)
         {
             // Get a new random condig at magnetization q
-            for (int i = 0; i < ising.N_atm; i++)
-                new_spins_vector[i] =  ising.spins_vector[i];
+            if (!accepted)
+                for (int i = 0; i < ising.N_atm; i++)
+                    new_spins_vector[i] =  ising.spins_vector[i];
             int new_E_config = 0;
             int new_idx_E_config = 0;
-            array<vector<int>, 2> new_flip_list = flip_list;
 
             // Flip a positive spin to a negative
-            int idx_tmp1 = rand_xoshiro256pp() % new_flip_list[0].size();
-            int flipped_idx1 = new_flip_list[0].at(idx_tmp1);
+            int idx_tmp1 = rand_xoshiro256pp() % flip_list[0].size();
+            int flipped_idx1 = flip_list[0].at(idx_tmp1);
             new_spins_vector[flipped_idx1] = - 1;
 
-            new_flip_list[1].push_back(flipped_idx1);
-            new_flip_list[0].erase(new_flip_list[0].begin() + idx_tmp1);
+            flip_list[1].push_back(flipped_idx1);
+            flip_list[0].erase(flip_list[0].begin() + idx_tmp1);
 
             int delta_E = 0;
             for (int a = 0; a < ising.NN; a++)
@@ -209,12 +217,12 @@ int main(int argc, char **argv)
             new_E_config = ising.E_config + 2 * delta_E;
 
             // Flip a negative spin to a positive
-            int idx_tmp2 = rand_xoshiro256pp() % new_flip_list[1].size();
-            int flipped_idx2 = new_flip_list[1].at(idx_tmp2);
+            int idx_tmp2 = rand_xoshiro256pp() % flip_list[1].size();
+            int flipped_idx2 = flip_list[1].at(idx_tmp2);
             new_spins_vector[flipped_idx2] = 1;
 
-            new_flip_list[0].push_back(flipped_idx2);
-            new_flip_list[1].erase(new_flip_list[1].begin() + idx_tmp2);
+            flip_list[0].push_back(flipped_idx2);
+            flip_list[1].erase(flip_list[1].begin() + idx_tmp2);
 
             delta_E = 0;
             for (int a = 0; a < ising.NN; a++)
@@ -231,7 +239,19 @@ int main(int argc, char **argv)
                     ising.spins_vector[i] = new_spins_vector[i];
 
                 ising.set_E_config(new_E_config);
-                flip_list = new_flip_list;
+                accepted = true;
+            }
+            else
+            {
+                if (flipped_idx1 != flipped_idx2)
+                {
+                    flip_list[0].pop_back();
+                    flip_list[0].push_back(flipped_idx1);
+
+                    flip_list[1].pop_back();
+                    flip_list[1].push_back(flipped_idx2);
+                }
+                accepted = false;
             }
 
             hist[ising.idx_E_config]++;
@@ -264,8 +284,6 @@ int main(int argc, char **argv)
             if (JDOS[i * ising.NM + q + 1] > 0)
                 sum_JDOS += JDOS[i * ising.NM + q + 1];
 
-                
-
         for (int i = 0; i < ising.NE; i++)
             JDOS[i * ising.NM + q + 1] = JDOS[i * ising.NM + q + 1] * ising.norm_factor[q + 1] / sum_JDOS;
 
@@ -281,21 +299,12 @@ int main(int argc, char **argv)
         t = ctime(&now); t.pop_back();
 
         console_output = t + " | q: " + std::to_string(q) + "/" + std::to_string(q_max) + " | q_time: " + std::to_string(q_time) + "s | E: " + std::to_string(hits) + " | q_time/E: " + std::to_string(q_time / hits) + "s";
-        string data_line = std::to_string(q) + " " + std::to_string(q_max) + " " + std::to_string(q_time) + " " + std::to_string(hits) + " " + std::to_string(q_time / hits) +
-        + " " + std::to_string(k);
+        string data_line = std::to_string(q) + " " + std::to_string(q_max) + " " + std::to_string(q_time) + " " + std::to_string(hits) + " " + std::to_string(q_time / hits);
         
         console_log.push_back(console_output);
         data.push_back(data_line);
 
         cout << console_output << endl;
-
-        // for (int i = 0; i < ising.NE; i++)
-        //     if (JDOS[i * ising.NM + q + 1] > 0) cout << JDOS[i * ising.NM + q + 1] << " ";
-        // cout << endl;
-
-        // for (int i = 0; i < ising.NE; i++)
-        //     if (hist[i] > 0) cout << hist[i] << " ";
-        // cout << endl;
     }
     
     // Stop mesuring time
@@ -319,7 +328,7 @@ int main(int argc, char **argv)
     file1.close();
 
     std::ofstream file2((string) SAVE_DIR + save_file + "_data.txt");
-    file2 << "q q_max q_time hits q_time/hits k \n"; 
+    file2 << "q q_max q_time hits q_time/hits \n"; 
     for (int i = 0; i < data.size(); i++)
         file2 << data[i] << "\n";
     file2 << runtime << "\n";
