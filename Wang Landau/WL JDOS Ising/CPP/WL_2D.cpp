@@ -86,7 +86,7 @@ int main(int argc, char **argv)
     array<int, NM> magnetizations;
     create_vector(energies, - max_E, max_E, 4);
     create_vector(magnetizations, - max_M, max_M, 2);
-    
+
     // Fisrt configuration
     std::array<int, N_SPINS> spins_WL;
     for (int i = 0; i < spins_WL.size(); i++) 
