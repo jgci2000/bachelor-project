@@ -67,7 +67,7 @@ int main(int argc, char **argv)
         q_max = ising.NM / 2 - 3;
 
     int skip = ising.N_atm;
-    ll REP = pow(10, 4);
+    ll REP = pow(10, 3);
 
     string NN_table_file_name = "./neighbour_tables/neighbour_table_" + std::to_string(ising.dim) + "D_" + ising.lattice + "_" + std::to_string(ising.NN) + "NN_L" + std::to_string(ising.L) + ".txt";
     string norm_factor_file_name = "./coefficients/coefficients_" + std::to_string(ising.N_atm) + "d2.txt";

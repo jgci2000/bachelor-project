@@ -42,7 +42,7 @@ using std::string;
 #define LATTICE_NUM 1
 
 // Output location
-#define SAVE_DIR    "./Data/"
+#define SAVE_DIR    "./data/"
 
 
 int main(int argc, char **argv)
@@ -78,7 +78,7 @@ int main(int argc, char **argv)
         q_max = ising.NM / 2 - 3;
 
     int skip = ising.N_atm;
-    ll REP = pow(10, 4);
+    ll REP = pow(10, 3);
     ll REP_worker = REP / (size - 1);
 
     string NN_table_file_name = "./neighbour_tables/neighbour_table_" + std::to_string(ising.dim) + "D_" + ising.lattice + "_" + std::to_string(ising.NN) + "NN_L" + std::to_string(ising.L) + ".txt";
@@ -122,7 +122,7 @@ int main(int argc, char **argv)
         now = time(0);
         t = ctime(&now); t.pop_back();
 
-        string console_output = "L: " + std::to_string(ising.L) + " | REP: " + std::to_string(REP) + " | skip: " + std::to_string(skip) + " | dim: " + std::to_string(ising.dim) + "D | lattie: " + ising.lattice;
+        string console_output = "L: " + std::to_string(ising.L) + " | REP: " + std::to_string(REP) + " | skip: " + std::to_string(skip) + " | dim: " + std::to_string(ising.dim) + "D | lattie: " + ising.lattice + " | walkers: " + std::to_string(size - 1) + " | REP/walker: " + std::to_string(REP_worker);
         console_log.push_back(console_output);
 
         cout << endl;

@@ -109,7 +109,7 @@ using std::string;
 
 const int q_max = N_SPINS / 2 + 1;      // Max index of the magnetization computed (N_SPINS / 2 + 1 for half of the JDOS)
 const int skip = N_SPINS;               // Scan a configuration each skip times to get more random results
-const ll REP = pow(10, 4);              // Number of sampled configurations in one energy
+const ll REP = pow(10, 3);              // Number of sampled configurations in one energy
 
 const int max_E = (1.0 / 2.0) * NN * N_SPINS;
 const int max_M = N_SPINS;

@@ -3,6 +3,7 @@
 // João Inácio, Mar. 30th, 2021
 //
 // This version is parallelized and makes use the Ising class
+// All of the processes do work in this version
 //
 
 #include <iostream>
@@ -37,12 +38,12 @@ using std::string;
 #define SEED        0
 
 // Size of the Ising Lattice
-#define L_LATTICE   8
+#define L_LATTICE   4
 // LATTICE_NUM -> 1 - SS; 2 - SC; 3 - BCC; 4 - FCC; 5 - HCP; 6 - Hex 
 #define LATTICE_NUM 1
 
 // Output location
-#define SAVE_DIR    "./Data/"
+#define SAVE_DIR    "./data/"
 
 
 int main(int argc, char **argv)
@@ -78,8 +79,8 @@ int main(int argc, char **argv)
         q_max = ising.NM / 2 - 3;
 
     int skip = ising.N_atm;
-    ll REP = pow(10, 4);
-    ll REP_worker = REP / (size - 1);
+    ll REP = pow(10, 3);
+    ll REP_worker = REP / size;
 
     string NN_table_file_name = "./neighbour_tables/neighbour_table_" + std::to_string(ising.dim) + "D_" + ising.lattice + "_" + std::to_string(ising.NN) + "NN_L" + std::to_string(ising.L) + ".txt";
     string norm_factor_file_name = "./coefficients/coefficients_" + std::to_string(ising.N_atm) + "d2.txt";
@@ -87,9 +88,11 @@ int main(int argc, char **argv)
 
     ising.read_NN_talbe(NN_table_file_name);
     ising.read_norm_factor(norm_factor_file_name);
-    
-    ld *JDOS_worker = new ld[ising.NE * ising.NM];
-    ld *JDOS;
+
+    ld *JDOS_root = new ld[ising.NE * ising.NM];
+    int hits_root;
+
+    ld *JDOS = new ld[ising.NE * ising.NM];;
     ll *hist = new ll[ising.NE];
     ll *hist_E_selected = new ll[ising.NE];
 
@@ -108,7 +111,7 @@ int main(int argc, char **argv)
         now = time(0);
         t = ctime(&now); t.pop_back();
 
-        string console_output = "L: " + std::to_string(ising.L) + " | REP: " + std::to_string(REP) + " | skip: " + std::to_string(skip) + " | dim: " + std::to_string(ising.dim) + "D | lattie: " + ising.lattice;
+        string console_output = "L: " + std::to_string(ising.L) + " | REP: " + std::to_string(REP) + " | skip: " + std::to_string(skip) + " | dim: " + std::to_string(ising.dim) + "D | lattie: " + ising.lattice + " | walkers: " + std::to_string(size) + " | REP/walker: " + std::to_string(REP_worker);
         console_log.push_back(console_output);
 
         cout << endl;
@@ -153,8 +156,9 @@ int main(int argc, char **argv)
         cout << console_output << endl;
     }
     
-    // Wait for root process
-    MPI_Barrier(MPI_COMM_WORLD);
+    // Broadcast computed JDOS and wait for all processes
+    // MPI_Bcast(JDOS, ising.NE * ising.NM, MPI_LONG_DOUBLE, root, MPI_COMM_WORLD);
+    // MPI_Barrier(MPI_COMM_WORLD);
 
     // Main Loop    
     for (int q = 1; q <= q_max; q++)
@@ -198,6 +202,8 @@ int main(int argc, char **argv)
         hist[ising.idx_E_config]++;
         hist_E_selected[ising.idx_E_config]++;
 
+        MPI_Bcast(JDOS, ising.NE * ising.NM, MPI_LONG_DOUBLE, root, MPI_COMM_WORLD);
+
         // Scan the first config
         for (int flip_idx = 0; flip_idx < flip_list[0].size(); flip_idx++)
         {
@@ -216,7 +222,7 @@ int main(int argc, char **argv)
         bool accepted = false;
 
         // Where the magic happens
-        while (min_hist(hist_E_selected, ising.NE) < REP)
+        while (min_hist(hist_E_selected, ising.NE) < REP_worker)
         {
             // Get a new random condig at magnetization q
             if (!accepted)
@@ -279,7 +285,7 @@ int main(int argc, char **argv)
             hist[ising.idx_E_config]++;
 
             // Scan configuration
-            if (hist_E_selected[ising.idx_E_config] < REP && k % skip == 0)
+            if (hist_E_selected[ising.idx_E_config] < REP_worker && k % skip == 0)
             {
                 for (int flip_idx = 0; flip_idx < flip_list[0].size(); flip_idx++)
                 {
@@ -290,7 +296,7 @@ int main(int argc, char **argv)
                     int E_tmp = ising.E_config + 2 * delta_E;
                     int idx_E_tmp = ising.energies[E_tmp];
 
-                    JDOS[idx_E_tmp * ising.NM + q + 1] += JDOS[ising.idx_E_config * ising.NM + q] / REP;
+                    JDOS[idx_E_tmp * ising.NM + q + 1] += JDOS[ising.idx_E_config * ising.NM + q] / REP_worker;
                 }
 
                 hist_E_selected[ising.idx_E_config]++;
@@ -301,33 +307,90 @@ int main(int argc, char **argv)
 
         delete[] new_spins_vector;
 
-        ld sum_JDOS = 0;
-        for (int i = 0; i < ising.NE; i++)
-            if (JDOS[i * ising.NM + q + 1] > 0)
-                sum_JDOS += JDOS[i * ising.NM + q + 1];
-
-        for (int i = 0; i < ising.NE; i++)
-            JDOS[i * ising.NM + q + 1] = JDOS[i * ising.NM + q + 1] * ising.norm_factor[q + 1] / sum_JDOS;
-
         int hits = 0;
         for (int i = 0; i < ising.NE; i++)
             if (JDOS[i * ising.NM + q] > 0)
                 hits++;
 
-        auto q_end = std::chrono::steady_clock::now();
-        double q_time = (double) (std::chrono::duration_cast<std::chrono::microseconds> (q_end - q_start).count()) * pow(10, -6);
+        MPI_Reduce(JDOS, JDOS_root, ising.NE * ising.NM, MPI_LONG_DOUBLE, MPI_SUM, root, MPI_COMM_WORLD);
+        MPI_Reduce(&hits, &hits_root, 1, MPI_INT, MPI_SUM, root, MPI_COMM_WORLD);
 
+        if (rank == root)
+        {
+            for (int j = 0; j <= q; j++)
+                for (int i = 0; i < ising.NE; i++)
+                    JDOS_root[i * ising.NM + j] = JDOS_root[i * ising.NM + j] / size;
+
+            hits_root = hits_root / size;
+
+            ld sum_JDOS = 0;
+            for (int i = 0; i < ising.NE; i++)
+                if (JDOS_root[i * ising.NM + q + 1] > 0)
+                    sum_JDOS += JDOS_root[i * ising.NM + q + 1];
+
+            for (int i = 0; i < ising.NE; i++)
+                JDOS[i * ising.NM + q + 1] = JDOS_root[i * ising.NM + q + 1] * ising.norm_factor[q + 1] / sum_JDOS;
+
+            auto q_end = std::chrono::steady_clock::now();
+            double q_time = (double) (std::chrono::duration_cast<std::chrono::microseconds> (q_end - q_start).count()) * pow(10, -6);
+
+            now = time(0);
+            t = ctime(&now); t.pop_back();
+
+            string console_output = t + " | q: " + std::to_string(q) + "/" + std::to_string(q_max) + " | q_time: " + std::to_string(q_time) + "s | E: " + std::to_string(hits_root) + " | q_time/E: " + std::to_string(q_time / hits_root) + "s";
+            string data_line = std::to_string(q) + " " + std::to_string(q_max) + " " + std::to_string(q_time) + " " + std::to_string(hits_root) + " " + std::to_string(q_time / hits_root);
+            
+            console_log.push_back(console_output);
+            data.push_back(data_line);
+
+            cout << console_output << endl;
+        }
+        
+        // Broadcast JDOS and wait for all processes
+        // MPI_Bcast(JDOS, ising.NE * ising.NM, MPI_LONG_DOUBLE, root, MPI_COMM_WORLD);
+        // MPI_Barrier(MPI_COMM_WORLD);
+    }
+
+    if (rank == root)
+    {
+        // Stop mesuring time
+        auto method_end = std::chrono::steady_clock::now();
+        double runtime = (double) (std::chrono::duration_cast<std::chrono::microseconds> (method_end - method_start).count()) * pow(10, -6);
         now = time(0);
         t = ctime(&now); t.pop_back();
 
-        console_output = t + " | q: " + std::to_string(q) + "/" + std::to_string(q_max) + " | q_time: " + std::to_string(q_time) + "s | E: " + std::to_string(hits) + " | q_time/E: " + std::to_string(q_time / hits) + "s";
-        string data_line = std::to_string(q) + " " + std::to_string(q_max) + " " + std::to_string(q_time) + " " + std::to_string(hits) + " " + std::to_string(q_time / hits);
-        
-        console_log.push_back(console_output);
-        data.push_back(data_line);
+        cout << endl;
+        cout << "Runtime: " << std::setw(8) << runtime << " seconds." << endl;
+        cout << "Simulation ended at: " << t << endl;
 
-        cout << console_output << endl;
+        // Write JDOS to file
+        std::ofstream file1((string) SAVE_DIR + save_file + ".txt");
+        for (int i = 0; i < ising.NE; i++)
+        {
+            for (int j = 0; j < ising.NM; j++)
+                file1 << JDOS[i * ising.NM + j] << " ";
+            file1 << "\n";
+        }
+        file1.close();
+
+        std::ofstream file2((string) SAVE_DIR + save_file + "_data.txt");
+        file2 << "q q_max q_time hits q_time/hits \n";
+        for (int i = 0; i < data.size(); i++)
+            file2 << data[i] << "\n";
+        file2 << runtime << "\n";
+        file2.close();
+
+        std::ofstream file3((string) SAVE_DIR + save_file + "_console_logs.txt");
+        for (int i = 0; i < console_log.size(); i++)
+            file3 << console_log.at(i) << "\n";
+        file3.close();
     }
 
+    delete[] JDOS, JDOS_root;
+    delete[] hist, hist_E_selected;
+
+    MPI_Finalize();
+
+    return 0;
 }
 

@@ -18,7 +18,7 @@ shift
 args="$*"
 
 # Compilation
-$CC -o $filename -O3 -std=c++20 $input_file
+$CC -o $filename -O3 -std=c++20 -m64 $input_file
 rc=$?
 
 # Run the program
