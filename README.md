@@ -29,9 +29,12 @@ of States.
 * Make a jupyter notebook for last point
 
 
-## TODO
+# TODO
+## Important
 
-* Debug Ising Spin S code -> functions working: scan_at_q1, random_config_at_q, WK_rw_criteria; where the problem could be -> scan or rw_step_at_q
+
+## Secundary
+  * Debug Ising Spin S code
 * Improve thermodynamics script
 * Study the thermodynamics from different lattices
 * Learn and study the critical exponents from lattices
