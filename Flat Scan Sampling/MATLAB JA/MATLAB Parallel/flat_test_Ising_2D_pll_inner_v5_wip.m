@@ -9,7 +9,7 @@ close all
 %
 rng default
 %
-L = 8;
+L = 4;
 q_max = L^2 / 2 + 1;
 %
 max_rw_steps = 1E12;
