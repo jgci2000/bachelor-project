@@ -68,6 +68,7 @@
 			"concepts": "cpp",
 			"unordered_set": "cpp",
 			"ranges": "cpp"
-		}
+		},
+		"git.ignoreLimitWarning": true
 	}
 }
