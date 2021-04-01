@@ -43,7 +43,7 @@ of States.
 * skip analysis
 * Is it worth to do a WL step before the FSS simulation to know all of the points in the phase space?
 
-## Secundary
+## Secondary
 
 * Compare FSS with WL
   * Update the C++ WL implementation
