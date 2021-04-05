@@ -1,6 +1,6 @@
 //
 // Flat Scan Sampling for the Ising 1/2 Model 
-//  João Inácio, Mar. 30th, 2021
+// João Inácio, Mar. 30th, 2021
 //
 // This version is single core and makes use the Ising class
 //
@@ -36,7 +36,7 @@ using std::string;
 #define SEED        0
 
 // Size of the Ising Lattice
-#define L_LATTICE   4
+#define L_LATTICE   32
 // LATTICE_NUM -> 1 - SS; 2 - SC; 3 - BCC; 4 - FCC; 5 - HCP; 6 - Hex 
 #define LATTICE_NUM 1
 
@@ -67,13 +67,14 @@ int main(int argc, char **argv)
         q_max = ising.NM / 2 - 3;
 
     int skip = ising.N_atm;
-    ll REP = atol(argv[2]);
-    int run = atoi(argv[1]);
+    ll REP = pow(10, 4);
 
     string NN_table_file_name = "./neighbour_tables/neighbour_table_" + std::to_string(ising.dim) + "D_" + ising.lattice + "_" + std::to_string(ising.NN) + "NN_L" + std::to_string(ising.L) + ".txt";
     string norm_factor_file_name = "./coefficients/coefficients_" + std::to_string(ising.N_atm) + "d2.txt";
-    string save_file =  ising.lattice + "/L" + std::to_string(ising.L) + "/" + std::to_string((int) log10(REP)) + "/" + std::to_string(run) + "_JDOS_FSS_Ising_" + std::to_string(ising.dim) + "D_" + ising.lattice + "_L" + std::to_string(ising.L) + "_REP_1E" + std::to_string((int) log10(REP)) + "_skip_" + std::to_string(skip);
+    string save_file = "JDOS_FSS_Ising_" + std::to_string(ising.dim) + "D_" + ising.lattice + "_L" + std::to_string(ising.L) + "_REP_1E" + std::to_string((int) log10(REP)) + "_skip_" + std::to_string(skip);
 
+    cout << NN_table_file_name << endl;
+    
     ising.read_NN_talbe(NN_table_file_name);
     ising.read_norm_factor(norm_factor_file_name);
 
@@ -94,7 +95,7 @@ int main(int argc, char **argv)
     now = time(0);
     t = ctime(&now); t.pop_back();
 
-    string console_output = "run: " + std::to_string(run) + " | L: " + std::to_string(ising.L) + " | REP: " + std::to_string(REP) + " | skip: " + std::to_string(skip) + " | dim: " + std::to_string(ising.dim) + "D | lattie: " + ising.lattice;
+    string console_output = "L: " + std::to_string(ising.L) + " | REP: " + std::to_string(REP) + " | skip: " + std::to_string(skip) + " | dim: " + std::to_string(ising.dim) + "D | lattie: " + ising.lattice;
     console_log.push_back(console_output);
 
     cout << endl;
