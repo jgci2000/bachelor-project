@@ -65,13 +65,14 @@ int main(int argc, char **argv)
     if (ising.NM % 2 == 0)
         q_max = ising.NM / 2 - 3;
 
+    int run = atoi(argv[1]);
     double f = exp(1);
-    double f_final = 1 + pow(10, -8);
+    double f_final = 1 + pow(10, - atoi(argv[2]));
     double flatness = 0.90;
 
     string NN_table_file_name = "./neighbour_tables/neighbour_table_" + std::to_string(ising.dim) + "D_" + ising.lattice + "_" + std::to_string(ising.NN) + "NN_L" + std::to_string(ising.L) + ".txt";
     string norm_factor_file_name = "./coefficients/coefficients_" + std::to_string(ising.N_atm) + "d2.txt";
-    string save_file = "JDOS_WL_Ising_" + std::to_string(ising.dim) + "D_" + ising.lattice + "_L" + std::to_string(ising.L) + "_f" + std::to_string((int) - log10(f_final - 1)) + "_flatness" + std::to_string((int) (flatness * 100));
+    string save_file = std::to_string(run) + "_JDOS_WL_Ising_" + std::to_string(ising.dim) + "D_" + ising.lattice + "_L" + std::to_string(ising.L) + "_f" + std::to_string((int) - log10(f_final - 1)) + "_flatness" + std::to_string((int) (flatness * 100));
 
     ising.read_NN_talbe(NN_table_file_name);
     ising.read_norm_factor(norm_factor_file_name);
