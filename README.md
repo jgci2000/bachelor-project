@@ -1,8 +1,6 @@
 # Project
 
-This is my 3rd year Research Project in Monte-Carlo methods in Statistical Mechanics. It means that I use 
-Monte-Carlo methods to solve models like the Ising Model, Heisenberg Model, ..., and get the Joint Density
-of States.
+This is my 3rd year Research Project in Monte-Carlo methods in Statistical Mechanics. It means that I use Monte-Carlo methods to solve models like the Ising Model, Heisenberg Model, ..., and get the Joint Density of States.
 
 ## Methods
 
@@ -27,6 +25,13 @@ of States.
 * Implement MPI version of my new FSS Ising-1/2 implementation
 * Run simulations to validate my implementation
 * Make a jupyter notebook for last point
+
+## Week 6:
+* Refurbish WL C++ implementation
+* Run WL and FSS L16_SS to compare
+* Continue developing REP and stat analysis scripts
+* Benchmark and validade computations in the cluster
+* Explore shuffle and skip effects trough 10 simulations of each (L16_SS R1E4)
 
 
 # TODO
