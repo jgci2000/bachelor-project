@@ -41,7 +41,7 @@ using std::string;
 #define LATTICE_NUM 1
 
 // Output location
-#define SAVE_DIR    "./data/"
+#define SAVE_DIR(lattice, L, log_f)    "./data/" + lattice + "/L" + L + "/" + log_f + "/"
 
 int main(int argc, char **argv)
 {
@@ -120,7 +120,7 @@ int main(int argc, char **argv)
     now = time(0);
     t = ctime(&now); t.pop_back();
 
-    string console_output = "L: " + std::to_string(ising.L) + " | f_final: 1+1E" + std::to_string((int) log10(f_final - 1)) + " | flatness: " + std::to_string((int) (flatness * 100)) + " | dim: " + std::to_string(ising.dim) + "D | lattie: " + ising.lattice;
+    string console_output = "run: " + std::to_string(run) + " | L: " + std::to_string(ising.L) + " | f_final: 1+1E" + std::to_string((int) log10(f_final - 1)) + " | flatness: " + std::to_string((int) (flatness * 100)) + " | dim: " + std::to_string(ising.dim) + "D | lattie: " + ising.lattice;
     console_log.push_back(console_output);
 
     cout << endl;
@@ -218,7 +218,7 @@ int main(int argc, char **argv)
     cout << "Simulation ended at: " << t << endl;
 
     // Write JDOS to file
-    std::ofstream file1((string) SAVE_DIR + save_file + ".txt");
+    std::ofstream file1((string) SAVE_DIR(ising.lattice, std::to_string(ising.L), argv[2]) + save_file + ".txt");
     for (int i = 0; i < ising.NE; i++) 
     {
         for (int j = 0; j < ising.NM; j++) 
@@ -227,14 +227,14 @@ int main(int argc, char **argv)
     }
     file1.close();
 
-    std::ofstream file2((string) SAVE_DIR + save_file + "_data.txt");
+    std::ofstream file2((string) SAVE_DIR(ising.lattice, std::to_string(ising.L), argv[2]) + save_file + "_data.txt");
     file2 << "f f_max loop_dur mc_sweeps min_h avg_h \n"; 
     for (int i = 0; i < data.size(); i++)
         file2 << data[i] << "\n";
     file2 << runtime << "\n";
     file2.close();
 
-    std::ofstream file3((string) SAVE_DIR + save_file + "_console_logs.txt");
+    std::ofstream file3((string) SAVE_DIR(ising.lattice, std::to_string(ising.L), argv[2]) + save_file + "_console_logs.txt");
     for (int i = 0; i < console_log.size(); i++)
         file3 << console_log.at(i) << "\n";
     file3.close();

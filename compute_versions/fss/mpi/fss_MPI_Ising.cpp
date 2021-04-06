@@ -43,7 +43,7 @@ using std::string;
 #define LATTICE_NUM 1
 
 // Output location
-#define SAVE_DIR    "./data/"
+#define SAVE_DIR(lattice, L, log_REP)    "./data/" + lattice + "/L" + L + "/" + log_REP + "/"
 
 
 int main(int argc, char **argv)
@@ -365,7 +365,7 @@ int main(int argc, char **argv)
         cout << "Simulation ended at: " << t << endl;
 
         // Write JDOS to file
-        std::ofstream file1((string) SAVE_DIR + save_file + ".txt");
+        std::ofstream file1((string) SAVE_DIR(ising.lattice, std::to_string(ising.L), argv[2]) + save_file + ".txt");
         for (int i = 0; i < ising.NE; i++)
         {
             for (int j = 0; j < ising.NM; j++)
@@ -374,14 +374,14 @@ int main(int argc, char **argv)
         }
         file1.close();
 
-        std::ofstream file2((string) SAVE_DIR + save_file + "_data.txt");
+        std::ofstream file2((string) SAVE_DIR(ising.lattice, std::to_string(ising.L), argv[2]) + save_file + "_data.txt");
         file2 << "q q_max q_time hits q_time/hits \n";
         for (int i = 0; i < data.size(); i++)
             file2 << data[i] << "\n";
         file2 << runtime << "\n";
         file2.close();
 
-        std::ofstream file3((string) SAVE_DIR + save_file + "_console_logs.txt");
+        std::ofstream file3((string) SAVE_DIR(ising.lattice, std::to_string(ising.L), argv[2]) + save_file + "_console_logs.txt");
         for (int i = 0; i < console_log.size(); i++)
             file3 << console_log.at(i) << "\n";
         file3.close();

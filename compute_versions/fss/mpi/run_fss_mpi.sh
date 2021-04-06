@@ -12,11 +12,10 @@ CC=mpic++
 # File names
 input_file=$1
 filename=${input_file%%.cpp}
-shift
 
 # Number of processes
-n_cores=$1
 shift
+n_cores=$1
 
 # Runtime arguments
 shift
