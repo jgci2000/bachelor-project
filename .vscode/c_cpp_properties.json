@@ -5,12 +5,13 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/usr/bin/**",
-                "/usr/include/x86_64-linux-gnu/mpich"
+                "/usr/include/**"
             ],
             "defines": [],
             "cStandard": "gnu17",
             "cppStandard": "gnu++14",
-            "intelliSenseMode": "gcc-x64"
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/g++"
         }
     ],
     "version": 4
