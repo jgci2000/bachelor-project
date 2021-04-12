@@ -12,18 +12,17 @@ CC=mpic++
 # File names
 input_file=$1
 filename=${input_file%%.cpp}
-shift
 
 # Number of processes
-n_cores=$1
 shift
+n_cores=$1
 
 # Runtime arguments
 shift
 args="$*"
 
 # Compilation
-$CC -o $filename -O3 -std=c++17 -march=native -m64 $input_file Ising.cpp Fss_Functions.cpp
+$CC -o $filename -Ofast -std=c++17 -march=native -m64 $input_file Ising.cpp Fss_Functions.cpp
 rc=$?
 
 # Run the program
