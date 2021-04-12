@@ -33,6 +33,11 @@ This is my 3rd year Research Project in Monte-Carlo methods in Statistical Mecha
 * Benchmark and validade computations in the cluster
 * Explore shuffle and skip effects trough 10 simulations of each (L16_SS R1E4)
 
+## Week 7:
+* makefiles and generate folder to write results to
+* Script for shuffle_skip analysis
+* Study the effects of the shuffle and skip
+
 
 # TODO
 ## Important
