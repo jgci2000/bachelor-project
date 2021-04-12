@@ -52,6 +52,7 @@ This is my 3rd year Research Project in Monte-Carlo methods in Statistical Mecha
 * REP analysis
 * skip analysis
 * Is it worth to do a WL step before the FSS simulation to know all of the points in the phase space?
+* WL vs FSS script
 
 ## Secondary
 
