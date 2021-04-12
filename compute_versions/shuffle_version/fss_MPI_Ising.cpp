@@ -43,7 +43,7 @@ using std::string;
 #define LATTICE_NUM 1
 
 // Output location
-#define SAVE_DIR    "./data/"
+#define SAVE_DIR(lattice, L, log_REP)    "./data/" + lattice + "/L" + L + "/" + log_REP + "/"
 
 
 int main(int argc, char **argv)
@@ -78,13 +78,14 @@ int main(int argc, char **argv)
     if (ising.NM % 2 == 0)
         q_max = ising.NM / 2 - 3;
 
+    int run = atoi(argv[1]);
     int skip = ising.N_atm;
-    ll REP = pow(10, 3);
+    ll REP = pow(10, atol(argv[2]));
     ll REP_worker = REP / size;
 
     string NN_table_file_name = "./neighbour_tables/neighbour_table_" + std::to_string(ising.dim) + "D_" + ising.lattice + "_" + std::to_string(ising.NN) + "NN_L" + std::to_string(ising.L) + ".txt";
     string norm_factor_file_name = "./coefficients/coefficients_" + std::to_string(ising.N_atm) + "d2.txt";
-    string save_file = "JDOS_FSS_Ising_" + std::to_string(ising.dim) + "D_" + ising.lattice + "_L" + std::to_string(ising.L) + "_REP_1E" + std::to_string((int) log10(REP)) + "_skip_" + std::to_string(skip);
+    string save_file = std::to_string(run) + "_shuffle_JDOS_FSS_Ising_" + std::to_string(ising.dim) + "D_" + ising.lattice + "_L" + std::to_string(ising.L) + "_REP_1E" + std::to_string((int) log10(REP)) + "_skip_" + std::to_string(skip);
 
     ising.read_NN_talbe(NN_table_file_name);
     ising.read_norm_factor(norm_factor_file_name);
@@ -111,7 +112,7 @@ int main(int argc, char **argv)
         now = time(0);
         t = ctime(&now); t.pop_back();
 
-        string console_output = "L: " + std::to_string(ising.L) + " | REP: " + std::to_string(REP) + " | skip: " + std::to_string(skip) + " | dim: " + std::to_string(ising.dim) + "D | lattie: " + ising.lattice + " | walkers: " + std::to_string(size) + " | REP/walker: " + std::to_string(REP_worker);
+        string console_output = "run: " + std::to_string(run) + " | L: " + std::to_string(ising.L) + " | REP: " + std::to_string(REP) + " | skip: " + std::to_string(skip) + " | dim: " + std::to_string(ising.dim) + "D | lattie: " + ising.lattice + " | walkers: " + std::to_string(size) + " | REP/walker: " + std::to_string(REP_worker);
         console_log.push_back(console_output);
 
         cout << endl;
@@ -367,7 +368,7 @@ int main(int argc, char **argv)
         cout << "Simulation ended at: " << t << endl;
 
         // Write JDOS to file
-        std::ofstream file1((string) SAVE_DIR + save_file + ".txt");
+        std::ofstream file1((string) SAVE_DIR(ising.lattice, std::to_string(ising.L), argv[2]) + save_file + ".txt");
         for (int i = 0; i < ising.NE; i++)
         {
             for (int j = 0; j < ising.NM; j++)
@@ -376,14 +377,14 @@ int main(int argc, char **argv)
         }
         file1.close();
 
-        std::ofstream file2((string) SAVE_DIR + save_file + "_data.txt");
+        std::ofstream file2((string) SAVE_DIR(ising.lattice, std::to_string(ising.L), argv[2]) + save_file + "_data.txt");
         file2 << "q q_max q_time hits q_time/hits \n";
         for (int i = 0; i < data.size(); i++)
             file2 << data[i] << "\n";
         file2 << runtime << "\n";
         file2.close();
 
-        std::ofstream file3((string) SAVE_DIR + save_file + "_console_logs.txt");
+        std::ofstream file3((string) SAVE_DIR(ising.lattice, std::to_string(ising.L), argv[2]) + save_file + "_console_logs.txt");
         for (int i = 0; i < console_log.size(); i++)
             file3 << console_log.at(i) << "\n";
         file3.close();
