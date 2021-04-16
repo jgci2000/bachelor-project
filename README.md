@@ -37,7 +37,8 @@ This is my 3rd year Research Project in Monte-Carlo methods in Statistical Mecha
 * makefiles and generate folder to write results to
 * Script for shuffle_skip analysis
 * Study the effects of the shuffle and skip
-* SC vs MC performance -> quick computations in R9 8L for R1E3/4 to R1E6.
+* SC vs MC performance (should be linear)
+* New MPI implemeentation with 1 manager
 
 # TODO
 ## Important
@@ -45,14 +46,12 @@ This is my 3rd year Research Project in Monte-Carlo methods in Statistical Mecha
 * What should I change in a parallel FSS simulation so the results are the same as a single core simulation with the same parameters
   * Do a WL random walk before beggining the method (shuffle)
   * Change the skip parameter
-  * Compare the results with 10-100 single core simulations
-* Cluster
-  * Benchmark node vs multi-node
-  * Validate computations in the cluster, single core and parallel
+  * Compare the results with 15 single core simulations
 * REP analysis
 * skip analysis
-* Is it worth to do a WL step before the FSS simulation to know all of the points in the phase space?
-* SC vs MC performance and parallelization scalling with quick computations
+* SC vs MC performance and parallelization scalling
+  * New version with 1 manager and N workers
+  * Test versions in the cluster with L8_SS and various cores
 
 ## Secondary
 
