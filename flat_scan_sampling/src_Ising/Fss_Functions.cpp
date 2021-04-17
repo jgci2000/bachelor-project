@@ -1,18 +1,20 @@
 //
 // Source file for FSS method functions.
-// João Inácio, Mar. 25th, 2021
+// João Inácio, Apr. 17th, 2021
 //
 
 
+#include <iostream>
+#include <fstream>
 #include <climits>
 #include <array>
 #include <vector>
+#include <map>
 #include <string>
 
 #include "Fss_Functions.h"
 
 
-// Finds the minimum value for the histogram, using C arrays.
 long long min_hist(long long *hist, int size) 
 {
     long long min = LONG_LONG_MAX;
@@ -22,154 +24,180 @@ long long min_hist(long long *hist, int size)
     return min;
 }
 
-// Improved binary search algorithm, using C array.
-int binary_search(int *arr, int size, int num)
+void shuffle(long double *JDOS, long long REP, std::array<std::vector<int>, 2> &flip_list, int *spins_vector, int q, int N_atm, int NN, int NM, int *NN_table, int &E_config, int &idx_E_config, std::map<int, int> &energies)
 {
-    int idx_low = -1; 
-    int idx_high = size; 
-    int idx_middle;
-    while(idx_low + 1 != idx_high)
-    {
-        idx_middle = (idx_low + idx_high) / 2;
-        if(arr[idx_middle] < num)
-            idx_low = idx_middle;
-        else
-            idx_high = idx_middle;
-    }
-    return (idx_high >= size || arr[idx_high] != num) ? -1 : idx_high;
-}
+    int *new_spins_vector = new int[N_atm];
+    bool accepted = false;
 
-// Improved binary search algorithm, using C++ std::array.
-template<typename T, size_t N>
-int binary_search(std::array<T, N> &arr, T num)
-{
-    int idx_low = -1; 
-    int idx_high = arr.size(); 
-    int idx_middle;
-    while(idx_low + 1 != idx_high)
+    // Shuffle for REP times
+    for (int idx_shuffle = 0; idx_shuffle < REP; idx_shuffle++)
     {
-        idx_middle = (idx_low + idx_high) / 2;
-        if(arr[idx_middle] < num)
-            idx_low = idx_middle;
-        else
-            idx_high = idx_middle;
-    }
-    return (idx_high >= arr.size() || arr[idx_high] != num) ? -1 : idx_high;
-}
+        // Get a new random condig at magnetization q
+        if (!accepted)
+            for (int i = 0; i < N_atm; i++)
+                new_spins_vector[i] =  spins_vector[i];
+        int new_E_config = 0;
+        int new_idx_E_config = 0;
 
-// Improved binary search algorithm, using C++ std::vector.
-int binary_search(std::vector<int> &arr, int num)
-{
-    int idx_low = -1; 
-    int idx_high = arr.size(); 
-    int idx_middle;
-    while(idx_low + 1 != idx_high)
-    {
-        idx_middle = (idx_low + idx_high) / 2;
-        if(arr.at(idx_middle) < num)
-            idx_low = idx_middle;
-        else
-            idx_high = idx_middle;
-    }
-    return (idx_high >= arr.size() || arr.at(idx_high) != num) ? -1 : idx_high;
-}
+        // Flip a positive spin to a negative
+        int idx_tmp1 = rand() % flip_list[0].size();
+        int flipped_idx1 = flip_list[0].at(idx_tmp1);
+        new_spins_vector[flipped_idx1] = - 1;
 
-// Creates a vector "in" with values from "init" to "final" with a certain step.
-template<typename T, size_t N> 
-void create_vector(std::array<T, N> &in, T init, T final, int step) 
-{
-    for (int i = 0; i < in.size(); i++)
-        in[i] = init + i * step;
-}
+        flip_list[1].push_back(flipped_idx1);
+        flip_list[0].erase(flip_list[0].begin() + idx_tmp1);
 
-// Shift array circularly, using C++ std::array.
-template<typename T, size_t N>
-std::array<T, N> circshift(std::array<T, N> &in, int xshift, int yshift)
-{
-    std::array<T, N> out;
-    int L = sqrt(in.size());
-    for (int i =0; i < L; i++) 
-    {
-        int ii = (i + xshift) % L;
-        if (ii < 0) ii = L + ii;
-        for (int j = 0; j < L; j++) 
+        int delta_E = 0;
+        for (int a = 0; a < NN; a++)
+            delta_E += - new_spins_vector[flipped_idx1] * new_spins_vector[NN_table[flipped_idx1 * NN + a]];
+        new_E_config = E_config + 2 * delta_E;
+
+        // Flip a negative spin to a positive
+        int idx_tmp2 = rand() % flip_list[1].size();
+        int flipped_idx2 = flip_list[1].at(idx_tmp2);
+        new_spins_vector[flipped_idx2] = 1;
+
+        flip_list[0].push_back(flipped_idx2);
+        flip_list[1].erase(flip_list[1].begin() + idx_tmp2);
+
+        delta_E = 0;
+        for (int a = 0; a < NN; a++)
+            delta_E += - new_spins_vector[flipped_idx2] * new_spins_vector[NN_table[flipped_idx2 * NN + a]];
+        new_E_config = new_E_config + 2 * delta_E;          
+
+        // Wang Landau criteria
+        new_idx_E_config = energies[new_E_config];
+        long double ratio = JDOS[idx_E_config * NM + q] / JDOS[new_idx_E_config * NM + q];
+
+        if (ratio >= 1 || ((long double) rand() / (long double) INT_MAX) < ratio)
         {
-            int jj = (j + yshift) % L;
-            if (jj < 0) jj = L + jj;
-            out[ii * L + jj] = in[i * L + j];
+            for (int i = 0; i < N_atm; i++)
+                spins_vector[i] = new_spins_vector[i];
+
+            E_config = new_E_config;
+            idx_E_config = new_idx_E_config;
+            accepted = true;
         }
+        else
+        {
+            if (flipped_idx1 != flipped_idx2)
+            {
+                flip_list[0].pop_back();
+                flip_list[0].push_back(flipped_idx1);
+
+                flip_list[1].pop_back();
+                flip_list[1].push_back(flipped_idx2);
+            }
+            accepted = false;
+        }
+    }
+}
+
+
+std::map<int, int> create_map(int init, int final, int step)
+{
+    std::map<int, int> out;
+    int i = 0;
+    while (init <= final)
+    {
+        out.insert(std::pair<int, int>(init, i));
+        init += step;
+        i++;
     }
     return out;
 }
 
-// Scan for the Flat Scan Sampling.
-template<typename T, size_t N1, size_t N2>
-void fss_scan(int J, int NE, std::vector<T> &pos, std::array<T, N1> &spins_WL, long long *neo_previous, int *NN_table, int NN, int E_old, int idx_E_old, std::array<T, N2> &energies)
+void read_NN_talbe(std::string file_name, int *NN_table)
 {
-    for (int idx = 0; idx < pos.size(); idx++)
+    std::ifstream neighbour_tables_file(file_name);
+    std::string line;
+
+    if (neighbour_tables_file.is_open())
     {
-        int flipped_pos_scan = pos.at(idx);
-        spins_WL[flipped_pos_scan] = - 1;
-
-        int sum_nei = 0;
-        for (int i = 0; i < NN; i++)
-            sum_nei += spins_WL[NN_table[flipped_pos_scan * NN + i]];
-
-        int delta_E = - J * spins_WL[flipped_pos_scan] * sum_nei;
-        int E_new = E_old + 2 * delta_E;
-
-        int idx_E_new = binary_search(energies, E_new);
-
-        neo_previous[idx_E_old * NE + idx_E_new]++;
-        spins_WL[flipped_pos_scan] = 1;
+        int i = 0;
+        while (std::getline(neighbour_tables_file, line))
+        {
+            std::vector<std::string> a = split(line, ' ');
+            for (int idx = 0; idx < a.size(); idx++)
+                NN_table[i++] = std::stold(a.at(idx));
+        }
+        neighbour_tables_file.close();
     }
+    else
+        std::cout << "Unable to open neighbour table file. Invalid lattice size or lattice type." << std::endl;
 }
 
-// Shuffle spins.
-template<typename T, size_t N>
-void shuffle(std::array<T, N> &spins_WL, long long REP, std::vector<T> &pos, std::vector<T> &neg, int &E_WL_old, int *NN_table, int NN, int J)
+void read_norm_factor(std::string file_name, long double *norm_factor)
 {
-    srand((unsigned) time(NULL));
+    std::ifstream norm_factor_file(file_name);
+    std::string line;
 
-    for (int i = 0; i < REP; i++)
+    if (norm_factor_file.is_open()) 
     {
-        int idx_pos = rand() % pos.size();
-        int flipped_pos = pos.at(idx_pos);
+        for (int i = 0; std::getline(norm_factor_file, line); i++)
+            norm_factor[i] = std::stold(line);
+        norm_factor_file.close();
+    }
+    else 
+        std::cout << "Unable to open normalization factor file. Invalid lattice size or the file isn't on the correct directory." << std::endl;
+}
 
-        int idx_neg = rand() % neg.size();
-        int flipped_neg = neg.at(idx_neg);
+system_info get_system(int L, int lattice_num)
+{
+    system_info system;
+    system.L = L;
 
-        if (flipped_neg == flipped_pos)
-            continue;
+    switch (lattice_num)
+    {
+        case 1:
+            system.dim = 2;
+            system.lattice = "SS";
+            system.N_atm = L * L;
+            system.NN = 4;
+            break;
+
+        case 2:
+            system.dim = 3;
+            system.lattice = "SC";
+            system.N_atm = L * L * L;
+            system.NN = 6;
+            break;
+
+        case 3:
+            system.dim = 3;
+            system.lattice = "BCC";
+            system.N_atm = 2 * L * L * L; 
+            system.NN = 8;
+            break;
         
-        pos.erase(pos.begin() + idx_pos);
-        neg.push_back(flipped_pos);
+        case 4:
+            system.dim = 3;
+            system.lattice = "FCC";
+            system.N_atm = 4 * L * L * L;
+            system.NN = 12;
+            break;
 
-        spins_WL[flipped_pos] = - 1;
+        case 5: 
+            system.dim = 3;
+            system.lattice = "HCP";
+            system.N_atm = 2 * L * L * L;
+            system.NN = 12;
+            break;
+        case 6:
+            system.dim = 3;
+            system.lattice = "Hex";
+            system.N_atm = L * L * L;
+            system.NN = 8;
+            break;
 
-        int sum_nei = 0;
-        for (int i = 0; i < NN; i++)
-            sum_nei += spins_WL[NN_table[flipped_pos * NN + i]];
-
-        int delta_E = - J * spins_WL[flipped_pos] * sum_nei;
-        E_WL_old += 2 * delta_E;
-
-
-        neg.erase(neg.begin() + idx_neg);
-        pos.push_back(flipped_neg);
-
-        spins_WL[flipped_neg] = 1;
-
-        sum_nei = 0;
-        for (int i = 0; i < NN; i++)
-            sum_nei += spins_WL[NN_table[flipped_neg * NN + i]];
-
-        delta_E = - J * spins_WL[flipped_neg] * sum_nei;
-        E_WL_old += 2 * delta_E;
+        default:
+            std::cout << "Invalid lattice number." << std::endl;
+            break;
     }
+
+    return system;
 }
 
-// Split strings.
 std::vector<std::string> split(const std::string& s, char seperator)
 {
     std::vector<std::string> output;
@@ -189,3 +217,4 @@ std::vector<std::string> split(const std::string& s, char seperator)
 
     return output;
 }
+
