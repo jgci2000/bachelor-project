@@ -39,7 +39,7 @@ using std::string;
 #define SZ 2 * (S + 1)
 
 /* Lattice size */
-#define L 4
+#define L 8
 /* Ineteraction strength */
 #define J 1
 
