@@ -7,13 +7,13 @@ fss_mpi: Fss_Functions.o
 Fss_Functions.o: Fss_Functions.cpp
 	g++ -c Fss_Functions.cpp -o Fss_Functions.o
 
-clean_fss_mpi:
+clear_fss_mpi:
 	rm *.o
 	rm fss_MPI_Ising
 
-clean_fss:
+clear_fss:
 	rm *.o
 	rm fss_Ising
 
-clean_results:
+clear_results:
 	rm -r ./data/**

@@ -31,6 +31,4 @@ system_info get_system(int, int);
 
 std::vector<std::string> split(const std::string&, char);
 
-bool path_exist(const std::string &);
-
 #endif // FSS_FUNCTIONS_H

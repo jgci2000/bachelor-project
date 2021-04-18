@@ -2,8 +2,7 @@
 // MPI implementation of the Flat Scan Sampling for the Ising 1/2 Model 
 // João Inácio, Apr. 17th, 2021
 //
-// This version is parallelized and makes use the Ising class
-// All of the processes do work in this version
+// This version is parallelized with MPI
 //
 
 #include <iostream>

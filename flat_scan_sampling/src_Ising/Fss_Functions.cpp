@@ -93,7 +93,6 @@ void shuffle(long double *JDOS, long long REP, std::array<std::vector<int>, 2> &
     }
 }
 
-
 std::map<int, int> create_map(int init, int final, int step)
 {
     std::map<int, int> out;
