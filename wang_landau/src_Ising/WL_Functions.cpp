@@ -1,59 +1,45 @@
 //
-// Source file for Ising spin 1/2 class.
+// Source file for FSS method functions.
 // João Inácio, Mar. 25th, 2021
 //
-// Here are the functions definitions for the Ising header file.
-// 
 
 
 #include <iostream>
+#include <fstream>
+#include <climits>
 #include <array>
 #include <vector>
-#include <string>
-#include <fstream>
 #include <map>
+#include <string>
 
-#include "Ising.h"
 #include "WL_Functions.h"
 
 
-void Ising::read_NN_talbe(std::string file_name)
+long long min_hist(long long *hist, int size) 
 {
-    std::ifstream neighbour_tables_file(file_name);
-    std::string line;
+    long long min = LONG_LONG_MAX;
+    for (int i = 0; i < size; i++) 
+        if (hist[i] != 0 && hist[i] < min)
+            min = hist[i];
+    return min;
+}
 
-    if (neighbour_tables_file.is_open())
+long double average_hist(long long *hist, int size)
+{
+    long double sum = 0;
+    int nnz = 0;
+    for (int i = 0; i < size; i++)
     {
-        int i = 0;
-        while (std::getline(neighbour_tables_file, line))
+        if (hist[i] != 0)
         {
-            std::vector<std::string> a = split(line, ' ');
-            for (int idx = 0; idx < a.size(); idx++)
-                this->NN_table[i++] = std::stold(a.at(idx));
+            sum += hist[i];
+            nnz++;
         }
-        neighbour_tables_file.close();
     }
-    else
-        std::cout << "Unable to open neighbour table file. Invalid lattice size or lattice type." << std::endl;
+    return sum / nnz;
 }
 
-
-void Ising::read_norm_factor(std::string file_name)
-{
-    std::ifstream norm_factor_file(file_name);
-    std::string line;
-
-    if (norm_factor_file.is_open()) 
-    {
-        for (int i = 0; std::getline(norm_factor_file, line); i++)
-            this->norm_factor[i] = std::stold(line);
-        norm_factor_file.close();
-    }
-    else 
-        std::cout << "Unable to open normalization factor file. Invalid lattice size or the file isn't on the correct directory." << std::endl;
-}
-
-std::map<int, int> Ising::create_map(int init, int final, int step)
+std::map<int, int> create_map(int init, int final, int step)
 {
     std::map<int, int> out;
     int i = 0;
@@ -66,34 +52,45 @@ std::map<int, int> Ising::create_map(int init, int final, int step)
     return out;
 }
 
-void Ising::set_E_config(int E_config)
+void read_NN_talbe(std::string file_name, int *NN_table)
 {
-    this->E_config = E_config;
-    this->idx_E_config = this->energies[E_config];
-}
+    std::ifstream neighbour_tables_file(file_name);
+    std::string line;
 
-void Ising::set_M_config(int M_config)
-{
-    this->M_config = M_config;
-    this->idx_M_config = this->magnetizations[M_config];
-}
-
-
-std::vector<int> Ising::create_vector(int init, int final, int step)
-{
-    std::vector<int> out;
-    while (init <= final)
+    if (neighbour_tables_file.is_open())
     {
-        out.push_back(init);
-        init += step;
+        int i = 0;
+        while (std::getline(neighbour_tables_file, line))
+        {
+            std::vector<std::string> a = split(line, ' ');
+            for (int idx = 0; idx < a.size(); idx++)
+                NN_table[i++] = std::stold(a.at(idx));
+        }
+        neighbour_tables_file.close();
     }
-    return out;
+    else
+        std::cout << "Unable to open neighbour table file. Invalid lattice size or lattice type." << std::endl;
 }
 
+void read_norm_factor(std::string file_name, long double *norm_factor)
+{
+    std::ifstream norm_factor_file(file_name);
+    std::string line;
 
-system_info Ising::get_system(int L, int lattice_num)
+    if (norm_factor_file.is_open()) 
+    {
+        for (int i = 0; std::getline(norm_factor_file, line); i++)
+            norm_factor[i] = std::stold(line);
+        norm_factor_file.close();
+    }
+    else 
+        std::cout << "Unable to open normalization factor file. Invalid lattice size or the file isn't on the correct directory." << std::endl;
+}
+
+system_info get_system(int L, int lattice_num)
 {
     system_info system;
+    system.L = L;
 
     switch (lattice_num)
     {
@@ -146,6 +143,22 @@ system_info Ising::get_system(int L, int lattice_num)
     return system;
 }
 
+std::vector<std::string> split(const std::string& s, char seperator)
+{
+    std::vector<std::string> output;
 
+    std::string::size_type prev_pos = 0, pos = 0;
 
+    while((pos = s.find(seperator, pos)) != std::string::npos)
+    {
+        std::string substring( s.substr(prev_pos, pos-prev_pos) );
 
+        output.push_back(substring);
+
+        prev_pos = ++pos;
+    }
+
+    output.push_back(s.substr(prev_pos, pos-prev_pos)); // Last word
+
+    return output;
+}
