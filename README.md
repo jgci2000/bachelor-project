@@ -38,7 +38,12 @@ This is my 3rd year Research Project in Monte-Carlo methods in Statistical Mecha
 * Script for shuffle_skip analysis
 * Study the effects of the shuffle and skip
 * SC vs MC performance (should be linear)
-* New MPI implemeentation with 1 manager
+* New MPI implementation with 1 manager
+
+## Week 8:
+* Continue the study of the effects of skip and shuffle
+* MC scalability on the cluster
+* Start working of Ising Spin S again
 
 # TODO
 ## Important
