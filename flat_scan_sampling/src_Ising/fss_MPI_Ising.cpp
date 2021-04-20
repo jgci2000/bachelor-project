@@ -321,18 +321,9 @@ int main(int argc, char **argv)
             }
             idx_E_config = energies[E_config];
              
-            for (int i = 0; i < N_atm; i++)
-                cout << spins_vector[i] << " ";
-            cout << endl;
-            cout << "Before: " << E_config << " " << idx_E_config << endl;
-
             // Shuffle_configuration
+            
             shuffle(JDOS, shuffle_REP, flip_list, spins_vector, q, N_atm, NN, NM, NN_table, E_config, idx_E_config, energies);
-
-            for (int i = 0; i < N_atm; i++)
-                cout << spins_vector[i] << " ";
-            cout << endl;
-            cout << "After: " << E_config << " " << idx_E_config << endl;
 
             // Update Histograms
 
