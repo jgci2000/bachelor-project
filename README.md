@@ -48,6 +48,7 @@ This is my 3rd year Research Project in Monte-Carlo methods in Statistical Mecha
 ## Week 9:
 * Draft of the report
 * Finalize the study of the speedup in MC simulations
+* New implementation of FSS for the Ising SpinS model
 
 # TODO
 ## Important
