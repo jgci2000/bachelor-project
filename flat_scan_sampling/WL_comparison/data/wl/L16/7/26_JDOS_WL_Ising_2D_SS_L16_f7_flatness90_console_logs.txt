@@ -1,0 +1,25 @@
+run: 26 | L: 16 | f_final: 1+1E-7 | flatness: 90 | dim: 2D | lattie: SS
+Wed Apr 21 10:06:40 2021 | f: 1+1E0.235094/1+1E-7 | sweeps: 2710000 | flat time: 39.316373s
+Wed Apr 21 10:06:43 2021 | f: 1+1E-0.187942/1+1E-7 | sweeps: 230000 | flat time: 3.316834s
+Wed Apr 21 10:06:48 2021 | f: 1+1E-0.546643/1+1E-7 | sweeps: 340000 | flat time: 4.934326s
+Wed Apr 21 10:06:53 2021 | f: 1+1E-0.875664/1+1E-7 | sweeps: 320000 | flat time: 4.643639s
+Wed Apr 21 10:07:00 2021 | f: 1+1E-1.190478/1+1E-7 | sweeps: 460000 | flat time: 6.626320s
+Wed Apr 21 10:07:08 2021 | f: 1+1E-1.498346/1+1E-7 | sweeps: 550000 | flat time: 7.921656s
+Wed Apr 21 10:07:15 2021 | f: 1+1E-1.802783/1+1E-7 | sweeps: 490000 | flat time: 7.057020s
+Wed Apr 21 10:07:24 2021 | f: 1+1E-2.105512/1+1E-7 | sweeps: 640000 | flat time: 9.223194s
+Wed Apr 21 10:07:43 2021 | f: 1+1E-2.407391/1+1E-7 | sweeps: 1300000 | flat time: 18.773289s
+Wed Apr 21 10:08:02 2021 | f: 1+1E-2.708846/1+1E-7 | sweeps: 1340000 | flat time: 19.350703s
+Wed Apr 21 10:08:43 2021 | f: 1+1E-3.010088/1+1E-7 | sweeps: 2810000 | flat time: 40.615917s
+Wed Apr 21 10:09:40 2021 | f: 1+1E-3.311224/1+1E-7 | sweeps: 4000000 | flat time: 57.825057s
+Wed Apr 21 10:11:11 2021 | f: 1+1E-3.612307/1+1E-7 | sweeps: 6250000 | flat time: 90.466414s
+Wed Apr 21 10:12:52 2021 | f: 1+1E-3.913363/1+1E-7 | sweeps: 7010000 | flat time: 101.365270s
+Wed Apr 21 10:16:48 2021 | f: 1+1E-4.214407/1+1E-7 | sweeps: 16310000 | flat time: 235.942587s
+Wed Apr 21 10:22:03 2021 | f: 1+1E-4.515443/1+1E-7 | sweeps: 21750000 | flat time: 314.574134s
+Wed Apr 21 10:31:00 2021 | f: 1+1E-4.816477/1+1E-7 | sweeps: 37130000 | flat time: 537.165606s
+Wed Apr 21 10:39:17 2021 | f: 1+1E-5.117508/1+1E-7 | sweeps: 34340000 | flat time: 496.851607s
+Wed Apr 21 10:53:11 2021 | f: 1+1E-5.418539/1+1E-7 | sweeps: 57210000 | flat time: 834.353406s
+Wed Apr 21 11:08:02 2021 | f: 1+1E-5.719570/1+1E-7 | sweeps: 59200000 | flat time: 890.907638s
+Wed Apr 21 11:16:32 2021 | f: 1+1E-6.020600/1+1E-7 | sweeps: 35170000 | flat time: 510.169236s
+Wed Apr 21 11:51:24 2021 | f: 1+1E-6.321630/1+1E-7 | sweeps: 143980000 | flat time: 2092.045285s
+Wed Apr 21 13:04:11 2021 | f: 1+1E-6.622660/1+1E-7 | sweeps: 275560000 | flat time: 4366.485574s
+Wed Apr 21 13:13:33 2021 | f: 1+1E-6.923690/1+1E-7 | sweeps: 38490000 | flat time: 561.962755s
