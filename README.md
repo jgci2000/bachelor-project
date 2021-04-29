@@ -45,6 +45,10 @@ This is my 3rd year Research Project in Monte-Carlo methods in Statistical Mecha
 * MC scalability on the cluster
 * Start working of Ising Spin S again
 
+## Week 9:
+* Draft of the report
+* Finalize the study of the speedup in MC simulations
+
 # TODO
 ## Important
 
