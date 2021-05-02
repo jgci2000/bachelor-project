@@ -89,7 +89,6 @@ output(1,:) = [1, 0, 1, 0, 0];
 disp([datestr(now,'dd/mm/yyyy HH:MM:SS'), ' | q: ', int2str(1), '/', int2str(q_max)]);
 %
 % MAIN LOOP
-%
 for q = 2:q_max
     %
     q_timer = tic;
