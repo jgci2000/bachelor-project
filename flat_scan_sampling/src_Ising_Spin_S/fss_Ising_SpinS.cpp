@@ -1,6 +1,6 @@
 //
 // Flat Scan Sampling for the Ising SpinS Model 
-// João Inácio, Apr. 29th, 2021
+// João Inácio, May 2nd, 2021
 //
 // This version is single core
 //
@@ -96,10 +96,10 @@ int main(int argc, char **argv)
 
     string NN_table_file_name = "./neighbour_tables/neighbour_table_" + to_string(dim) + "D_" + 
     lattice + "_" + to_string(NN) + "NN_L" + to_string(L) + ".txt";
-    string norm_factor_file_name = "./coefficients/coefficients_" + to_string(N_atm) + "d2.txt";
+    string norm_factor_file_name = "./coefficients/coefficients_" + to_string(N_atm) + "d" + to_string(SZ) + ".txt";
     string Npos_file_name = "./sum_npos/sum_configs_Npos" + std::to_string(SZ) + "_N_atm" + std::to_string(N_atm) + ".txt";
-    string save_file = "JDOS_FSS_Ising_" + to_string(dim) + "D_" + lattice + "_L" + to_string(L) + 
-    "_REP_1E" + to_string((int) log10(REP)) + "_skip_" + to_string(skip);
+    string save_file = "JDOS_FSS_Ising_SpinS_" + to_string(dim) + "D_" + lattice + "_SZ" + to_string(SZ) + 
+    "_L" + to_string(L) + "_REP_1E" + to_string((int) log10(REP)) + "_skip_" + to_string(skip);
 
     // Initialize vectors and read files
 
@@ -142,7 +142,7 @@ int main(int argc, char **argv)
     }
     else
     {
-        cout << "Unable to open neighbour table file. Invalid lattice size or lattice type." << endl;
+        cout << "Unable to sum Nppos file. Invalid lattice size, lattice type or total spin." << endl;
     }
 
     ld *JDOS = new ld[NE * NM];
@@ -159,18 +159,7 @@ int main(int argc, char **argv)
         for (int j = 0; j < NE * line_size_Npos.at(i); j++)
             JDOS_M_spin[i][j] = 0;
     JDOS_M_spin[0][0] = 1;
-
-    // for (int idx = 0; idx < NM; idx++)
-    // {
-    //     for (int i = 0; i < NE; i++)
-    //         {
-    //             for (int j = 0; j < line_size_Npos.at(idx); j++)
-    //                 cout << JDOS_M_spin[idx][j * NE + i] << " ";
-    //             cout << endl;
-    //         }
-    //     cout << endl;
-    // }
-
+    
     // Start measuring time
 
     vector<string> console_log;
@@ -182,7 +171,7 @@ int main(int argc, char **argv)
     t = ctime(&now); t.pop_back();
 
     string console_output = "L: " + to_string(L) + " | REP: " + to_string(REP) + " | skip: " + 
-    to_string(skip) + " | dim: " + to_string(dim) + "D | lattie: " + lattice + " | Sz: " + to_string(SZ);
+    to_string(skip) + " | dim: " + to_string(dim) + "D | lattie: " + lattice + " | SZ: " + to_string(SZ);
     console_log.push_back(console_output);
 
     cout << endl;
@@ -298,19 +287,17 @@ int main(int argc, char **argv)
             int E_old = 0;
             for (int a = 0; a < NN; a++)
                 E_old += - spins_vector[flipped_idx] * spins_vector[NN_table[flipped_idx * NN + a]];
-            
-            SPM[flipped_idx] += 1;
+
+            SPM[flipped_idx]++;
             spins_vector[flipped_idx] = spinZ[SPM[flipped_idx]];
 
             int E_new = 0;
             for (int a = 0; a < NN; a++)
                 E_new += - spins_vector[flipped_idx] * spins_vector[NN_table[flipped_idx * NN + a]];
             
-            E_config = E_config - E_old + E_new;        
+            E_config = E_config - E_old + E_new;
         }
-
-        idx_E_config = energies[E_config];
-
+        
         int counter[SZ] = {0};
         for (int i = 0; i < N_atm; i++)
             for (int j = 0; j < SZ; j++)
@@ -330,13 +317,15 @@ int main(int argc, char **argv)
             else
                 counter2 = 0;
         }
+        
+        idx_E_config = energies[E_config];
         int idx_Npos_config = idx_Npos / SZ;
 
         // Update Histograms
 
         hist[idx_E_config * line_size_Npos.at(q) + idx_Npos_config]++;
         hist_E_selected[idx_E_config * line_size_Npos.at(q) + idx_Npos_config]++;
-
+        
         // Scan the first config
 
         for (int x = 1; x < SZ; x++)
@@ -388,19 +377,6 @@ int main(int argc, char **argv)
             }
         }
 
-    //     for (int idx = 0; idx < 4; idx++)
-    //     {
-    //         for (int i = 0; i < NE; i++)
-    //             {
-    //                 for (int j = 0; j < line_size_Npos.at(idx); j++)
-    //                     cout << JDOS_M_spin[idx][j * NE + i] << " ";
-    //                 cout << endl;
-    //             }
-    //         cout << endl;
-    //     }
-    //     return 0;
-    // }
-
         ll k = 1;
         bool accepted = false;
         vector<int> new_SPM;
@@ -410,7 +386,7 @@ int main(int argc, char **argv)
         while (min_hist(hist_E_selected, NE * line_size_Npos.at(q)) < REP)
         {
             // Get a new random condig at magnetization q
-
+            
             if (!accepted)
             {
                 new_SPM = SPM;
@@ -421,10 +397,9 @@ int main(int argc, char **argv)
             int new_idx_E_config = 0;
             int new_idx_Npos_config = 0;
 
-            // Choose a spin o flip
+            // Choose a spin to flip
             
             int flipped_idx1 = rand_xoshiro256pp() % N_atm;
-            int flipped_start = SPM[flipped_idx1];
 
             int E_old = 0;
             for (int a = 0; a < NN; a++)
@@ -432,7 +407,7 @@ int main(int argc, char **argv)
 
             vector<int> SPM_end_list;
             for (int i = 0; i < SZ; i++)
-                if (i != flipped_start)
+                if (i != SPM[flipped_idx1])
                     SPM_end_list.push_back(i);
 
             int SPM_start = SPM[flipped_idx1];
@@ -447,12 +422,12 @@ int main(int argc, char **argv)
             new_E_config = E_config - E_old + E_new;
 
             int SPM_dif = SPM_end - SPM_start;
-
+            
             // Choose another one to flip back
-
+            
             vector<int> flip_list;
             for (int i = 0; i < N_atm; i++)
-                if (new_SPM[i] - SPM_dif > 1 && new_SPM[i] - SPM_dif < SZ)
+                if (new_SPM[i] + 1 - SPM_dif >= 1 && new_SPM[i] + 1 - SPM_dif <= SZ)
                     flip_list.push_back(i);
 
             int flipped_idx2 = flip_list.at(rand_xoshiro256pp() % flip_list.size());
@@ -466,15 +441,13 @@ int main(int argc, char **argv)
 
             E_new = 0;
             for (int a = 0; a < NN; a++)
-                E_new += - new_spins_vector[flipped_idx1] * new_spins_vector[NN_table[flipped_idx1 * NN + a]];
+                E_new += - new_spins_vector[flipped_idx2] * new_spins_vector[NN_table[flipped_idx2 * NN + a]];
             new_E_config = new_E_config - E_old + E_new;
-
-            new_idx_E_config = energies[new_E_config];
 
             int counter[SZ] = {0};
             for (int i = 0; i < N_atm; i++)
                 for (int j = 0; j < SZ; j++)
-                    if (SPM[i] == j)
+                    if (new_SPM[i] == j)
                         counter[j]++;
             
             int counter2 = 0;
@@ -490,11 +463,13 @@ int main(int argc, char **argv)
                 else
                     counter2 = 0;
             }
+            
             new_idx_Npos_config = idx_Npos / SZ;
-
+            new_idx_E_config = energies[new_E_config];
+            
             // Wang Landau criteria
 
-            ld ratio = JDOS[idx_E_config * NM + q] / JDOS[new_idx_E_config * NM + q];
+            ld ratio = JDOS_M_spin[q][idx_Npos_config * NE + idx_E_config] / JDOS_M_spin[q][new_idx_Npos_config * NE + new_idx_E_config];
 
             if (ratio >= 1 || ((ld) rand_xoshiro256pp() / (ld) UINT64_MAX) < ratio || hist_E_selected[new_idx_E_config * line_size_Npos.at(q) + new_idx_Npos_config] == 0)
             {
@@ -517,7 +492,7 @@ int main(int argc, char **argv)
 
             // Scan configuration
 
-            if (hist_E_selected[idx_E_config] < REP && k % skip == 0 || hist_E_selected[new_idx_E_config * line_size_Npos.at(q) + new_idx_Npos_config] == 0)
+            if (hist_E_selected[idx_E_config * line_size_Npos.at(q) + idx_Npos_config] < REP && k % skip == 0 || hist_E_selected[new_idx_E_config * line_size_Npos.at(q) + new_idx_Npos_config] == 0)
             {
                 for (int x = 1; x < SZ; x++)
                 {
@@ -602,8 +577,8 @@ int main(int argc, char **argv)
             JDOS[i * NM + q + 1] = sum_JDOS_M_spin[i] * norm_factor[q + 1] / sum_sum_JDOS_M_spin;
 
         int hits = 0;
-        for (int i = 0; i < NE; i++)
-            if (JDOS[i * NM + q] > 0)
+        for (int i = 0; i < NE * line_size_Npos.at(q); i++)
+            if (JDOS_M_spin[q][i] > 0)
                 hits++;
 
         auto q_end = std::chrono::steady_clock::now();
@@ -660,9 +635,16 @@ int main(int argc, char **argv)
     
     // Deallocate arrays
 
+    for (int i = 0; i < line_size_Npos.size(); i++)
+        delete[] Npos[i];
+
+    for (int i = 0; i < NM; i++)
+        delete[] JDOS_M_spin[i];
+
+    delete[] JDOS_M_spin;
     delete[] JDOS, hist, hist_E_selected;
     delete[] new_spins_vector, spins_vector;
-    delete[] NN_table, norm_factor;
+    delete[] NN_table, norm_factor, Npos;
 
     return 0;
 }
