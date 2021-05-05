@@ -38,13 +38,15 @@ using std::to_string;
 #define SEED        0
 
 // Size of the Ising Lattice
-#define L_LATTICE   8
+#define L_LATTICE   4
 // LATTICE_NUM -> 1 - SS; 2 - SC; 3 - BCC; 4 - FCC; 5 - HCP; 6 - Hex 
 #define LATTICE_NUM 1
 
 // Output location
-#define SAVE_DIR(lattice, L, log_REP)    "./data/sc/" + lattice + "/L" + to_string(L) + "/" + to_string(log_REP) + "/"
+#define SAVE_DIR(lattice, L)    "../data/L" + to_string(L) + "_" + lattice + "/"
 
+// Snapshot file
+#define SNAPSHOT(snap, q) to_string(q) + "_" + to_string(snap) 
 
 int main(int argc, char **argv)
 {
@@ -84,9 +86,13 @@ int main(int argc, char **argv)
     if (NM % 2 == 0)
         q_max = NM / 2 - 3;
 
+    q_max = NM - 2;
+
     int run;
     int skip;
     ll REP;
+    int snapshot;
+    int snapshot_idx = 0;
 
     switch (argc)
     {
@@ -112,6 +118,8 @@ int main(int argc, char **argv)
             REP = pow(10, 4);
             break;
     }
+
+    snapshot = REP / 40;
     
     string NN_table_file_name = "./neighbour_tables/neighbour_table_" + to_string(dim) + "D_" + 
     lattice + "_" + to_string(NN) + "NN_L" + to_string(L) + ".txt";
@@ -193,6 +201,8 @@ int main(int argc, char **argv)
 
     for (int q = 1; q <= q_max; q++)
     {
+        snapshot_idx = 0;
+
         auto q_start = std::chrono::steady_clock::now();
 
         for (int i = 0; i < NE; i++)
@@ -340,6 +350,26 @@ int main(int argc, char **argv)
             }
 
             k++;
+
+            if (k % snapshot == 0)
+            {
+                namespace fs = std::filesystem;
+                fs::create_directories(SAVE_DIR(lattice, L));
+
+                std::ofstream file1((string) SAVE_DIR(lattice, L) + SNAPSHOT(snapshot_idx, q) + "_JDOS.txt");
+                for (int i = 0; i < NE; i++) 
+                    file1 << JDOS[i * NM + q + 1] << " ";
+                file1 << "\n";
+                file1.close();
+
+                std::ofstream file2((string) SAVE_DIR(lattice, L) + SNAPSHOT(snapshot_idx, q) + "_hist.txt");
+                for (int i = 0; i < NE; i++) 
+                    file2 << hist_E_selected[i] << " ";
+                file2 << "\n";
+                file2.close();
+
+                snapshot_idx++;
+            }
         }
 
         // Normalize JDOS and output to console
@@ -370,6 +400,7 @@ int main(int argc, char **argv)
         data.push_back(data_line);
 
         cout << console_output << endl;
+        cout << "row steps: " << k << endl; 
     }
     
     // Stop mesuring time
@@ -386,8 +417,21 @@ int main(int argc, char **argv)
     // Write JDOS to file
 
     namespace fs = std::filesystem;
-    fs::create_directories(SAVE_DIR(lattice, L, (int) log10(REP)));
+    fs::create_directories(SAVE_DIR(lattice, L));
 
+    std::ofstream file1((string) SAVE_DIR(lattice, L) + SNAPSHOT(snapshot_idx, q_max) + "_JDOS.txt");
+    for (int i = 0; i < NE; i++) 
+        file1 << JDOS[i * NM + q_max + 1] << " ";
+    file1 << "\n";
+    file1.close();
+
+    std::ofstream file2((string) SAVE_DIR(lattice, L) + SNAPSHOT(snapshot_idx, q_max) + "_hist.txt");
+    for (int i = 0; i < NE; i++) 
+        file2 << hist_E_selected[i] << " ";
+    file2 << "\n";
+    file2.close();
+
+    /*
     std::ofstream file1((string) SAVE_DIR(lattice, L, (int) log10(REP)) + save_file + ".txt");
     for (int i = 0; i < NE; i++) 
     {
@@ -396,7 +440,7 @@ int main(int argc, char **argv)
         file1 << "\n";
     }
     file1.close();
-
+    
     std::ofstream file2((string) SAVE_DIR(lattice, L, (int) log10(REP)) + save_file + "_data.txt");
     file2 << "q q_max q_time hits q_time/hits \n"; 
     for (int i = 0; i < data.size(); i++)
@@ -408,7 +452,8 @@ int main(int argc, char **argv)
     for (int i = 0; i < console_log.size(); i++)
         file3 << console_log.at(i) << "\n";
     file3.close();
-    
+    */
+
     // Deallocate arrays
 
     delete[] JDOS, hist, hist_E_selected;
@@ -417,3 +462,4 @@ int main(int argc, char **argv)
 
     return 0;
 }
+
