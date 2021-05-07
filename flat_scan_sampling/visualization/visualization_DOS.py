@@ -1,5 +1,5 @@
 """
-    JDOS contruction visualization script for FSS method
+    DOS contruction visualization script for FSS method
     João Inácio, May 2nd, 2021
 """
 
@@ -37,25 +37,43 @@ ax2 = plt.subplot(1, 2, 2)
 JDOS_all = list()
 hist_all = list()
 
+log_JDOS_all = list()
+log_hist_all = list()
+
 for snapshot in range(snap_max + 1):
     JDOS = np.loadtxt("./data/L4_SS/" + str(q) + "_" + str(snapshot) + "_JDOS.txt")
     hist = np.loadtxt("./data/L4_SS/" + str(q) + "_" + str(snapshot) + "_hist.txt")
+    
+    JDOS_dif_0 = np.where(JDOS > 0)[0]
+    hist_dif_0 = np.where(hist > 0)[0]
+    
+    log_JDOS_all.append(np.zeros(NE))
+    log_hist_all.append(np.zeros(NE))
+    
+    
+    log_JDOS_all[snapshot][JDOS_dif_0] = np.log10(JDOS[JDOS_dif_0])
+    log_hist_all[snapshot][hist_dif_0] = np.log10(hist[hist_dif_0])
+    
     JDOS_all.append(JDOS)
     hist_all.append(hist)
+
 
 def update(snapshot):
     ax1.clear()
     ax2.clear()
     
-    ax1.plot(energies, JDOS_all[snapshot], '-or')
-    ax2.plot(energies, hist_all[snapshot], '-or')
+    JDOS_gt_0 = np.where(JDOS_all[snapshot] > 0)[0]
+    hist_gt_0 = np.where(hist_all[snapshot] > 0)[0]
     
-    ax1.set_ylim([0, 1.1 * np.max(JDOS_complete)])
+    ax1.plot(energies, log_JDOS_all[snapshot], '-or')
+    ax2.plot(energies, log_hist_all[snapshot], '-or')
+    
+    ax1.set_ylim([0, 1.1 * np.log10(np.max(JDOS_complete))])
     ax1.set_title(f"Construction of the DOS at {q+1}")
     ax1.set_ylabel(f"DOS at {q+1}")
     ax1.set_xlabel("E")
 
-    ax2.set_ylim([0, 1.1 * np.max(hist_complete)])
+    ax2.set_ylim([0, 1.1 * np.log10(np.max(hist_complete))])
     ax2.set_title(f"Histogram of the accepted configurations at {q}")
     ax2.set_ylabel(f"Histogram at {q}")
     ax2.set_xlabel("E")
@@ -63,9 +81,7 @@ def update(snapshot):
     print(str(snapshot) + "/" + str(snap_max), end='\r')
 
 ani = FuncAnimation(fig, update, np.arange(0, len(JDOS_all), 1))
-print("animation done!")
 ani.save("animation_FSS_" + dim + "_" + lattice + "_DOS_" + str(q+1) + ".gif", fps=30)#, writer='imagemagick', fps=30)
-print("animation saved!")
 
 # plt.show()
 
