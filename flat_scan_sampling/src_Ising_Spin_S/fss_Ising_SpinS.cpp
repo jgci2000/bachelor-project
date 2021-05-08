@@ -209,7 +209,7 @@ int main(int argc, char **argv)
 
             SPM_tmp[flip_idx] = SPM[flip_idx] + x;
 
-            int counter[SZ] = {0};
+            vector<int> counter; counter.assign(SZ, 0);
             for (int i = 0; i < N_atm; i++)
                 for (int j = 0; j < SZ; j++)
                     if (SPM_tmp[i] == j)
@@ -217,7 +217,7 @@ int main(int argc, char **argv)
             
             int counter2 = 0;
             int idx_Npos;
-            for (idx_Npos = 0; idx_Npos < line_size_Npos.at(x); idx_Npos += SZ)
+            for (idx_Npos = 0; idx_Npos < line_size_Npos.at(x) * SZ; idx_Npos += SZ)
             {
                 for (int i = 0; i < SZ; i++)
                     if (counter[i] == Npos[x][i + idx_Npos])
@@ -234,7 +234,7 @@ int main(int argc, char **argv)
         }
     }
 
-    ld sum_JDOS_M_spin[NE] = {0};
+    vector<ld> sum_JDOS_M_spin; sum_JDOS_M_spin.assign(NE, 0);
     ld sum_sum_JDOS_M_spin = 0;
     for (int i = 0; i < NE; i++)
     {
@@ -298,7 +298,7 @@ int main(int argc, char **argv)
             E_config = E_config - E_old + E_new;
         }
         
-        int counter[SZ] = {0};
+        vector<int> counter; counter.assign(SZ, 0);
         for (int i = 0; i < N_atm; i++)
             for (int j = 0; j < SZ; j++)
                 if (SPM[i] == j)
@@ -306,7 +306,7 @@ int main(int argc, char **argv)
         
         int counter2 = 0;
         int idx_Npos;
-        for (idx_Npos = 0; idx_Npos < line_size_Npos.at(q); idx_Npos += SZ)
+        for (idx_Npos = 0; idx_Npos < line_size_Npos.at(q) * SZ; idx_Npos += SZ)
         {
             for (int i = 0; i < SZ; i++)
                 if (counter[i] == Npos[q][i + idx_Npos])
@@ -352,7 +352,7 @@ int main(int argc, char **argv)
 
                 SPM_tmp[flip_list.at(flip_idx)] = SPM[flip_list.at(flip_idx)] + x;
 
-                int counter[SZ] = {0};
+                vector<int> counter; counter.assign(SZ, 0);
                 for (int i = 0; i < N_atm; i++)
                     for (int j = 0; j < SZ; j++)
                         if (SPM_tmp[i] == j)
@@ -360,7 +360,7 @@ int main(int argc, char **argv)
                 
                 int counter2 = 0;
                 int idx_Npos;
-                for (idx_Npos = 0; idx_Npos < line_size_Npos.at(q + x); idx_Npos += SZ)
+                for (idx_Npos = 0; idx_Npos < line_size_Npos.at(q + x) * SZ; idx_Npos += SZ)
                 {
                     for (int i = 0; i < SZ; i++)
                         if (counter[i] == Npos[q + x][i + idx_Npos])
@@ -444,7 +444,7 @@ int main(int argc, char **argv)
                 E_new += - new_spins_vector[flipped_idx2] * new_spins_vector[NN_table[flipped_idx2 * NN + a]];
             new_E_config = new_E_config - E_old + E_new;
 
-            int counter[SZ] = {0};
+            vector<int> counter; counter.assign(SZ, 0);
             for (int i = 0; i < N_atm; i++)
                 for (int j = 0; j < SZ; j++)
                     if (new_SPM[i] == j)
@@ -452,7 +452,7 @@ int main(int argc, char **argv)
             
             int counter2 = 0;
             int idx_Npos;
-            for (idx_Npos = 0; idx_Npos < line_size_Npos.at(q); idx_Npos += SZ)
+            for (idx_Npos = 0; idx_Npos < line_size_Npos.at(q) * SZ; idx_Npos += SZ)
             {
                 for (int i = 0; i < SZ; i++)
                     if (counter[i] == Npos[q][i + idx_Npos])
@@ -518,7 +518,7 @@ int main(int argc, char **argv)
 
                         SPM_tmp[flip_list.at(flip_idx)] = SPM[flip_list.at(flip_idx)] + x;
 
-                        int counter[SZ] = {0};
+                        vector<int> counter; counter.assign(SZ, 0);
                         for (int i = 0; i < N_atm; i++)
                             for (int j = 0; j < SZ; j++)
                                 if (SPM_tmp[i] == j)
@@ -526,7 +526,7 @@ int main(int argc, char **argv)
                         
                         int counter2 = 0;
                         int idx_Npos;
-                        for (idx_Npos = 0; idx_Npos < line_size_Npos.at(q + x); idx_Npos += SZ)
+                        for (idx_Npos = 0; idx_Npos < line_size_Npos.at(q + x) * SZ; idx_Npos += SZ)
                         {
                             for (int i = 0; i < SZ; i++)
                                 if (counter[i] == Npos[q + x][i + idx_Npos])
@@ -551,7 +551,7 @@ int main(int argc, char **argv)
 
         // Normalize JDOS and output to console
 
-        ld sum_JDOS_M_spin[NE] = {0};
+        vector<ld> sum_JDOS_M_spin; sum_JDOS_M_spin.assign(NE, 0);
         ld sum_sum_JDOS_M_spin = 0;
         for (int i = 0; i < NE; i++)
         {
@@ -562,7 +562,7 @@ int main(int argc, char **argv)
 
         for (int i = 0; i < NE * line_size_Npos.at(q + 1); i++)
             JDOS_M_spin[q + 1][i] = JDOS_M_spin[q + 1][i] * norm_factor[q + 1] / sum_sum_JDOS_M_spin;
-
+        
         for (int i = 0; i < NE; i++)
             sum_JDOS_M_spin[i] = 0;
         sum_sum_JDOS_M_spin = 0;
@@ -642,9 +642,9 @@ int main(int argc, char **argv)
         delete[] JDOS_M_spin[i];
 
     delete[] JDOS_M_spin;
-    delete[] JDOS, hist, hist_E_selected;
-    delete[] new_spins_vector, spins_vector;
-    delete[] NN_table, norm_factor, Npos;
+    delete[] JDOS, delete[] hist, delete[] hist_E_selected;
+    delete[] new_spins_vector, delete[] spins_vector;
+    delete[] NN_table, delete[] norm_factor, delete[] Npos;
 
     return 0;
 }
