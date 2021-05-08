@@ -50,7 +50,6 @@ for snapshot in range(snap_max + 1):
     log_JDOS_all.append(np.zeros(NE))
     log_hist_all.append(np.zeros(NE))
     
-    
     log_JDOS_all[snapshot][JDOS_dif_0] = np.log10(JDOS[JDOS_dif_0])
     log_hist_all[snapshot][hist_dif_0] = np.log10(hist[hist_dif_0])
     
@@ -61,9 +60,6 @@ for snapshot in range(snap_max + 1):
 def update(snapshot):
     ax1.clear()
     ax2.clear()
-    
-    JDOS_gt_0 = np.where(JDOS_all[snapshot] > 0)[0]
-    hist_gt_0 = np.where(hist_all[snapshot] > 0)[0]
     
     ax1.plot(energies, log_JDOS_all[snapshot], '-or')
     ax2.plot(energies, log_hist_all[snapshot], '-or')
