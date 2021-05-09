@@ -173,7 +173,7 @@ int main(int argc, char **argv)
     t = ctime(&now); t.pop_back();
 
     string console_output = "L: " + to_string(L) + " | REP: " + to_string(REP) + " | skip: " + 
-    to_string(skip) + " | dim: " + to_string(dim) + "D | lattie: " + lattice + " | SZ: " + to_string(SZ);
+    to_string(skip) + " | dim: " + to_string(dim) + "D | lattice: " + lattice + " | SZ: " + to_string(SZ);
     console_log.push_back(console_output);
 
     cout << endl;
