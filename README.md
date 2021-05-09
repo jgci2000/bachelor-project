@@ -51,6 +51,12 @@ This is my 3rd year Research Project in Monte-Carlo methods in Statistical Mecha
 * New implementation of FSS for the Ising SpinS model
 * Explore Veusz
 
+## Week 11: 
+* Test the new SpinS implementation
+* Work on getting a better thesis draft
+* FSS vs WL -> Script
+* Finalize the shuffle vs skip study
+
 # TODO
 ## Important
 
