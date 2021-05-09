@@ -14,6 +14,11 @@ struct system_info
     int NN;
     std::string lattice;
     int dim;
+    int SZ;
+};
+
+struct xorshift64s_state {
+  uint64_t a;
 };
 
 long long min_hist(long long *, int);
@@ -29,6 +34,10 @@ void read_norm_factor(std::string, long double *);
 
 system_info get_system(int, int);
 
+system_info get_system(int, int, double);
+
 std::vector<std::string> split(const std::string&, char);
+
+std::vector<int> split_int(const std::string&, char);
 
 #endif // FSS_FUNCTIONS_H

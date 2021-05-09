@@ -39,7 +39,7 @@ using std::to_string;
 #define SEED        0
 
 // Size of the Ising Lattice
-#define L_LATTICE   4
+#define L_LATTICE   8
 // LATTICE_NUM -> 1 - SS; 2 - SC; 3 - BCC; 4 - FCC; 5 - HCP; 6 - Hex 
 #define LATTICE_NUM 1
 
@@ -450,9 +450,10 @@ int main(int argc, char **argv)
         } while (q != q_max);
     }
     
-    delete[] JDOS, hist, hist_E_selected, JDOS_root;
-    delete[] new_spins_vector, spins_vector;
-    delete[] NN_table, norm_factor;
+    delete[] JDOS, delete[] hist;
+    delete[] hist_E_selected, delete[] JDOS_root;
+    delete[] new_spins_vector, delete[] spins_vector;
+    delete[] NN_table, delete[] norm_factor;
 
     MPI_Finalize();
 

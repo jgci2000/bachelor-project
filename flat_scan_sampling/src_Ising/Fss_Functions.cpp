@@ -11,13 +11,25 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <stdint.h>
 
 #include "Fss_Functions.h"
 
 
+uint64_t xorshift64s(struct xorshift64s_state *state)
+{
+	uint64_t x = state->a;
+	x ^= x >> 12;
+	x ^= x << 25;
+	x ^= x >> 27;
+	state->a = x;
+	return x * UINT64_C(0x2545F4914F6CDD1D);
+}
+
+
 long long min_hist(long long *hist, int size) 
 {
-    long long min = LONG_LONG_MAX;
+    long long min = __LONG_LONG_MAX__;
     for (int i = 0; i < size; i++) 
         if (hist[i] != 0 && hist[i] < min)
             min = hist[i];
@@ -26,6 +38,9 @@ long long min_hist(long long *hist, int size)
 
 void shuffle(long double *JDOS, long long REP, std::array<std::vector<int>, 2> &flip_list, int *spins_vector, int q, int N_atm, int NN, int NM, int *NN_table, int &E_config, int &idx_E_config, std::map<int, int> &energies)
 {
+    srand((unsigned) time(NULL));
+    xorshift64s_state state = {.a = (uint64_t) rand()};
+
     int *new_spins_vector = new int[N_atm];
     bool accepted = false;
 
@@ -69,7 +84,7 @@ void shuffle(long double *JDOS, long long REP, std::array<std::vector<int>, 2> &
         new_idx_E_config = energies[new_E_config];
         long double ratio = JDOS[idx_E_config * NM + q] / JDOS[new_idx_E_config * NM + q];
 
-        if (ratio >= 1 || ((long double) rand() / (long double) INT_MAX) < ratio)
+        if (ratio >= 1 || ((long double) xorshift64s(&state) / (long double) __DBL_MAX__) < ratio)
         {
             for (int i = 0; i < N_atm; i++)
                 spins_vector[i] = new_spins_vector[i];
@@ -197,6 +212,63 @@ system_info get_system(int L, int lattice_num)
     return system;
 }
 
+system_info get_system(int L, int lattice_num, double S)
+{
+    system_info system;
+    system.L = L;
+    system.SZ = 2*S + 1;
+
+    switch (lattice_num)
+    {
+        case 1:
+            system.dim = 2;
+            system.lattice = "SS";
+            system.N_atm = L * L;
+            system.NN = 4;
+            break;
+
+        case 2:
+            system.dim = 3;
+            system.lattice = "SC";
+            system.N_atm = L * L * L;
+            system.NN = 6;
+            break;
+
+        case 3:
+            system.dim = 3;
+            system.lattice = "BCC";
+            system.N_atm = 2 * L * L * L; 
+            system.NN = 8;
+            break;
+        
+        case 4:
+            system.dim = 3;
+            system.lattice = "FCC";
+            system.N_atm = 4 * L * L * L;
+            system.NN = 12;
+            break;
+
+        case 5: 
+            system.dim = 3;
+            system.lattice = "HCP";
+            system.N_atm = 2 * L * L * L;
+            system.NN = 12;
+            break;
+        case 6:
+            system.dim = 3;
+            system.lattice = "Hex";
+            system.N_atm = L * L * L;
+            system.NN = 8;
+            break;
+
+        default:
+            std::cout << "Invalid lattice number." << std::endl;
+            break;
+    }
+
+    return system;
+}
+
 std::vector<std::string> split(const std::string& s, char seperator)
 {
     std::vector<std::string> output;
@@ -217,3 +289,22 @@ std::vector<std::string> split(const std::string& s, char seperator)
     return output;
 }
 
+std::vector<int> split_int(const std::string& s, char seperator)
+{
+    std::vector<int> output;
+
+    std::string::size_type prev_pos = 0, pos = 0;
+
+    while((pos = s.find(seperator, pos)) != std::string::npos)
+    {
+        std::string substring( s.substr(prev_pos, pos-prev_pos) );
+
+        output.push_back(stoi(substring));
+
+        prev_pos = ++pos;
+    }
+
+    output.push_back(stoi(s.substr(prev_pos, pos-prev_pos))); // Last word
+
+    return output;
+}

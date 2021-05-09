@@ -185,9 +185,7 @@ int main(int argc, char **argv)
     // Flat Scan Sampling
     // Scan and Compute JDOS at q = 1
 
-    vector<int> SPM; 
-    for (int i = 0; i < N_atm; i++)
-        SPM.push_back(0);
+    vector<int> SPM; SPM.assign(N_atm, 0);
 
     int prev_idx_E_config = 0;
     int prev_idx_Npos = 0;
@@ -196,8 +194,6 @@ int main(int argc, char **argv)
     {
         for (int flip_idx = 0; flip_idx < N_atm; flip_idx++)
         {
-            vector<int> SPM_tmp = SPM;
-
             int E_tmp1 = 0;
             for (int a = 0; a < NN; a++)
                 E_tmp1 += - spinZ[SPM[flip_idx]] * spinZ[SPM[flip_idx]];
@@ -209,12 +205,12 @@ int main(int argc, char **argv)
             int E_tmp3 = - max_E - E_tmp1 + E_tmp2;
             int idx_E_tmp3 = energies[E_tmp3];
 
-            SPM_tmp[flip_idx] = SPM[flip_idx] + x;
+            SPM[flip_idx] += x;
 
             vector<int> counter; counter.assign(SZ, 0);
             for (int i = 0; i < N_atm; i++)
                 for (int j = 0; j < SZ; j++)
-                    if (SPM_tmp[i] == j)
+                    if (SPM[i] == j)
                         counter[j]++;
             
             int counter2 = 0;
@@ -231,8 +227,9 @@ int main(int argc, char **argv)
                     counter2 = 0;
             }
             idx_Npos /= SZ;
-
+            
             JDOS_M_spin[x][idx_Npos * NE + idx_E_tmp3] += JDOS_M_spin[0][0];
+            SPM[flip_idx] -= x;
         }
     }
 
@@ -339,8 +336,6 @@ int main(int argc, char **argv)
 
             for (int flip_idx = 0; flip_idx < flip_list.size(); flip_idx++)
             {
-                vector<int> SPM_tmp = SPM;
-
                 int E_tmp1 = 0;
                 for (int a = 0; a < NN; a++)
                     E_tmp1 += - spins_vector[flip_list.at(flip_idx)] * spins_vector[NN_table[flip_list.at(flip_idx) * NN + a]];
@@ -352,12 +347,12 @@ int main(int argc, char **argv)
                 int E_tmp3 = E_config - E_tmp1 + E_tmp2;
                 int idx_E_tmp3 = energies[E_tmp3];
 
-                SPM_tmp[flip_list.at(flip_idx)] = SPM[flip_list.at(flip_idx)] + x;
+                SPM[flip_list.at(flip_idx)] += x;
 
                 vector<int> counter; counter.assign(SZ, 0);
                 for (int i = 0; i < N_atm; i++)
                     for (int j = 0; j < SZ; j++)
-                        if (SPM_tmp[i] == j)
+                        if (SPM[i] == j)
                             counter[j]++;
                 
                 int counter2 = 0;
@@ -376,6 +371,7 @@ int main(int argc, char **argv)
                 idx_Npos /= SZ;
 
                 JDOS_M_spin[q + x][idx_Npos * NE + idx_E_tmp3] += JDOS_M_spin[q][idx_Npos_config * NE + idx_E_config] / REP;
+                SPM[flip_list.at(flip_idx)] -= x;
             }
         }
 
@@ -505,8 +501,6 @@ int main(int argc, char **argv)
 
                     for (int flip_idx = 0; flip_idx < flip_list.size(); flip_idx++)
                     {
-                        vector<int> SPM_tmp = SPM;
-
                         int E_tmp1 = 0;
                         for (int a = 0; a < NN; a++)
                             E_tmp1 += - spins_vector[flip_list.at(flip_idx)] * spins_vector[NN_table[flip_list.at(flip_idx) * NN + a]];
@@ -518,12 +512,12 @@ int main(int argc, char **argv)
                         int E_tmp3 = E_config - E_tmp1 + E_tmp2;
                         int idx_E_tmp3 = energies[E_tmp3];
 
-                        SPM_tmp[flip_list.at(flip_idx)] = SPM[flip_list.at(flip_idx)] + x;
+                        SPM[flip_list.at(flip_idx)] += x;
 
                         vector<int> counter; counter.assign(SZ, 0);
                         for (int i = 0; i < N_atm; i++)
                             for (int j = 0; j < SZ; j++)
-                                if (SPM_tmp[i] == j)
+                                if (SPM[i] == j)
                                     counter[j]++;
                         
                         int counter2 = 0;
@@ -542,6 +536,7 @@ int main(int argc, char **argv)
                         idx_Npos /= SZ;
 
                         JDOS_M_spin[q + x][idx_Npos * NE + idx_E_tmp3] += JDOS_M_spin[q][idx_Npos_config * NE + idx_E_config] / REP;
+                        SPM[flip_list.at(flip_idx)] -= x;
                     }
                 }
 

@@ -38,7 +38,7 @@ using std::to_string;
 #define SEED        0
 
 // Size of the Ising Lattice
-#define L_LATTICE   8
+#define L_LATTICE   4
 // LATTICE_NUM -> 1 - SS; 2 - SC; 3 - BCC; 4 - FCC; 5 - HCP; 6 - Hex 
 #define LATTICE_NUM 1
 
@@ -85,7 +85,7 @@ int main(int argc, char **argv)
         q_max = NM / 2 - 3;
 
     int skip = N_atm;
-    ll REP = pow(10, 4);
+    ll REP = pow(10, 3);
 
     string NN_table_file_name = "./neighbour_tables/neighbour_table_" + to_string(dim) + "D_" + 
     lattice + "_" + to_string(NN) + "NN_L" + to_string(L) + ".txt";
@@ -385,9 +385,10 @@ int main(int argc, char **argv)
     
     // Deallocate arrays
 
-    delete[] JDOS, hist, hist_E_selected;
-    delete[] new_spins_vector, spins_vector;
-    delete[] NN_table, norm_factor;
+    delete[] JDOS, delete[] hist;
+    delete[] hist_E_selected, delete[] new_spins_vector;
+    delete[] spins_vector, delete[] NN_table;
+    delete[] norm_factor;
 
     return 0;
 }

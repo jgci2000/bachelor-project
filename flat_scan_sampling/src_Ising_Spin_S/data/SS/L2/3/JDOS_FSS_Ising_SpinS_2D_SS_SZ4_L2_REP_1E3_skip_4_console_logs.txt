@@ -1,7 +1,0 @@
-L: 2 | REP: 1000 | skip: 4 | dim: 2D | lattie: SS | SZ: 4
-Sun May  2 16:08:18 2021 | q: 0/5
-Sun May  2 16:08:18 2021 | q: 1/5 | q_time: 0.001951s | E: 1 | q_time/E: 0.001951s
-Sun May  2 16:08:18 2021 | q: 2/5 | q_time: 0.006995s | E: 3 | q_time/E: 0.002332s
-Sun May  2 16:08:18 2021 | q: 3/5 | q_time: 0.007374s | E: 3 | q_time/E: 0.002458s
-Sun May  2 16:08:18 2021 | q: 4/5 | q_time: 0.014798s | E: 5 | q_time/E: 0.002960s
-Sun May  2 16:08:18 2021 | q: 5/5 | q_time: 0.012120s | E: 4 | q_time/E: 0.003030s
