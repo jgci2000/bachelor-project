@@ -6,7 +6,7 @@
 *.zip
 *.tar.gz
 *.tar.xz
-
+.Ds_Store
 
 # Prerequisites
 *.d
