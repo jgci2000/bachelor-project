@@ -7,6 +7,8 @@
 *.tar.gz
 *.tar.xz
 .Ds_Store
+./.vscode
+./.miscellaneous
 
 # Prerequisites
 *.d
