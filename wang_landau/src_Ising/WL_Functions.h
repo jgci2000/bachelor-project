@@ -1,6 +1,6 @@
 //
 // Header file for FSS method functions.
-// João Inácio, Mar. 25th, 2021
+// João Inácio, May 8th, 2021
 //
 
 

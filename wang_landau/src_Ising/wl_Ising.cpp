@@ -1,6 +1,6 @@
 //
 // Wang Landau sampling for the Ising 1/2 Model 
-// João Inácio, Apr. 18th, 2021
+// João Inácio, May 8th, 2021
 //
 // This version is single core
 //
@@ -159,7 +159,7 @@ int main(int argc, char **argv)
     // Wang Landau Sampling
     // Main loop
 
-    std::chrono::_V2::steady_clock::time_point loop_start;
+    auto loop_start = std::chrono::steady_clock::now();
     
     while(f > f_final)
     {
@@ -292,9 +292,9 @@ int main(int argc, char **argv)
         file3 << console_log.at(i) << "\n";
     file3.close();
 
-    delete[] JDOS, ln_JDOS, hist;
+    delete[] JDOS, delete[] ln_JDOS, delete[] hist;
     delete[] spins_vector;
-    delete[] NN_table, norm_factor;
+    delete[] NN_table, delete[] norm_factor;
 
     return 0;
 }

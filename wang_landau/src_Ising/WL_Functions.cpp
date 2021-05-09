@@ -1,6 +1,6 @@
 //
 // Source file for FSS method functions.
-// João Inácio, Mar. 25th, 2021
+// João Inácio, May 8th, 2021
 //
 
 
@@ -17,7 +17,7 @@
 
 long long min_hist(long long *hist, int size) 
 {
-    long long min = LONG_LONG_MAX;
+    long long min = __LONG_LONG_MAX__;
     for (int i = 0; i < size; i++) 
         if (hist[i] != 0 && hist[i] < min)
             min = hist[i];
