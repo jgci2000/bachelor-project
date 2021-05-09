@@ -1,0 +1,18 @@
+run: 83 | L: 8 | f_final: 1+1E-5 | flatness: 90 | dim: 2D | lattie: SS
+Thu Apr 29 15:12:56 2021 | f: 1+1E0.235094/1+1E-5 | sweeps: 70000 | flat time: 0.272282s
+Thu Apr 29 15:12:56 2021 | f: 1+1E-0.187942/1+1E-5 | sweeps: 20000 | flat time: 0.075527s
+Thu Apr 29 15:12:56 2021 | f: 1+1E-0.546643/1+1E-5 | sweeps: 30000 | flat time: 0.114385s
+Thu Apr 29 15:12:56 2021 | f: 1+1E-0.875664/1+1E-5 | sweeps: 20000 | flat time: 0.075957s
+Thu Apr 29 15:12:57 2021 | f: 1+1E-1.190478/1+1E-5 | sweeps: 30000 | flat time: 0.112907s
+Thu Apr 29 15:12:57 2021 | f: 1+1E-1.498346/1+1E-5 | sweeps: 40000 | flat time: 0.149916s
+Thu Apr 29 15:12:57 2021 | f: 1+1E-1.802783/1+1E-5 | sweeps: 60000 | flat time: 0.225315s
+Thu Apr 29 15:12:57 2021 | f: 1+1E-2.105512/1+1E-5 | sweeps: 60000 | flat time: 0.224819s
+Thu Apr 29 15:12:58 2021 | f: 1+1E-2.407391/1+1E-5 | sweeps: 150000 | flat time: 0.565501s
+Thu Apr 29 15:12:58 2021 | f: 1+1E-2.708846/1+1E-5 | sweeps: 170000 | flat time: 0.639587s
+Thu Apr 29 15:12:59 2021 | f: 1+1E-3.010088/1+1E-5 | sweeps: 200000 | flat time: 0.753096s
+Thu Apr 29 15:13:00 2021 | f: 1+1E-3.311224/1+1E-5 | sweeps: 330000 | flat time: 1.241655s
+Thu Apr 29 15:13:02 2021 | f: 1+1E-3.612307/1+1E-5 | sweeps: 470000 | flat time: 1.766356s
+Thu Apr 29 15:13:05 2021 | f: 1+1E-3.913363/1+1E-5 | sweeps: 660000 | flat time: 2.482323s
+Thu Apr 29 15:13:09 2021 | f: 1+1E-4.214407/1+1E-5 | sweeps: 1070000 | flat time: 4.020233s
+Thu Apr 29 15:13:11 2021 | f: 1+1E-4.515443/1+1E-5 | sweeps: 740000 | flat time: 2.779424s
+Thu Apr 29 15:13:16 2021 | f: 1+1E-4.816477/1+1E-5 | sweeps: 1270000 | flat time: 4.771935s
