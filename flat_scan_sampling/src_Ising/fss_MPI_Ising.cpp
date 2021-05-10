@@ -324,7 +324,7 @@ int main(int argc, char **argv)
             // Shuffle_configuration
             
             shuffle(JDOS, shuffle_REP, flip_list, spins_vector, q, N_atm, NN, NM, NN_table, E_config, idx_E_config, energies);
-
+            
             // Update Histograms
 
             hist[idx_E_config]++;
