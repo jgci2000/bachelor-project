@@ -1,9 +1,12 @@
 # Thesis Outline (30 pages)
 
-## Chap. 1 - Introduiction (1/2 pages)
+Total pages -> 28/38
+
+## Chap. 1 - Introduiction (3/4 pages)
 * State of Art 
 * Introduce the problem
 * Thesis outline
+* Why is this important?
 
 ## Chapter 2 - Theory (7/11 pages)
 ### 2.1 - Spin Models (3/5 pages)
@@ -25,8 +28,8 @@
 * Theoretical background for the ffs
 * Theoretical background for the critical exponents
 
-### 2.4 - Lattice Types (?) (1 page)
-* Theoretical knowledge of the lattice theory
+### 2.4 - Amdhal's Law/Other Paralle Computing Stuff (1 page)
+* ...
 
 ## Chapter 3 - Intro to Flat Scan Sampling (4/6 pages)
 
