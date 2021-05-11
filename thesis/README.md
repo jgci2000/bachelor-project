@@ -58,7 +58,7 @@
 * One manager and N workers
 * Efforts to make the simulation more accurate -> WL_shuffle
 
-#### 4.2.3 - Performance and Scalling
+#### 4.2.3 - Performance and Scaling
 * Comparison of Wall times for different lattices and sizes (for all implementations, MATLAB inc.)
 * Multi-Core scalling of the method
 * Talk about Amdhal's Law and how it fits to the results
