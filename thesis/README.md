@@ -61,6 +61,7 @@
 #### 4.2.3 - Performance and Scalling
 * Comparison of Wall times for different lattices and sizes (for all implementations, MATLAB inc.)
 * Multi-Core scalling of the method
+* Talk about Amdhal's Law and how it fits to the results
 -----------------------------------------
 
 ## Chapter 5 - Validation and Convergence of the FSS (/ pages)
