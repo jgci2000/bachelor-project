@@ -1,55 +1,82 @@
 # Thesis Outline (30 pages)
+-----------------------------------------
 
-Total pages -> 28/38
-
-## Chap. 1 - Introduiction (3/4 pages)
+## Chap. 1 - Introduction (/ pages)
 * State of Art 
 * Introduce the problem
 * Thesis outline
 * Why is this important?
+-----------------------------------------
 
-## Chapter 2 - Theory (7/11 pages)
-### 2.1 - Spin Models (3/5 pages)
-* Ising
-	* Thermodynamic Relations
-* Ising SpinS
-* DOS and JDOS
-* Applications
-	* Applications in Physics/Material Sciences (Describe Ferromagnets)
-	* Ising Social
-	* Applications in Finances
+## Chapter 2 - Spin Models (/ pages)
 
-### 2.2 - Methods (2/3 pages)
-* Metropolis (?)
-* RPS (?)
-* Wang-Landau
-	
-### 2.3 - Finite Size Effects (?) (1/2 pages)
-* Theoretical background for the ffs
-* Theoretical background for the critical exponents
+### Section 2.1 - Ising Model
+* Introduce the Ising Model
 
-### 2.4 - Amdhal's Law/Other Paralle Computing Stuff (1 page)
-* ...
+#### 2.1.1 - Joint Density of States
+ * What is the DOS and JDOS?
 
-## Chapter 3 - Intro to Flat Scan Sampling (4/6 pages)
+#### 2.1.2 - Thermodynamics
+ * Thermodynamic relations computed from the JDOS
 
-### 3.1 - Background and Description (1/2 pages)
+#### 2.1.3 - Relevance
+ * Where is the Model applied?
+   * Physics/Material Sciences -> Ferromagnetism
+   * Ising Social
+   * Finances
+
+### Section 2.2 - Spin S Ising Model
+* Introduce the Model
+* Differences from Ising Model
+-----------------------------------------
+
+## Chapter 3 - Monte-Carlo Methods for Spin Models (/ pages)
+
+### Section 3.1 - Metropolis
+
+### Section 3.2 - Random Path Sampling
+
+### Section 3.3 - Wang-Landau
+
+-----------------------------------------
+## Chapter 4 - Introduction to the Flat Scan Sampling (/ pages)
+
+### Section 4.1 - Background (1/2 pages)
 * How the method was created
 * Its relation to RPS and WL
-* How it acctually works
+#### 4.1.1 - Algorithm
+* How it actually works
 
-### 3.2 - Implementation Details for the Ising model (3/4 pages)
-* Single core C++
-* MPI C++
-* MATLAB JA (?)
-* Efforts to make the simulation more accurate (skip, shuffle)
-* Comparison of wall times and MC scalling
+### Section 4.2 - Implementation for the Ising model (/ pages)
 
-## Chapter 4 - Validation and Convergence of the FSS (4/5 pages)
+#### 4.2.1 - Single Core
+* Single Core C++
+* Efforts to make the simulation more accurate -> skip
+
+#### 4.2.2 - MPI
+* One manager and N-1 workers
+* One manager and N workers
+* Efforts to make the simulation more accurate -> WL_shuffle
+
+#### 4.2.3 - Performance and Scalling
+* Comparison of Wall times for different lattices and sizes (for all implementations, MATLAB inc.)
+* Multi-Core scalling of the method
+-----------------------------------------
+
+## Chapter 5 - Validation and Convergence of the FSS (/ pages)
+
+### Section 5.1 - 
 * Convergence
 * Validation
 * Plots of statistical analysis and REP analysis
 * How does it compare to WL (comparison with WL)
+
+
+
+
+
+
+
 
 ## Chapter 5 - Finite Size Scalling and Thermodynamics (4/5 pages)
 
