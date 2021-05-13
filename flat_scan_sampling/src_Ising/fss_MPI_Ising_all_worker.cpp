@@ -17,6 +17,7 @@
 #include <array>
 #include <vector>
 #include <map>
+#include <filesystem>
 #include <mpi.h>
 
 #include "Fss_Functions.h"
@@ -29,6 +30,7 @@ using std::vector;
 using std::array;
 using std::string;
 using std::map;
+using std::to_string;
 
 #define ll          long long
 #define ld          long double
@@ -43,7 +45,7 @@ using std::map;
 #define LATTICE_NUM 1
 
 // Output location
-#define SAVE_DIR(lattice, L, log_REP)    "./data/" + lattice + "/L" + L + "/" + log_REP + "/"
+#define SAVE_DIR(lattice, L, log_REP)    "./data/" + lattice + "/L" + to_string(L) + "/" + to_string(log_REP) + "/"
 
 int main(int argc, char **argv)
 {
@@ -101,9 +103,9 @@ int main(int argc, char **argv)
     ll REP = pow(10, atol(argv[2]));
     ll REP_worker = REP / size;
 
-    string NN_table_file_name = "./neighbour_tables/neighbour_table_" + std::to_string(dim) + "D_" + lattice + "_" + std::to_string(NN) + "NN_L" + std::to_string(L) + ".txt";
-    string norm_factor_file_name = "./coefficients/coefficients_" + std::to_string(N_atm) + "d2.txt";
-    string save_file = std::to_string(run) + "_JDOS_FSS_Ising_" + std::to_string(dim) + "D_" + lattice + "_L" + std::to_string(L) + "_REP_1E" + std::to_string((int) log10(REP)) + "_skip_" + std::to_string(skip);
+    string NN_table_file_name = "./neighbour_tables/neighbour_table_" + to_string(dim) + "D_" + lattice + "_" + to_string(NN) + "NN_L" + to_string(L) + ".txt";
+    string norm_factor_file_name = "./coefficients/coefficients_" + to_string(N_atm) + "d2.txt";
+    string save_file = to_string(run) + "_JDOS_FSS_Ising_" + to_string(dim) + "D_" + lattice + "_L" + to_string(L) + "_REP_1E" + to_string((int) log10(REP)) + "_skip_" + to_string(skip);
 
     // Initialize vectors and read files
 
@@ -138,7 +140,7 @@ int main(int argc, char **argv)
         now = time(0);
         t = ctime(&now); t.pop_back();
 
-        string console_output = "run: " + std::to_string(run) + " | L: " + std::to_string(L) + " | REP: " + std::to_string(REP) + " | skip: " + std::to_string(skip) + " | dim: " + std::to_string(dim) + "D | lattie: " + lattice + " | walkers: " + std::to_string(size) + " | REP/walker: " + std::to_string(REP_worker);
+        string console_output = "run: " + to_string(run) + " | L: " + to_string(L) + " | REP: " + to_string(REP) + " | skip: " + to_string(skip) + " | dim: " + to_string(dim) + "D | lattie: " + lattice + " | walkers: " + to_string(size) + " | REP/walker: " + to_string(REP_worker);
         console_log.push_back(console_output);
 
         cout << endl;
@@ -177,7 +179,7 @@ int main(int argc, char **argv)
         for (int i = 0; i < NE; i++)
             JDOS[i * NM + 1] = JDOS[i * NM + 1] * norm_factor[1] / sum_JDOS;
 
-        string console_output = t + " | q: " + std::to_string(0) + "/" + std::to_string(q_max);
+        string console_output = t + " | q: " + to_string(0) + "/" + to_string(q_max);
         console_log.push_back(console_output);
 
         cout << console_output << endl;
@@ -375,8 +377,8 @@ int main(int argc, char **argv)
             now = time(0);
             t = ctime(&now); t.pop_back();
 
-            string console_output = t + " | q: " + std::to_string(q) + "/" + std::to_string(q_max) + " | q_time: " + std::to_string(q_time) + "s | E: " + std::to_string(hits_root) + " | q_time/E: " + std::to_string(q_time / hits_root) + "s";
-            string data_line = std::to_string(q) + " " + std::to_string(q_max) + " " + std::to_string(q_time) + " " + std::to_string(hits_root) + " " + std::to_string(q_time / hits_root);
+            string console_output = t + " | q: " + to_string(q) + "/" + to_string(q_max) + " | q_time: " + to_string(q_time) + "s | E: " + to_string(hits_root) + " | q_time/E: " + to_string(q_time / hits_root) + "s";
+            string data_line = to_string(q) + " " + to_string(q_max) + " " + to_string(q_time) + " " + to_string(hits_root) + " " + to_string(q_time / hits_root);
             
             console_log.push_back(console_output);
             data.push_back(data_line);
@@ -400,7 +402,10 @@ int main(int argc, char **argv)
 
         // Write JDOS to file
 
-        std::ofstream file1((string) SAVE_DIR(lattice, std::to_string(L), argv[2]) + save_file + ".txt");
+       namespace fs = std::filesystem;
+        fs::create_directories(SAVE_DIR(lattice, L, (int) log10(REP))); 
+
+        std::ofstream file1((string) SAVE_DIR(lattice, L, (int) log10(REP)) + save_file + ".txt");
         for (int i = 0; i < NE; i++)
         {
             for (int j = 0; j < NM; j++)
@@ -409,14 +414,14 @@ int main(int argc, char **argv)
         }
         file1.close();
 
-        std::ofstream file2((string) SAVE_DIR(lattice, std::to_string(L), argv[2]) + save_file + "_data.txt");
+        std::ofstream file2((string) SAVE_DIR(lattice, L, (int) log10(REP)) + save_file + "_data.txt");
         file2 << "q q_max q_time hits q_time/hits \n";
         for (int i = 0; i < data.size(); i++)
             file2 << data[i] << "\n";
         file2 << runtime << "\n";
         file2.close();
 
-        std::ofstream file3((string) SAVE_DIR(lattice, std::to_string(L), argv[2]) + save_file + "_console_logs.txt");
+        std::ofstream file3((string) SAVE_DIR(lattice, L, (int) log10(REP)) + save_file + "_console_logs.txt");
         for (int i = 0; i < console_log.size(); i++)
             file3 << console_log.at(i) << "\n";
         file3.close();
