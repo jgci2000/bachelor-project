@@ -13,6 +13,7 @@ clean: clean_fss_mpi clean_fss clean_o
 
 clean_fss_mpi:
 	rm fss_MPI_Ising
+	rm fss_MPI_Ising_all_worker
 clean_fss:
 	rm fss_Ising
 clean_o:
