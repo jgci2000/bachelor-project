@@ -75,10 +75,10 @@
 * How does it compare to WL (comparison with WL)
 ------------------------------------------
 
-## Chapter 7 - Finite Size Scalling and Thermodynamics (/ pages)
+## Chapter 7 - Finite Size Scalling and Thermodynamics (3/- pages)
 ------------------------------------------
 
-## Chapter 8 - Extension to the Ising SpinS Model (/ pages)
+## Chapter 8 - Extension to the Ising SpinS Model (3/ pages)
 * Explain the different approach to the problem
 * Implementation details
 * Results (compare with JA Metropolis results)
