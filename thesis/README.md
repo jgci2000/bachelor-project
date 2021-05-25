@@ -1,62 +1,106 @@
-# Thesis Outline (30 pages)
+# Report Outline (30 pages)
 -----------------------------------------
 
-## Chap. 1 - Introduction (3/4 pages)
-* State of Art 
-* Introduce the problem
-* Thesis outline
-* Why is this important?
+## Chapter 1 - Introduction (3/4 pages)
+
+* Computations in physics 
+* Metropolis Method and why it is now perfect
+* Efforts in the 90s to try and create new and faster methods
+* Wang-Landau sampling and how it solved some problems
+* Its applications and more importantly applications to ferromagnets (briefly explaing ferromagnets)
+* Gaps that the WL did not fulfil
+* Introduce the FSS 
+
+* Report outline
+
+## Plots for Chapter 1
+* Ferromagnet plot from JA ppt (magnetization curve)
+* Maybe a plot of Metropolis results compared with experimental results
+* Plot of the DOS computations from the original paper
+
 -----------------------------------------
 
-## Chapter 2 - Spin Models (3/5 pages)
-
-### Section 2.1 - Ising Model
+## Chapter 2 - Ising Model (3/5 pages)
 * Introduce the Ising Model
-#### 2.1.1 - Joint Density of States
- * What is the DOS and JDOS?
-#### 2.1.2 - Thermodynamics
- * Thermodynamic relations computed from the JDOS
-#### 2.1.3 - Relevance
- * Where is the Model applied?
-   * Physics/Material Sciences -> Ferromagnetism
-   * Ising Social
-   * Finances
+* History of the model
+* Phase transition at Tc
+* Ferromagnetism and Paramagnetism states of the Ising Model
 
-### Section 2.2 - Spin S Ising Model
-* Introduce the Model
-* Differences from Ising Model
+### Section 2.1 - Joint Density of States
+* What is the DOS and JDOS?
+### Section 2.2 - Thermodynamics
+* Thermodynamic relations computed from the JDOS
+### Section 2.3 - Relevance
+* Where is the Model applied?
+  * Physics/Material Sciences -> Ferromagnetism
+  * Ising Social
+  * Finances
+
+## Plots for Chapter 2
+* Ferromagnet plot form JA ppt (oriented spins)
+* JDOS table or the L2 system
+* JDOS_exact plotted for L4
+
 -----------------------------------------
 
 ## Chapter 3 - Monte-Carlo Methods for Spin Models (4/5 pages)
-* Describe the methods (...)
 
 ### Section 3.1 - Metropolis
+* History of the method
+* How it works
+* Limitations
+#### 3.1.1 - Critical Slowing Down
+  * Explain this limitation better
 
 ### Section 3.2 - Random Path Sampling
+* How the method works
+* Its limitations
 
 ### Section 3.3 - Wang-Landau
+* How the method works
+* Its improvements relative to the Metropolis 
+* Its problems 
+* How some people tried solving them
+
+## Plots for Chapter 3
+* Schemes for the RPS mehtod (like in the JA ppt)
+* Incomplete JDOS from the RPS method to show its weakness
+* Plotted JDOS for the Wang-Landau sampling
+* Fig.4 from the 1/t paper (2007)
+* Fig.2 from the convergence paper (2005)
 
 -----------------------------------------
+
 ## Chapter 4 - Introduction to the Flat Scan Sampling (5/6 pages)
+* Introduce the FSS from the problems of the WL
 
 ### Section 4.1 - Background
 * How the method was created
 * Its relation to RPS and WL
 #### 4.1.1 - Algorithm
-* How it actually works
-
+  * How it actually works
 ### Section 4.2 - Implementation for the Ising model
 #### 4.2.1 - Single Core
-* Single Core C++
-* Efforts to make the simulation more accurate -> skip
-#### 4.2.2 - MPI
-* One manager and N-1 workers
-* One manager and N workers
-* Efforts to make the simulation more accurate -> WL_shuffle
-#### 4.2.3 - Performance and Scaling
-* Comparison of Wall times for different lattices and sizes (for all implementations, MATLAB inc.)
-* Multi-Core scalling of the method
-* Talk about Amdhal's Law and how it fits to the results
+  * Single Core C++
+  * Efforts to make the simulation more accurate -> skip
+#### 4.2.2 - Performance
+  * Comparison of Wall times for different lattices and sizes (for all implementations, MATLAB inc.)
+#### 4.2.3 - MPI
+  * One manager and N-1 workers (probably not included)
+  * One manager and N workers
+  * Efforts to make the simulation more accurate -> WL_shuffle
+#### 4.2.4 - Multicore Scaling
+  * Talk about Amdhal's Law and how it fits to the results
+  * Multi-Core scalling of the method
+
+## Plots for Chapter 4
+* Scheme of how it works
+* Compare computed magnetisation with one from the WL and Metropolis for SC
+* Results from skip and WL_shuffle
+* Table from single core benchmarks
+* Plot of the theoretical Amdhal's Law
+* Plot of scaling
+
 -----------------------------------------
 
 ## Chapter 5 - Validation and Convergence of the FSS (4/5 pages)
@@ -78,22 +122,8 @@
 ## Chapter 7 - Finite Size Scalling and Thermodynamics (3/- pages)
 ------------------------------------------
 
-## Chapter 8 - Extension to the Ising SpinS Model (3/ pages)
-* Explain the different approach to the problem
-* Implementation details
-* Results (compare with JA Metropolis results)
+## Chapter 8 - Conclusion and Future Work (1 page)
 ------------------------------------------
 
-## Chapter 9 - Conclusion and Future Work (1 page)
-
-
-
-
-
-
-
-
-
-
-
+And if there is time left talk about the SpinS Ising Model
 
