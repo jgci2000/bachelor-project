@@ -71,7 +71,7 @@
 
 -----------------------------------------
 
-## Chapter 4 - Introduction to the Flat Scan Sampling (5/6 pages)
+## Chapter 4 - Introduction to the Flat Scan Sampling (5/7 pages)
 * Introduce the FSS from the problems of the WL
 
 ### Section 4.1 - Background
@@ -103,7 +103,7 @@
 
 -----------------------------------------
 
-## Chapter 5 - Validation and Convergence of the FSS (4/5 pages)
+## Chapter 5 - Validation and Convergence of the FSS (4/6 pages)
 * Plots of statistical analysis and REP analysis
 
 ### Section 5.1 - Validation
@@ -129,7 +129,7 @@
 
 ------------------------------------------
 
-## Chapter 6 - Wang-Landau Comparison (3/2 pages)
+## Chapter 6 - Wang-Landau Comparison (3/5 pages)
 * Why compare with wang landau?
 * Briefly explaing the strategy of both methods
 * Advantages and disadvantages from both methods
