@@ -104,22 +104,55 @@
 -----------------------------------------
 
 ## Chapter 5 - Validation and Convergence of the FSS (4/5 pages)
-* Convergence
-* Validation
 * Plots of statistical analysis and REP analysis
 
-### Section 5.1 - Convergence
+### Section 5.1 - Validation
+* Compare thermodynamic results with Metropolis 
+  * <|M|> (met) vs MmF (fss) for large L (met) and reasonalbe L (fss)
+  * <|M|> for metropolis and fss same L
+* Compare Tc values
+* Compare computed JDOS with exact JDOS L4
+* Compare DOS with Beale solution L16 (?) (just sum the magnetisations)
 
-### Section 5.2 - Validation
+### Section 5.2 - Convergence
+* Statistical analysis of REP L8
+* Error for the L4 with the exact JDOS
+
+## Plots for Chapter 5
+* 2 magnetisation plots
+* 1 plot with the TC from different lattices
+* plto that compares the Beale exact DOS (?)
+* plot that compares the estimated JDOS with the L4 exact solution
+* 2 plots from the slice and checkerboard configs for the JDOS L8
+* 1/2 plots of the deviation from the exact JDOS L4
+* var vs 1/sqrt(REP) plot (linear relation)
+
 ------------------------------------------
 
-## Chapter 6 - Wang Landau Comparison (3/2 pages)
+## Chapter 6 - Wang-Landau Comparison (3/2 pages)
 * Why compare with wang landau?
-* good and bad for both methods
-* How does it compare to WL (comparison with WL)
+* Briefly explaing the strategy of both methods
+* Advantages and disadvantages from both methods
+
+### Section 6.1 - Statistical Analysis
+* Error plots for the different configurations L8 or L16 with mc results
+* Saturation of the error even for large values of flatness
+* Should I reproduce the results from the 1/t method to compare? Or introduce the S parameter? 
+
+### Section 6.2 - Estimating Tc for infinite lattice
+* According to the 1/t paper the WL Tc(inf) is wrong
+* A comparison of this should be good
+
+## Plots for Chapter 6
+* 2/3 plots to compare config mean and var 
+* 1 plot L4 exact JDOS comparison
+* 2 Tc extrapolation plot with the fss and wl results ss, sc
+
 ------------------------------------------
 
-## Chapter 7 - Finite Size Scalling and Thermodynamics (3/- pages)
+## Chapter 7 - Finite Size Scalling (3/- pages)
+
+
 ------------------------------------------
 
 ## Chapter 8 - Conclusion and Future Work (1 page)
