@@ -100,6 +100,7 @@
 * Table from single core benchmarks
 * Plot of the theoretical Amdhal's Law
 * Plot of scaling
+* Wall time plots with REP 
 
 -----------------------------------------
 
@@ -147,6 +148,7 @@
 * 2/3 plots to compare config mean and var 
 * 1 plot L4 exact JDOS comparison
 * 2 Tc extrapolation plot with the fss and wl results ss, sc
+* wall time plots (WL is random)
 
 ------------------------------------------
 
