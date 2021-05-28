@@ -1,5 +1,130 @@
 # Report Outline (30 pages)
------------------------------------------
+---
+
+# NEW OUTLINE
+
+---
+
+## Chapter 1 - Ferromagnetism and the Ising Model
+
+### 1.1 - Ferromagnetism
+* What is ferromagnetism
+* What materials display it
+* What does it have to do with computational physics
+* Good models that model it
+
+### 1.2 - Ising Model
+* What is the Ising model
+* History
+* Phase transitions
+#### 1.2.1 - Joint Density of States
+* What is the DOS and JDOS
+* DOS vs JDOS
+#### 1.2.2 - Thermodynamics
+* Thermodynamic relations that can be computed from the DOS and JDOS
+#### 1.2.3 - Relevance
+* Where can we find the model
+
+## Plots for Chapter 1
+* Ferromagnet/Paramagnet scheme 
+* JDOS table for a L2_SS system
+* Plotted JDOS_exact for L4_SS
+---
+
+## Chapter 2 - Monte Carlo Methods Applied to the Ising Model
+* Why solve this models by computer simulations
+* Why are stochastic methods good to simulate these models
+
+### 2.1 - Metropolis
+* History and its legacy
+* How it works
+* Limitations
+#### 2.1.1 - Critical Slowing Down
+ * Explain this limitation a little better
+
+### 2.2 - Wang-Landau
+* Efforts in the 90s to find better methods than Metropolis
+#### 2.2.1 - Algorithm
+* How it works
+#### 2.2.2 - Variations
+* 1/t
+* S parameter
+#### 2.2.3 - Success and Limitations
+* How it solved some problems and brought new ones
+
+* Applications
+
+## Plots for Chapter 2
+* Something for the Metropolis
+* DOS and JDOS computed by the WL samping
+* Fig.4 from the 1/t paper (2007)
+* Fig.2 from the convergence paper (205)
+---
+
+## Chapter 3 - Flat Scan Sampling
+* Intoduce FSS from the problems from the WL method
+
+### 3.1 - Background 
+* Explain RPS method 
+* Relation to both the RPS and WL
+
+### 3.2 - Algorithm
+* How it works
+
+### 3.3 - Implementations
+#### 3.3.1 - Single Core
+ * Single core C++
+ * Explain the thought process
+ * Efforts to make the simulation better -> skip
+#### 3.3.2 - MPI
+ * N worker implementation
+ * Explain implementation
+ * Efforts to make the simulation better -> WL shuffle
+
+### 3.4 - Validation and Convergence
+* Validation for L4_SS
+* rep analysis for convergence
+* Show that the method converges to the exact solution with and error proportional to 1/sqrt(rep)
+* Show the same for L8 and L16 SS systems
+
+### 3.5 - Performance
+* Single core performance -> linear with REP
+* Multi core performance 
+#### 3.5.1 - Amdhal's Law and Parallel Scaling
+ * Amdhal's law 
+ * Fit to results
+ * Estimation of speedup for infinite cores
+
+### 3.6 - Comparison with Wang-Landau Sampling
+* Why compare with wang landau?
+* Briefly explaing the strategy of both methods
+* Advantages and disadvantages from both methods
+#### 3.6.1 - Statistical Analysis
+ * Error plots for the different configurations L8 or L16 with mc results
+ * Saturation of the error even for large values of flatness
+ * Reproduce the results for 1/t and S parameter variations to compare
+
+## Plots for Chapter 3
+* Scheme for the RPS
+---
+
+## Chapter 4 - Thermodynamics and Finite Size Scaling
+
+
+
+## Plots for Chapter 4
+---
+
+## Chapter 5 - Conclusion and Future Work
+* Give a little peak at spinS computations
+
+## Plots for Chapter 5
+* Maybe a plot of something from spinS Ising
+---
+
+# OLD OUTLINE
+
+---
 
 ## Chapter 1 - Introduction (3/4 pages)
 
@@ -18,7 +143,7 @@
 * Maybe a plot of Metropolis results compared with experimental results
 * Plot of the DOS computations from the original paper
 
------------------------------------------
+---
 
 ## Chapter 2 - Ising Model (3/5 pages)
 * Introduce the Ising Model
@@ -41,7 +166,7 @@
 * JDOS table or the L2 system
 * JDOS_exact plotted for L4
 
------------------------------------------
+---
 
 ## Chapter 3 - Monte-Carlo Methods for Spin Models (4/5 pages)
 
@@ -69,7 +194,7 @@
 * Fig.4 from the 1/t paper (2007)
 * Fig.2 from the convergence paper (2005)
 
------------------------------------------
+---
 
 ## Chapter 4 - Introduction to the Flat Scan Sampling (5/7 pages)
 * Introduce the FSS from the problems of the WL
@@ -102,7 +227,7 @@
 * Plot of scaling
 * Wall time plots with REP 
 
------------------------------------------
+---
 
 ## Chapter 5 - Validation and Convergence of the FSS (4/6 pages)
 * Plots of statistical analysis and REP analysis
@@ -128,7 +253,7 @@
 * 1/2 plots of the deviation from the exact JDOS L4
 * var vs 1/sqrt(REP) plot (linear relation)
 
-------------------------------------------
+---
 
 ## Chapter 6 - Wang-Landau Comparison (3/5 pages)
 * Why compare with wang landau?
@@ -150,15 +275,15 @@
 * 2 Tc extrapolation plot with the fss and wl results ss, sc
 * wall time plots (WL is random)
 
-------------------------------------------
+---
 
 ## Chapter 7 - Finite Size Scalling (3/- pages)
 
 
-------------------------------------------
+---
 
 ## Chapter 8 - Conclusion and Future Work (1 page)
-------------------------------------------
+---
 
 And if there is time left talk about the SpinS Ising Model
 
