@@ -1,7 +1,4 @@
 #My Stuff
-*.log
-*.aux
-*.synctex.gz
 *.tar.xf
 *.zip
 *.tar.gz
@@ -9,6 +6,15 @@
 .Ds_Store
 .vscode
 .miscellaneous
+
+# Latex stuff
+*.log
+*.aux
+*.synctex.gz
+*.blg
+*.tocc
+*.bbl
+
 
 # Prerequisites
 *.d
