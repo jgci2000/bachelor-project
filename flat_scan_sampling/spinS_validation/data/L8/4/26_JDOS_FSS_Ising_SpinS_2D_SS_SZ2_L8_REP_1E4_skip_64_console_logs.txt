@@ -1,0 +1,33 @@
+run: 26 | L: 8 | REP: 10000 | skip: 64 | dim: 2D | lattice: SS | SZ: 2
+Thu May 13 23:28:12 2021 | q: 0/31
+Thu May 13 23:28:12 2021 | q: 1/31 | q_time: 0.381303s | E: 1 | q_time/E: 0.381303s
+Thu May 13 23:28:13 2021 | q: 2/31 | q_time: 0.689329s | E: 2 | q_time/E: 0.344664s
+Thu May 13 23:28:14 2021 | q: 3/31 | q_time: 1.071939s | E: 3 | q_time/E: 0.357313s
+Thu May 13 23:28:16 2021 | q: 4/31 | q_time: 1.823565s | E: 5 | q_time/E: 0.364713s
+Thu May 13 23:28:18 2021 | q: 5/31 | q_time: 2.238156s | E: 6 | q_time/E: 0.373026s
+Thu May 13 23:28:21 2021 | q: 6/31 | q_time: 3.022387s | E: 8 | q_time/E: 0.377798s
+Thu May 13 23:28:25 2021 | q: 7/31 | q_time: 3.468351s | E: 9 | q_time/E: 0.385372s
+Thu May 13 23:28:29 2021 | q: 8/31 | q_time: 4.461913s | E: 11 | q_time/E: 0.405628s
+Thu May 13 23:28:34 2021 | q: 9/31 | q_time: 5.220203s | E: 13 | q_time/E: 0.401554s
+Thu May 13 23:28:40 2021 | q: 10/31 | q_time: 5.805392s | E: 14 | q_time/E: 0.414671s
+Thu May 13 23:28:47 2021 | q: 11/31 | q_time: 6.589118s | E: 16 | q_time/E: 0.411820s
+Thu May 13 23:28:55 2021 | q: 12/31 | q_time: 8.435974s | E: 18 | q_time/E: 0.468665s
+Thu May 13 23:29:03 2021 | q: 13/31 | q_time: 8.047469s | E: 19 | q_time/E: 0.423551s
+Thu May 13 23:29:12 2021 | q: 14/31 | q_time: 9.230689s | E: 21 | q_time/E: 0.439557s
+Thu May 13 23:29:22 2021 | q: 15/31 | q_time: 9.941749s | E: 23 | q_time/E: 0.432250s
+Thu May 13 23:29:33 2021 | q: 16/31 | q_time: 11.084440s | E: 25 | q_time/E: 0.443378s
+Thu May 13 23:29:45 2021 | q: 17/31 | q_time: 11.666993s | E: 26 | q_time/E: 0.448730s
+Thu May 13 23:29:59 2021 | q: 18/31 | q_time: 13.570153s | E: 28 | q_time/E: 0.484648s
+Thu May 13 23:30:13 2021 | q: 19/31 | q_time: 14.266615s | E: 30 | q_time/E: 0.475554s
+Thu May 13 23:30:28 2021 | q: 20/31 | q_time: 15.249999s | E: 32 | q_time/E: 0.476562s
+Thu May 13 23:30:44 2021 | q: 21/31 | q_time: 15.534094s | E: 34 | q_time/E: 0.456885s
+Thu May 13 23:31:00 2021 | q: 22/31 | q_time: 16.744306s | E: 36 | q_time/E: 0.465120s
+Thu May 13 23:31:19 2021 | q: 23/31 | q_time: 18.768923s | E: 38 | q_time/E: 0.493919s
+Thu May 13 23:31:37 2021 | q: 24/31 | q_time: 18.315018s | E: 40 | q_time/E: 0.457875s
+Thu May 13 23:31:57 2021 | q: 25/31 | q_time: 19.329278s | E: 42 | q_time/E: 0.460221s
+Thu May 13 23:32:18 2021 | q: 26/31 | q_time: 20.792352s | E: 44 | q_time/E: 0.472553s
+Thu May 13 23:32:39 2021 | q: 27/31 | q_time: 21.851368s | E: 46 | q_time/E: 0.475030s
+Thu May 13 23:33:02 2021 | q: 28/31 | q_time: 22.074907s | E: 48 | q_time/E: 0.459894s
+Thu May 13 23:33:25 2021 | q: 29/31 | q_time: 23.872344s | E: 50 | q_time/E: 0.477447s
+Thu May 13 23:33:49 2021 | q: 30/31 | q_time: 23.354507s | E: 52 | q_time/E: 0.449125s
+Thu May 13 23:34:13 2021 | q: 31/31 | q_time: 24.383933s | E: 53 | q_time/E: 0.460074s

@@ -1,0 +1,9 @@
+run: 787 | L: 4 | REP: 100000 | skip: 16 | dim: 2D | lattice: SS | SZ: 2
+Fri May 14 00:31:56 2021 | q: 0/7
+Fri May 14 00:31:56 2021 | q: 1/7 | q_time: 0.383008s | E: 1 | q_time/E: 0.383008s
+Fri May 14 00:31:57 2021 | q: 2/7 | q_time: 0.944870s | E: 2 | q_time/E: 0.472435s
+Fri May 14 00:31:58 2021 | q: 3/7 | q_time: 1.547671s | E: 3 | q_time/E: 0.515890s
+Fri May 14 00:32:01 2021 | q: 4/7 | q_time: 2.782015s | E: 5 | q_time/E: 0.556403s
+Fri May 14 00:32:05 2021 | q: 5/7 | q_time: 3.473419s | E: 6 | q_time/E: 0.578903s
+Fri May 14 00:32:09 2021 | q: 6/7 | q_time: 4.607611s | E: 8 | q_time/E: 0.575951s
+Fri May 14 00:32:14 2021 | q: 7/7 | q_time: 5.153133s | E: 9 | q_time/E: 0.572570s
