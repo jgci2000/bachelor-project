@@ -27,6 +27,7 @@
 
 ## Plots for Chapter 1
 * Ferromagnet/Paramagnet scheme 
+* Ising phase transition plot/scheme
 * JDOS table for a L2_SS system
 * Plotted JDOS_exact for L4_SS
 ---
@@ -57,8 +58,10 @@
 ## Plots for Chapter 2
 * Something for the Metropolis
 * DOS and JDOS computed by the WL samping
+* Error saturation with standart WL as a function of f_final and flatness
+* var vs something to show that is not linear
 * Fig.4 from the 1/t paper (2007)
-* Fig.2 from the convergence paper (205)
+* Fig.2 from the convergence paper (2005)
 ---
 
 ## Chapter 3 - Flat Scan Sampling
@@ -106,6 +109,36 @@
 
 ## Plots for Chapter 3
 * Scheme for the RPS
+* JDOS to show that the RPS sometimes doesn't find all of the pairs (E, M)
+
+### Implementations
+* Plot to show the effects of skip
+* Scheme for the MPI implmentation (?)
+* Plot to show the effects of WL shuffle
+
+### Validation and Convergence
+* rep analysis plots to show that the error becomes 0 and converges to the right solution when we increase rep
+* var vs 1/sqrt(rep) to show that the method converges to the exact solution while being inear with 1/sqrt(rep)
+* Show the same for L8 and L16 systems
+* Plot that show the exact and computed DOS for q=9 (L4) and the error in each point
+* Show the histogram fit for the mean error in the L4 system
+* Show the histogram fit for the 3 configs in the L4 system
+
+### Performance
+* Plot of the wall time vs rep
+* Same plot for the q time per E
+* Plot of the wall time vs rep for MPI
+* Theoretical behaviour for the Amdhal's law
+* Plot for the 1/n to extrapolate the S(inf)
+* Plot of the fit to Amdhal's law
+* Final plot of the two
+
+### Comparison with Wang-Landau Sampling
+* Error comparison with WL as a function o f_final and flatness
+* Compare error with the other implementations
+* Wall time comparison
+* Try to reproduce the plots from the S and 1/t papers
+
 ---
 
 ## Chapter 4 - Thermodynamics and Finite Size Scaling
