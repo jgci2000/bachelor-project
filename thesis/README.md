@@ -26,10 +26,10 @@
 * Where can we find the model
 
 ## Plots for Chapter 1
-* Ferromagnet/Paramagnet scheme 
-* Ising phase transition plot/scheme
-* JDOS table for a L2_SS system
-* Plotted JDOS_exact for L4_SS
+* :heavy_check_mark: Ferromagnet/Paramagnet scheme 
+* :heavy_check_mark: Ising phase transition plot/scheme
+* :heavy_check_mark: JDOS table for a L2_SS system
+* :heavy_check_mark: Plotted JDOS_exact for L4_SS
 ---
 
 ## Chapter 2 - Monte Carlo Methods Applied to the Ising Model
@@ -117,21 +117,20 @@
 * Plot to show the effects of WL shuffle
 
 ### Validation and Convergence
-* rep analysis plots to show that the error becomes 0 and converges to the right solution when we increase rep
-* var vs 1/sqrt(rep) to show that the method converges to the exact solution while being inear with 1/sqrt(rep)
+* :heavy_check_mark: rep analysis plots to show that the error becomes 0 and converges to the right solution when we increase rep
+* :heavy_check_mark: var vs 1/sqrt(rep) to show that the method converges to the exact solution while being inear with 1/sqrt(rep)
 * Show the same for L8 and L16 systems
-* Plot that show the exact and computed DOS for q=9 (L4) and the error in each point
-* Show the histogram fit for the mean error in the L4 system
-* Show the histogram fit for the 3 configs in the L4 system
+* :heavy_check_mark: Plot that show the exact and computed DOS for q=9 (L4) and the error in each point
+* :heavy_check_mark: Show the histogram fit for the mean error in the L4 system
+* :heavy_check_mark: Show the histogram fit for the 3 configs in the L4 system
 
 ### Performance
-* Plot of the wall time vs rep
-* Same plot for the q time per E
+* :heavy_check_mark: Plot of the wall time vs rep
+* :heavy_check_mark: Same plot for the q time per E
 * Plot of the wall time vs rep for MPI
-* Theoretical behaviour for the Amdhal's law
-* Plot for the 1/n to extrapolate the S(inf)
-* Plot of the fit to Amdhal's law
-* Final plot of the two
+* :heavy_check_mark: Theoretical behaviour for the Amdhal's law
+* :heavy_check_mark: Plot for the 1/n to extrapolate the S(inf)
+* :heavy_check_mark: Plot for Amdhal fit and S(inf) with the data points
 
 ### Comparison with Wang-Landau Sampling
 * Error comparison with WL as a function o f_final and flatness
