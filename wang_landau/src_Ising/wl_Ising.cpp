@@ -81,14 +81,14 @@ int main(int argc, char **argv)
     map<int, int> magnetizations = create_map(- max_M, max_M, 2);
 
     double f = exp(1);
-    double f_final_exp = 8;
+    double f_final_exp = 4;
     double f_final = 1 + pow(10, - f_final_exp);
     double flatness = 0.90;
-
+    int run = atoi(argv[1]);
     string NN_table_file_name = "./neighbour_tables/neighbour_table_" + to_string(dim) + "D_" + lattice + 
     "_" + to_string(NN) + "NN_L" + to_string(L) + ".txt";
     string norm_factor_file_name = "./coefficients/coefficients_" + to_string(N_atm) + "d2.txt";
-    string save_file = "JDOS_WL_Ising_" + to_string(dim) + "D_" + lattice + "_L" + to_string(L) + "_f" + 
+    string save_file = to_string(run) + "_JDOS_WL_Ising_" + to_string(dim) + "D_" + lattice + "_L" + to_string(L) + "_f" + 
     to_string((int) f_final_exp) + "_flatness" + to_string((int) (flatness * 100));
 
     // Initialize vectors and read files
