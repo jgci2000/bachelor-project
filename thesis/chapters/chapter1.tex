@@ -1,32 +1,38 @@
 \chapter{Ferromagnetism and the Ising Model}
 
+\pagenumbering{arabic}
+
 In this Chapter it is presented a brief introduction to ferromagnetism, to the history and significance of the Ising model along with the joint density of states and relevant thermodynamic relations obtained from it.
 
 \section{Ferromagnetism}
 
-Magnetic materials are critical in our modern society, since they have very broad applications in our daily lives. For example, there are magnetic materials in every speaker and microphone, hard drive disks for our computers and they play a big role in medicine where they are used in body scanners as well as being implanted into out bodies. Magnetic materials can be classified in terms of their magnetic properties, such as diamagnetism, paramagnetism, ferromagnetism, and so forth\cite{Griffiths}. 
+Magnetic materials are critical in our modern society, since they have very broad applications in our daily lives. For example, there are magnetic materials in every speaker and microphone, hard-drive disks on our computers, they play a big role in medicine where they are used in body scanners (usually in MRI machines) and they could have applications in permanent magnetic motors \cite{Gutfleisch2011}. Magnetic materials can be classified in terms of their magnetic properties, such as diamagnetism, paramagnetism, ferromagnetism, and so forth \cite{Griffiths}. 
 
-A ferromagnetic material exhibits spontaneous magnetization with even in the absence of an applied external magnetic field. This way, the magnetic moments of the atoms that compose the material are all naturally aligned along one direction\cite{StephenBlundell2001}. One of the key features of ferromagnetic materials is that they only display this property below a certain well-defined critical temperature, $T_C$, usually called the Curie Temperature. Above this temperature the entropy within the material becomes too strong and the magnetic moments start to dis-align, thus the materials looses its spontaneous magnetization(figure \ref{spins_dia}). The Curie Temperature defines a phase transition between a ferromagnetic and a paramagnetic state, figure \ref{tese_JA_fig1}. 
+A ferromagnetic material exhibits spontaneous magnetization with even in the absence of an applied external magnetic field. This way, the magnetic moments of the atoms that compose the material are all naturally aligned along one direction \cite{StephenBlundell2001}. One of the key features of ferromagnetic materials is that they only display this property below a certain well-defined critical temperature, $T_C$, usually called the Curie Temperature. Above this temperature the entropy within the material becomes too strong and the magnetic moments start to dis-align, thus the materials looses its spontaneous magnetization, figure \ref{spins_dia}. The Curie Temperature defines a phase transition between a ferromagnetic and a paramagnetic state, figure \ref{tese_JA_fig1}. 
 
-\begin{figure}[h]
-	\centering
-	\begin{minipage}{.5\textwidth}
-		\centering
-		\includegraphics[scale=.7, width=.8\linewidth , height=4cm]{phase_transition.png}
-		\caption{Magnetization curve for $La_{0.67}Ca_{0.33}MnO_3$ as a function of temperature. From ref. \cite{ThesisJA}}
-		\label{tese_JA_fig1}
-	\end{minipage}%
-	\begin{minipage}{.5\textwidth}
-		\centering
-		\includegraphics[scale=.7, width=.8\linewidth , height=4cm]{spins_diagram.png}
-		\caption{Spins diagram for the ferromagnetic phase(left) and for the paramagnetic phase(right).}
-		\label{spins_dia}
-	\end{minipage}
+
+\begin{figure}[ht]
+\centering
+\subfigure[]{%
+\includegraphics[scale=0.4]{phase_transition.png}
+\label{tese_JA_fig1}}
+\quad
+\quad
+\quad
+\subfigure[]{%
+\includegraphics[scale=0.5]{spins_diagram.pdf}
+\label{spins_dia}}
+
+\caption{(a) Magnetization curve for $La_{0.67}Ca_{0.33}MnO_3$ as a function of temperature;(b) Spins diagram for the ferromagnetic phase(left) and for the paramagnetic phase(right).}
+
 \end{figure}
 
-This kind of nature is common to various rare earth materials (Gadolinium(Gd), Lanthanum(La), ...) and elements such as Iron(Fe), Cobalt(Co), Nickel(Ni), and so on. One big application of these types of materials is the magnetocaloric effect(MCE). The effect consists of a change in temperature of a magnetic material by applying or removing an external magnetic field. For a ferromagnetic material, the MCE arises when the magnetic filed is applied for temperatures around the Curie Temperature. When an external field is applied the magnetic moments align thus reducing entropy. Removing the magnetic field causes the moments to randomize therefore increasing entropy and temperature. This effect is fairly used in magnetic refrigeration.
 
-In the recent years, computational materials design is becoming the new norm to discover new materials by combining computer science with quantum and statistical mechanics. It is more advantageous than the experimental sciences since it is not as time-consuming and bounded by high costs in equipment as running an experiment\cite{Chen2019, Curtarolo2013}. 
+This kind of nature is common to various rare earth materials, such as Gadolinium,  and elements such as Iron, Cobalt, Nickel, and so on. One big application of these types of materials is the magnetocaloric effect (MCE).
+The effect consists of a change in temperature of a magnetic material by the application and removal of an external magnetic field. For a ferromagnetic material, the MCE is more prominent when the magnetic filed is applied for temperatures around the Curie Temperature. 
+This effect is fairly exploited in magnetic refrigeration with compounds of the type $La(Fe,Co)_{13– x}Al{x}$ and $La(Fe,Co)_{13–x}Si_x$, where $x\sim 1.1$, since they have Curie Temperatures near room temperature \cite{Gutfleisch2011,Sanvito2017}.
+
+In the recent years, computational materials design is becoming the new norm to discover new materials by combining computer science with quantum and statistical mechanics. It is more advantageous than the experimental sciences since it is not as time-consuming and bounded by high costs in equipment as running an experiment \cite{Curtarolo2013,Chen2019}. 
 
 \section{Ising Model}
 
@@ -75,7 +81,7 @@ There are a three configurations worth noticing.The first one is the zero energy
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.2, height=5.5cm]{JDOS_exact_L4_SS.jpeg}
+	\includegraphics[scale=0.2, height=5cm]{JDOS_exact_L4_SS.jpeg}
 	\caption{Histogram type plot of the exact JDoS for the SS L4 Ising Model. This was obtained by visiting each microstate available to the system.}
 	\label{exact_L4}
 \end{figure}
