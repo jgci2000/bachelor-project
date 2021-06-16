@@ -18,7 +18,7 @@ def main():
     NN = 4
 
     NT = 100
-    temperatures = np.linspace(0.1, 5, NT, dtype=np.float128)
+    temperatures = np.linspace(0.1, 5, NT)
     beta_vals = 1 / (kB * temperatures)
     
     L_vals = np.array([4, 8, 16])
@@ -96,8 +96,8 @@ def main():
         run_time_vals[k] = run_time / run_max
         
         # Partition function and Helmholtz free energy
-        Z = np.zeros(len(temperatures), dtype=np.float128)
-        Z_M = np.zeros((NM, len(temperatures)), dtype=np.float128)
+        Z = np.zeros(len(temperatures))
+        Z_M = np.zeros((NM, len(temperatures)))
         
         for q in range(0, NM):
             hits = np.where(JDOS[:, q] != 0)[0]
