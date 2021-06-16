@@ -1,6 +1,6 @@
 \chapter{Ferromagnetism and the Ising Model}
 
-In this Chapter  a brief introduction to ferromagnetism, is presented from the history and significance of the Ising model to the joint density of states and relevant thermodynamic relations and properties obtained from it.
+In this Chapter  a brief introduction to ferromagnetism is presented, from the history and significance of the Ising model, to the joint density of states and relevant thermodynamic relations and properties obtained from it.
 
 \section{Ferromagnetism}
 
@@ -18,20 +18,18 @@ Magnetic materials are critical in our modern society, since they have very broa
 \includegraphics[scale=0.5]{spins_diagram.pdf}
 \label{spins_dia}}
 
-\caption{(a) Magnetization curve for \ce{LA0,67Ca0,33MnO3} as a function of temperature;(b) Spins diagram for the ferromagnetic phase (left) and for the paramagnetic phase (right).}
+\caption{(a) Magnetization curve for \ce{La_{0.67}Ca_{0.33}MnO3} as a function of temperature;(b) Spins diagram for the ferromagnetic phase (left) and for the paramagnetic phase (right).}
 
 \end{figure}
 
-A ferromagnetic material exhibits spontaneous magnetization in the absence of an applied external magnetic field. This way, the magnetic moments of the atoms that compose the material are all naturally aligned along one direction \cite{StephenBlundell2001}. One of the key features of ferromagnetic materials is that they only display this property below a certain well-defined critical temperature, $T_C$, usually called the Curie temperature. This temperature defines a phase transition between a ferromagnetic and a paramagnetic state, figure \ref{tese_JA_fig1}. 
+A ferromagnetic material exhibits spontaneous magnetization in the absence of an applied external magnetic field. This way, the magnetic moments of the atoms that compose the material are all naturally aligned along one direction \cite{magnetism_book}. One of the key features of ferromagnetic materials is that they only display this property below a certain well-defined critical temperature, $T_C$, usually called the Curie temperature. This temperature defines a phase transition between a ferromagnetic and a paramagnetic state, figure \ref{tese_JA_fig1}. 
 Above the Curie temperature, the entropy within the material becomes too strong and the magnetic moments start to dis-align, thus the materials looses its spontaneous magnetization, figure \ref{spins_dia}.  In other words, the effect due to thermal disorder overtakes the ferromagnetic order.
 
 This kind of nature is common to various transition metal, Iron, Cobalt, Nickel, and so forth, and to some rare earth materials, such as Gadolinium.
 One application of ferromagnets is magnetic refrigeration. This is based on the magnetocaloric effect (MCE), which consists of a change in temperature of a magnetic material by the application and removal of an external magnetic field., known as the magnetocaloric effect (MCE). For a ferromagnetic material, the MCE is more prominent when the magnetic filed is applied for temperatures around the Curie temperature. 
-High performance magnetic refrigerants include the \ce{LaFeSi} 1:13 family \cite{Sanvito2017} and \ce{MnFeP} based intermetallics \cite{Gutfleisch2011}. 
+High performance magnetic refrigerants include the \ce{LaFeSi} 1:13 family \cite{Fujita} and \ce{MnFeP} based intermetallics \cite{Bruck}. 
 
-%The MCE is used in magnetic refrigeration/heating since its cycle is similar to the well known Carnot cycle.  Compounds of the type \ce{La(Fe,Co)_{$13– x$}Al_x}  and \ce{La(Fe,Co)_{$13–x$}Si_x},where $x \sim 1.1$,  are used in magnetic cooling since they have Curie temperatures near room temperature \cite{Gutfleisch2011,Sanvito2017}.
-
-In the recent years, computational materials design is becoming the new norm to discover new materials by combining computer science with quantum and statistical mechanics. It is more advantageous than the experimental sciences since it is not as time-consuming and bounded by high costs in equipment as running an experiment \cite{Curtarolo2013,Chen2019}. 
+In the recent years, computational materials design is becoming the new norm to discover new materials by combining computer science with quantum and statistical mechanics. It is more advantageous than the experimental sciences since it is not as time-consuming and bounded by high costs in equipment as running an experiment \cite{Curtarolo2013,Chen2019, Sanvito2017}. 
 
 \section{Ising Model}
 
@@ -45,18 +43,18 @@ The Ising Hamiltonian describes a system of lattice of atomic spins which can ha
 \begin{equation}
 	\mathcal{H} = -\sum_{<i,j>} J_{ij} \boldsymbol{S}_i \cdot \boldsymbol{S}_j - H \sum_i\boldsymbol{S}_i
 \end{equation}
-where $J$ is the interaction for constant between two neighbouring particles, $S_i$ is the spin value of the particle at the site $i$, $<i,j>$ denotes that the sum is conducted over all neighbouring particles. Them second term represents the interaction with an external magnetic field, $H$, and it is completely optional. If $J>0$, the system will have a ferromagnetic behaviour since parallel spins are energetically more favourable, and if $J<0$, the system will behave in an anti-ferromagnetic way.
+where $J$ is the interaction for constant between two neighbouring particles, $S_i$ is the spin value of the particle at the site $i$, $<i,j>$ denotes that the sum is conducted over all neighbouring particles. The second term represents the interaction with an external magnetic field, $H$, and it is completely optional. If $J>0$, the system will have a ferromagnetic behaviour since parallel spins are energetically more favourable, and if $J<0$, the system will behave in an anti-ferromagnetic way.
 
-In this work, I will not evaluate the Ising Model with an applied magnetic field, $H=0$, and I will consider $J_{ij}=1$ to simplify the computations. With this being said, the Hamiltonian treated in this work goes as follows,
+In this work, I will not evaluate the Ising Model with an applied magnetic field, $H=0$, and consider $J_{ij}=1$ to simplify the computations. With this being said, the Hamiltonian treated in this work goes as follows,
 \begin{equation}
 	\mathcal{H} = -\sum_{<i,j>} \boldsymbol{S}_i \cdot \boldsymbol{S}_j 	\equiv -\frac{1}{2} \sum_{ij} \boldsymbol{S}_i \cdot \boldsymbol{S}_j
 \end{equation}
 
-To simulate real materials we can obtain the values of the interaction constant for each atom in our lattice through Density Functional Theory (DFT) calculations.
+To simulate real materials we can obtain the values of the interaction constant for each atom in our lattice through Density Functional Theory (DFT) calculations \cite{DFT_book}.
 
 \subsection{Joint Density of States}
 
-It is mentioned in any undergraduate course in statistical mechanics that the density of states (DoS), $g(E)dE$, gives the number of states that have a certain energy between $E$ and $E+dE$. For discrete systems, like the Ising Model, the DoS evaluated at a certain energy gives us the exact number of microstates that have a specific energy $E$. Through the DoS we can obtain the partition function $Z(T)$, as a function of temperature, and then compute energy related thermodynamic variables, such as the mean energy $E(T)$, specific heat $C(T)$, Helmholtz free energy, $F(T)$. 
+It is mentioned in any undergraduate course in statistical mechanics that the density of states (DoS), $g(E)dE$, gives the number of states that have a certain energy between $E$ and $E+dE$ \cite{stat_mech}. For discrete systems, like the Ising Model, the DoS evaluated at a certain energy gives us the exact number of microstates that have a specific energy $E$. Through the DoS we can obtain the partition function $Z(T)$, as a function of temperature, and then compute energy related thermodynamic variables, such as the mean energy $E(T)$, specific heat $C(T)$, Helmholtz free energy, $F(T)$. 
 
 As we are dealing with magnetic systems our natural interest is to study the magnetization throughout various temperatures and applied magnetic field intensity. For this, we need the number of microstates with a certain pair $(E,M)$. This is the exact description of the Joint Density of States (JDoS), a multi-variable histogram with information about the number of microstates with a certain energy and another parameter, like density, $\rho$, number of particles, $N$, or, in this case, magnetization, $M$. This way we can compute the partition function as a function of both temperature and magnetization, $Z(T,M)$ and the Helmholtz free energy as $F(T,M)$.
 
@@ -85,15 +83,14 @@ $+8$   & 0  & 0  & 2 & 0 & 0
 
 \pagebreak
 
-There are a three configurations worth noting.The first is the zero energy and zero magnetization state. This is the state with the most micro configurations since it represents an equilibrium point for the system. The second is the macrostate with the most energy and zero magnetization. For every system size and lattice this macrostate has always $2$ microstates, since the spins are sorted in a chess/checker board pattern. The last configuration is the macrostate with the least energy and zero magnetization. Its value is always going to be equal to $2L$, since the spins are sorted in rows and columns of alternating positive and negative spins, similar to slices. Throughout this work these configurations will appear again and they will be called, ZeroZero, Checker Board and Slice, respectively. 
+There are three configurations worth noting.The first is the zero energy and zero magnetization state. This is the state with the most micro configurations since it represents the macrostate in which is likely to find the system in, when $T>>T_C$(has the highest entropy). The second is the macrostate with the highest energy and zero magnetization. For every system size and lattice this macrostate has always $2$ microstates, since the spins are sorted in a chess/checker board pattern. The last configuration is the macrostate with the least energy and zero magnetization. Its value is always going to be equal to $2L$, since the spins are sorted in rows and columns of alternating positive and negative spins, similar to slices. Throughout this work these configurations will appear again and they will be called, ZeroZero, Checker Board and Slice, respectively. 
 
 To compute the JDoS it is necessary to visit all of the possible microstates. It is easy to do this until we have $16$ spins ($L=4$ in a SS lattice, figure \ref{exact_L4}), since the number of possible configurations is still quite small, $Q = 2^{16}\sim 65E3$. But, for instance, for systems with $256$ spins ($L=8$ in a SS lattice) it becomes computationally impossible to randomly or sequentially visit all of the microstates since we have to sample $Q = 2^{256} \sim 1E77$ configurations. 
-
 Instead we can use various clever numerical methods methods to get an estimation of the JDoS in a much more reasonable time with fairly good precision. I will present widely studied methods in the next Chapter and a new unpublished method in the third Chapter.
 
 \subsection{Thermodynamics}
 
-From the JDoS we can obtain all of the thermodynamic quantities we desire. In this section I will present some useful formulas to compute those variables from a JDoS. 
+From the JDoS we can obtain all of the thermodynamic quantities when the system is in an equilibrium state. In this section I will present some useful formulas to compute those variables from the JDoS. 
 The probability of a given state with energy $E_i$, is given by
 \begin{equation}
 	P(E_i) = \frac{\sum_q g(E_i, M_q) \exp(-\beta E_i)}{Z},
@@ -113,19 +110,19 @@ $\langle E \rangle$ is related to the specific heat by
 \begin{equation}
 	\langle C \rangle = \frac{\langle E^2 \rangle - \langle E \rangle^2}{\left( k_BT \right)^2},
 \end{equation}
-then to obtaining the mean entropy we use the second law of thermodynamics,
+then to obtain the mean entropy we use the second law of thermodynamics,
 \begin{equation}
 	\langle S \rangle= \int \frac{\langle C \rangle}{T} dT.
 \end{equation}
 
 \pagebreak
 
-However there is another way to get the same thermodynamics from the estimated JDoS.  Using the Helmholtz free energy, defined as 
+However there is another way to estimate thermodynamic properties, from the estimated JDoS.  Using the Helmholtz free energy, defined as 
 \begin{equation}
 	F(T, M) = - k_B ln(Z(T, M))
 \end{equation}
-and the principle of minimum energy, we can extract $F_{min} (T) = \min(F(M, T))$, which is defined as the free energy for a single temperature where the free energy of a magnetization is minimized.
-From it we can obtain the magnetization and energy for that value of free energy minima, $M_{F_{min}}$ and $E_{F_{min}}$, respectively.Through the $F_{min}$ we can use the following thermodynamic relations to compute the specific heat and entropy of the system:
+and the principle of minimum energy, we can extract $F_{min} (T) = \min(F(M, T))$, which is defined as the lowest temperature-dependent free energy that can be reached by the system.
+From it we can obtain the magnetization and energy for that value of free energy minima, $M_{F_{min}}$ and $E_{F_{min}}$, respectively.Through $F_{min}$ we can use the following thermodynamic relations to compute the specific heat and entropy of the system:
 \begin{equation}
 	C = - T \frac{\partial^2 F_{min}}{\partial T^2},
 \end{equation}
