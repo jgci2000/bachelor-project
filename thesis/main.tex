@@ -3,9 +3,11 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{indentfirst}
 \usepackage{subfigure}
 \usepackage[version=4]{mhchem}
+\usepackage[font=small,labelfont=bf]{caption}
 
 \usepackage[nottoc]{tocbibind}
 
@@ -25,9 +27,13 @@
 
 \usepackage{fancyhdr}
 \pagestyle{fancy}
-\renewcommand{\chaptermark}[1]{%
-\markboth{\MakeUppercase{\small #1}}{}}
+%\renewcommand{\chaptermark}[1]{%
+%\markboth{\MakeUppercase{\small #1}}{}}
 
+\fancyhead[LE]{\slshape \rightmark} %section
+\fancyhead[RE]{\thepage}
+\fancyhead[RO]{\slshape \leftmark} % chapter
+\fancyhead[LO]{\thepage}
 
 %\usepackage{palatino}
 

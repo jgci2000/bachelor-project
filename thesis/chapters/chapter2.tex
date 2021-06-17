@@ -58,9 +58,9 @@ Lastly there is another shortcoming known as critical slowing down. In short, fo
 
 \section{Wang-Landau Sampling}
 
-Since its introduction the Metropolis sampling was the go-to method to study phase transitions and critical phenomena in condensed matter physics and statistical mechanics. In the final decades of the 20th century scientists were committed to develop new methods that could overcome the shortcomings of the Metropolis Sampling. Various methods were proposed such as the cluster flip algorithms, where Swendsen and Wang where pioneers, and the multicanonical ensemble method. The first solved the critical slowing down present in the Metropolis and the second could sample rough energy landscapes with ease. 
+Since its introduction, the Metropolis sampling was the go-to method to study phase transitions and critical phenomena in condensed matter physics and statistical mechanics. In the final decades of the 20th century scientists were committed to develop new methods that could overcome the shortcomings of the Metropolis Sampling. Various methods were proposed such as the cluster flip algorithms, where Swendsen and Wang where pioneers, and the multicanonical ensemble method. The first solved the critical slowing down present in the Metropolis and the second could sample rough energy landscapes with ease. 
 
-In 2001, Fugao Wang and David P. Landau proposed a new Monte Carlo method, now called the Wang-Landau method or sampling. The goal of this method diverges from the goal of previous methods. Instead of generating configurations with a canonical probability, this method tries to estimate the canonical partition function
+In 2001, Fugao Wang and David P. Landau proposed a new Monte Carlo method, now called the Wang-Landau (WL) method or sampling. The goal of this method diverges from the goal of previous methods. Instead of generating configurations with a canonical probability, this method tries to estimate the canonical partition function
 \begin{equation}
 	Z = \sum_E g(E) \exp(-\beta E)
 \end{equation}
@@ -69,7 +69,8 @@ through the estimation of the density of states $g(E)$ from a flat histogram in 
 The main difficulty of a simple random walk in the energy space is that the walker would spend most of its time in the highest probable states thus making the random walk ineffective. The idea of the Wang-Landau sampling is to do a random walk,Metropolis like, and accepting the new states with a probability proportional to the inverse to their DoS $\frac{1}{g(E)}$. Doing this we obtain a flat histogram meaning that each macrostate has the same probability of being visited.  
 Since $g(E)$ is unknown \textit{à priori}, in each step of the random walk, $g(E)$ is also being constructed.
 
-The algorithm was proposed to compute the DoS but, it can also estimate the JDoS by performing the random walk in the phase space composed by energy, $E$, and the second order parameter, in our case, the magnetization of the system, $M$. This comes with a downside, since the JDoS has 1000x more information than the DoS it takes 1000x more time to compute.
+The proposed algorithm computed the DoS but, it can also estimate the JDoS by performing the random walk in the phase space composed by energy, $E$, and the second order parameter, in our case, the magnetization of the system, $M$. This comes with a downside, since the JDoS has 1000x more information than the DoS it takes 1000x more time to compute.
+Later in 2006, Landau, presented a modification of the WL called the global updates method. This is a much harder version to implement but is much more efficient when sampling 2D discrete phase spaces and continuous phase spaces. 
 
 \subsection{Algorithm}
 
@@ -97,15 +98,40 @@ At the end, the method gives us the relative density of states. To determine the
 \subsection{Success and Limitations}
 
 The modification factor controls the accuracy and the steps taken to reach a flat histogram in our computations. As it approaches unity, the number of iterations goes to infinity. This way, at the beginning of the simulation, when the modification factor is large, the estimation of the DoS is quite bad, since there we are taking fewer samples with a high weight. At the later stages, the modification factor is lower therefore we have more samples of each macrostate with a lower overall weight. 
-This way, the initial stages of the simulation are characterized by the accumulation of low precision statistics and the later stages by the refining of the firsts samples. 
+Therefore, the initial stages of the simulation are characterized by the accumulation of low precision statistics and the later stages by the refining of the firsts samples. 
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.6, height=5cm]{wl_mean_error_f.pdf}
-	\caption{TODO: MORE P VALUES!!!! Mean absolute error of the JDoS for the Ising model computed by the Wang-Landau sampling for a L4 SS lattice plotted against $f_{final}-1$. The flatness condition used was 90\%.}
+	\includegraphics[scale=0.6, height=6cm]{wl_mean_error_f.pdf}
+	\caption{TODO: MORE P VALUES!!!! REMOVE ERROR BARS! Mean absolute error of the JDoS for the Ising model computed by the Wang-Landau sampling for a L4 SS lattice plotted against $f_{final}-1$. The flatness condition used was 90\%.}
 	\label{error_abs_wl}
 \end{figure}
-Due to the wrong samples at the initial stages of the computations, the final estimation of the JDoS will never converge to the exact solution. In the figure \ref{error_abs_wl} we can see that the absolute value of the mean error never converges to zero, thus the method has an intrinsic source of error. 
+
+Due to the wrong samples at the initial stages of the computations, the final estimation of the JDoS will converge to the exact solution, but the mean error in our computations will never vanish, independent of the flatness criteria used, shown in figure \ref{error_abs_wl}. 
+
+A few modifications to the original WL were proposed throughout the years, but the most noteworthy  are the modifications from Belardinelli et al. and from Chenggang Zhou et al.. The former has studied the method in great detail and was a co-author of the global updates method. He proposed the introduction of a parameter $S$, defined as the separation between successive records in the histogram. Meaning that in our random walk we would only update the histogram each $S$ steps. This will diminish the correlation between successive samples and improve accuracy.  
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.6, height=5.5cm]{S_paper_fig.png}
+	\caption{$g(M)$, the density of states for magnetization $M$ of L4 SS Ising lattice normalized. The solid line connects the exact values, and the symbols were obtained with different parameters $f$ and $S$. Data was averaged over $100$ measurements, so the statistical errors are smaller than the symbols. Taken from .}
+	\label{S_parameter}
+\end{figure}
+
+The modification proposed by Belardinelli et al. is more complex and introduces a new way of changing the modification parameter during the computations, they called it the $1/t$ time-dependent algorithm. The method starts as the WL does, however, if $f_{i+1} \leqslant 1/t$, where $t$ is the MC time, the modification factor becomes $f_{i+1} = f(t) = 1/t$ and we discard the histogram and update $f$ each MC time step. The simulation only stops when $f(t) < f_{final}$. This ensures that the mean error vanishes, figure \ref{t_algorithm}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.6, height=6cm]{t_paper_fig.png}
+	\caption{Comparison between the mean error computed by the original WL for different flatness criteria and the mean error calculated using the $1/t$ time-dependent algorithm for a L8 SS Ising lattice. Taken from .}
+	\label{t_algorithm}
+\end{figure}
+
+Despite this, the WL method has become the go-to method for DoS and JDoS estimation, because of its efficiency and ability to sample the whole phase space even if the estimation of the JDoS is not the most precise. It has been applied to magnetic systems like the Ising model, Lennard-Jones fluid simulations, biologic processes, etc.
+
+
+
+
 
 
 
