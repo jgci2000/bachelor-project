@@ -3,6 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{amsmath}
+\usepackage[T1]{fontenc}
 \usepackage{amssymb}
 \usepackage{indentfirst}
 \usepackage{subfigure}
@@ -29,10 +30,11 @@
 \pagestyle{fancy}
 %\renewcommand{\chaptermark}[1]{%
 %\markboth{\MakeUppercase{\small #1}}{}}
+\renewcommand{\headrulewidth}{0pt}
 
-\fancyhead[LE]{\slshape \rightmark} %section
+\fancyhead[LE]{\slshape\nouppercase \rightmark} %section
 \fancyhead[RE]{\thepage}
-\fancyhead[RO]{\slshape \leftmark} % chapter
+\fancyhead[RO]{\slshape\nouppercase \leftmark} % chapter
 \fancyhead[LO]{\thepage}
 
 %\usepackage{palatino}
@@ -66,7 +68,7 @@
 	\input{chapters/chapter4}
 	\input{chapters/chapter5}
 	
-	\bibliography{citations}
+	\bibliography{citations}	
 	\bibliographystyle{ieeetr}
 	
 \end{document}

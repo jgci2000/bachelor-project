@@ -5,9 +5,10 @@
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{1}{}%
 \contentsline {figure}{\numberline {1.2}{\ignorespaces Plot of the exact JDoS for the SS L4 Ising Model with PBC. This was obtained by visiting each microstate available to the system.\relax }}{3}{}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces TODO: MORE P VALUES!!!! REMOVE ERROR BARS! Mean absolute error of the JDoS for the Ising model computed by the Wang-Landau sampling for a L4 SS lattice plotted against $f_{final}-1$. The flatness condition used was 90\%.\relax }}{9}{}%
-\contentsline {figure}{\numberline {2.2}{\ignorespaces $g(M)$, the density of states for magnetization $M$ of L4 SS Ising lattice normalized. The solid line connects the exact values, and the symbols were obtained with different parameters $f$ and $S$. Data was averaged over $100$ measurements, so the statistical errors are smaller than the symbols. Taken from .\relax }}{10}{}%
-\contentsline {figure}{\numberline {2.3}{\ignorespaces Comparison between the mean error computed by the original WL for different flatness criteria and the mean error calculated using the $1/t$ time-dependent algorithm for a L8 SS Ising lattice. Taken from .\relax }}{10}{}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Mean absolute error of the JDoS for the Ising model computed by the Wang-Landau sampling for a L4 SS lattice plotted against $f_{final}-1$. The values were averaged over $100$ simulations. \relax }}{9}{}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces (a)$g(M)$, the density of states for magnetization $M$ of L4 SS Ising lattice normalized. The solid line connects the exact values, and the symbols were obtained with different parameters $f$ and $S$. Data was averaged over $100$ measurements, so the statistical errors are smaller than the symbols. Taken from \cite {Zhou2005}. ;(b) Comparison between the mean error computed by the original WL for different flatness criteria and the mean error calculated using the $1/t$ time-dependent algorithm for a L8 SS Ising lattice. Taken from \cite {Belardinelli2007}.\relax }}{10}{}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{10}{}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{10}{}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
