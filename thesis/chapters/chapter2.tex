@@ -23,7 +23,7 @@ In the equilibrium regime, the master equation has to equal $0$, and we get the 
 	W_{ji}P_{eq}(S_j) = W_{ij}P_{eq}(S_i).
 \end{equation}
 
-The object of Metropolis Sampling is to generate canonical configurations with an equilibrium probability
+The objective of Metropolis sampling is to generate canonical configurations with an equilibrium probability
 \begin{equation} \label{eq:met_prob_eq}
 	P_{eq}(E_i) = \frac{\exp(-\beta E_i)}{Z}.
 \end{equation}
@@ -84,7 +84,7 @@ Whether the configuration is accepted or rejected, we have to update the histogr
 \end{equation*}
 and we multiply the current value of the DoS by a modification factor, $f > 1$,
 \begin{equation*}
-	g(E,M)=fg(E,M).
+	g(E,M)=f \times g(E,M).
 \end{equation*}
 A reasonable choice for the initial value of the modification factor if $f_0 = e$. If $f_0$ is too small, the simulation will take a very long time to reach all of the possible macrostates, $(E,M)$. If it is too large, then we will have large statistical errors.  
 This process is repeated until the histogram is considered "flat", all of the possible energies have been visited the same number of times. As it is impossible to obtain a $100\%$ flat histogram, we define a rule for flatness as $\min(H(E, M)) > \langle H(E, M) \rangle \times p$; $p$ is chosen according to the size of the problem. For small cases, such as the two dimensional Ising model, $p$ can be set as high as $0.95$, but for larger systems the flatness condition may never be satisfied if $p$ is near unity.  
