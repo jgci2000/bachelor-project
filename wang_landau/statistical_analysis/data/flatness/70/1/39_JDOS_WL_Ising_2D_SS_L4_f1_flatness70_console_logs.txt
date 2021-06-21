@@ -1,0 +1,5 @@
+run: 39 | L: 4 | f_final: 1+1E-1 | flatness: 70 | dim: 2D | lattice: SS
+Fri Jun 18 15:08:14 2021 | f: 1+1E0.235094/1+1E-1 | sweeps: 10000 | flat time: 0.005663s
+Fri Jun 18 15:08:14 2021 | f: 1+1E-0.187942/1+1E-1 | sweeps: 10000 | flat time: 0.005591s
+Fri Jun 18 15:08:14 2021 | f: 1+1E-0.546643/1+1E-1 | sweeps: 10000 | flat time: 0.006080s
+Fri Jun 18 15:08:14 2021 | f: 1+1E-0.875664/1+1E-1 | sweeps: 10000 | flat time: 0.006264s

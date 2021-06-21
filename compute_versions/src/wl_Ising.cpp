@@ -120,10 +120,10 @@ int main(int argc, char **argv)
 
     int *spins_vector = new int[N_atm];
     int *NN_table = new int[N_atm * NN];
-    ld *log_norm_factor = new ld[NM];
+    ld *ln_norm_factor = new ld[NM];
     
     read_NN_talbe(NN_table_file_name, NN_table);
-    read_norm_factor(norm_factor_file_name, log_norm_factor, N_atm);
+    read_norm_factor(norm_factor_file_name, ln_norm_factor, N_atm);
 
     ld *ln_JDOS = new ld[NE * NM];
     ld *JDOS = new ld[NE * NM];
@@ -277,7 +277,7 @@ int main(int argc, char **argv)
         
         for (int i = 0; i < NE; i++)
             if (ln_JDOS[i * NM + q] > 0)
-                JDOS[i * NM + q] = exp(ln_JDOS[i * NM + q] + log_norm_factor[q] + log( - sum_ln_JDOS));  
+                JDOS[i * NM + q] = exp(ln_JDOS[i * NM + q] + ln_norm_factor[q] - sum_ln_JDOS);  
     }
 
     // Stop mesuring time
@@ -319,7 +319,7 @@ int main(int argc, char **argv)
 
     delete[] JDOS, delete[] ln_JDOS, delete[] hist;
     delete[] spins_vector;
-    delete[] NN_table, delete[] log_norm_factor;
+    delete[] NN_table, delete[] ln_norm_factor;
 
     return 0;
 }
