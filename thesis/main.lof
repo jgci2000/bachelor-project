@@ -6,12 +6,23 @@
 \contentsline {figure}{\numberline {1.2}{\ignorespaces Plot of the exact JDoS for the SS L4 Ising Model with PBC. This was obtained by visiting each microstate available to the system.\relax }}{3}{}%
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {2.1}{\ignorespaces Mean absolute error of the JDoS for the Ising model computed by the Wang-Landau sampling for a L4 SS lattice plotted against $f_{final}-1$. The values were averaged over $100$ simulations. \relax }}{9}{}%
-\contentsline {figure}{\numberline {2.2}{\ignorespaces (a)$g(M)$, the density of states for magnetization $M$ of L4 SS Ising lattice normalized. The solid line connects the exact values, and the symbols were obtained with different parameters $f$ and $S$. Data was averaged over $100$ measurements, so the statistical errors are smaller than the symbols. Taken from \cite {Zhou2005}. ;(b) Comparison between the mean error computed by the original WL for different flatness criteria and the mean error calculated using the $1/t$ time-dependent algorithm for a L8 SS Ising lattice. Taken from \cite {Belardinelli2007}.\relax }}{10}{}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces (a) $g(M)$, the density of states for magnetization $M$ of L4 SS Ising lattice normalized. The solid line connects the exact values, and the symbols were obtained with different parameters $f$ and $S$. Data was averaged over $100$ measurements, so the statistical errors are smaller than the symbols. Taken from \cite {Zhou2005}. (b) Comparison between the mean error computed by the original WL for different flatness criteria and the mean error calculated using the $1/t$ time-dependent algorithm for a L8 SS Ising lattice. Taken from \cite {Belardinelli2007}.\relax }}{10}{}%
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{10}{}%
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{10}{}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{11}{}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Scheme of how the Random Path Sampling method works.\relax }}{11}{}%
 \contentsline {figure}{\numberline {3.2}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{12}{}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{14}{}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{14}{}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{15}{}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{15}{}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{16}{}%
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces (a) LogLog plot of the single core wall time of FSS as a function of the number of samples per each energy point, REP. (b) LogLog plot of the time spent sampling for each energy value, $q_{time}/E$.These are computations for a system with 16 spins. Data was averaged over 1000 computations to reduce statistical error.\relax }}{18}{}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{18}{}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{18}{}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Speedup from Amdahl's Law as a function of the number of cores for five different values of the parallel portion of the code $p$.\relax }}{21}{}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{22}{}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{23}{}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }

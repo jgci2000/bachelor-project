@@ -50,7 +50,7 @@ Note that we accept the spin flip if a given uniformly random number $r, r \in [
 
 The Metropolis sampling proposed by Metropolis et al. \cite{Metropolis1953}, can be successfully applied to an array of models, ranging from widely studied quantum ensembles and gases simulations to state-of-the-art protein and peptide simulations and to machine learning and neural networks. The following paragraphs will be directed to magnetic systems, like the Ising model, but they can be extrapolated to others physical systems. 
 
-When getting thermodynamic variables we have to let the simulation reach the equilibrium stage, where the probability distribution takes the form of Equation \ref{eq:met_prob_eq}. Then we take a measurement each MC time, resulting in $M$ total values for that variable. At the end the average if that variable, $A$, is taken $\langle A \rangle = \frac{1}{M} \sum_i A_i$. 
+When estimating thermodynamic variables the simulation must reach the equilibrium stage, where the probability distribution takes the form of Equation \ref{eq:met_prob_eq}. Then we take a measurement at  each MC time, resulting in $R$ total values for that variable. At the end the average of that variable, $A$, is taken $\langle A \rangle = \frac{1}{R} \sum_i A_i$. 
 For large systems the time taken to reach equilibrium stage is often very long thus making the simulation time consuming. 
 This is worsened by the fact that to study how some thermodynamic variable $A$ changes over a wide range of temperatures or applied fields intensities, we need to run multiple Metropolis simulations for each temperature and field intensity values, making this process very time-consuming.
 
@@ -69,7 +69,7 @@ through the estimation of the density of states $g(E)$ from a flat histogram in 
 The main difficulty of a simple random walk in the energy space is that the walker would spend most of its time in the highest probable states thus making the random walk ineffective. The idea of the Wang-Landau sampling is to do a random walk,Metropolis like, and accepting the new states with a probability proportional to the inverse to their DoS $\frac{1}{g(E)}$. Doing this we obtain a flat histogram meaning that each macrostate has the same probability of being visited.  
 Since $g(E)$ is unknown \textit{à priori}, in each step of the random walk, $g(E)$ is also being constructed.
 
-The proposed algorithm computed the DoS but, it can also estimate the JDoS by performing the random walk in the phase space composed by energy, $E$, and the second order parameter, in our case, the magnetization of the system, $M$. This comes with a downside, since the JDoS has 1000x more information than the DoS it takes 1000x more time to compute.
+The proposed algorithm computed the DoS but, it can also estimate the JDoS by performing the random walk in the phase space composed by energy, $E$, and the second order parameter, in our case, the magnetization of the system, $M$. This comes with a downside, since the JDoS has much more more information than the DoS it takes much longer compute.
 Later in 2006, Landau et al. \cite{WL_Cont}, presented a modification of the WL called the global updates method. This is a much harder version to implement but is much more efficient when sampling 2D discrete phase spaces and continuous phase spaces \cite{Poulain2006}.  
 
 \subsection{Algorithm}
@@ -94,6 +94,15 @@ At the end, the method gives us the relative density of states. To determine the
 \begin{equation}
 	\sum_{E,M} g(E,M) = 2^N.
 \end{equation}
+We can also use number of configurations that have a designated magnetization $\Omega(M)$ to normalize the JDoS. This way we normalize the JDoS in a sequential manner magnetization through magnetization.
+$\Omega(M)$ is just the possible combinations that exist given the number of spins down $N_{\downarrow}$ and the number of spins up $N_{\uparrow}$ ($N_{\uparrow} + N_{\downarrow} = N$). So $\Omega(M)$ cam be easily calculated by 
+\begin{equation}\label{norm_fact}
+	\Omega(M) = \frac{N!}{N_{\downarrow}! (N - N_{\downarrow})!},
+\end{equation}
+with
+\begin{equation}
+	N_{\downarrow} = \frac{N-M}{2}.
+\end{equation}
 
 \subsection{Success and Limitations}
 
@@ -102,12 +111,12 @@ Therefore, the initial stages of the simulation are characterized by the accumul
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.6, height=6cm]{wl_mean_error_f.pdf}
+	\includegraphics[scale=0.4, height=5cm]{wl_mean_error_f.pdf}
 	\caption{Mean absolute error of the JDoS for the Ising model computed by the Wang-Landau sampling for a L4 SS lattice plotted against $f_{final}-1$. The values were averaged over $100$ simulations. }
 	\label{error_abs_wl}
 \end{figure}
 
-Due to the wrong samples at the initial stages of the computations, the final estimation of the JDoS will converge to the exact solution, but the mean error in our computations will never vanish, independent of the flatness criteria used, shown in Figure \ref{error_abs_wl}. 
+Due to the biased samples at the initial stages of the computations, the final estimation of the JDoS will converge, with high precision, to a wrong solution independent of the flatness criteria and $f_{final}$ value used, shown in Figure \ref{error_abs_wl}. 
 
 A few modifications to the original WL were proposed throughout the years, but the most noteworthy  are the modifications from Chenggang Zhou et al. \cite{Zhou2005} and Belardinelli et al. \cite{Belardinelli2007}. Zhou has studied the method in great detail \cite{Zhou2005} and was a co-author of the global updates method \cite{WL_Cont}. He proposed the introduction of a parameter $S$, defined as the separation between successive records in the histogram. Meaning that in our random walk we would only update the histogram each $S$ steps. This will diminish the correlation between successive samples and improve accuracy.  
 The modification proposed by Belardinelli et al. is more complex and introduces a new way of changing the modification parameter during the computations, they called it the $1/t$ time-dependent algorithm. The method starts as the WL does, however, if $f_{i+1} \leqslant 1/t$, where $t$ is the MC time, the modification factor becomes $f_{i+1} = f(t) = 1/t$ and we discard the histogram and update $f$ each MC time step. The simulation only stops when $f(t) < f_{final}$. This ensures that the mean error vanishes, Figure \ref{t_algorithm}.
@@ -130,7 +139,7 @@ The modification proposed by Belardinelli et al. is more complex and introduces 
 \includegraphics[scale=0.6, height=5cm]{t_paper_fig.png}
 \label{t_algorithm}}
 
-\caption{(a)$g(M)$, the density of states for magnetization $M$ of L4 SS Ising lattice normalized. The solid line connects the exact values, and the symbols were obtained with different parameters $f$ and $S$. Data was averaged over $100$ measurements, so the statistical errors are smaller than the symbols. Taken from \cite{Zhou2005}. ;(b) Comparison between the mean error computed by the original WL for different flatness criteria and the mean error calculated using the $1/t$ time-dependent algorithm for a L8 SS Ising lattice. Taken from \cite{Belardinelli2007}.}
+\caption{(a) $g(M)$, the density of states for magnetization $M$ of L4 SS Ising lattice normalized. The solid line connects the exact values, and the symbols were obtained with different parameters $f$ and $S$. Data was averaged over $100$ measurements, so the statistical errors are smaller than the symbols. Taken from \cite{Zhou2005}.  (b) Comparison between the mean error computed by the original WL for different flatness criteria and the mean error calculated using the $1/t$ time-dependent algorithm for a L8 SS Ising lattice. Taken from \cite{Belardinelli2007}.}
 
 \end{figure}
 
@@ -141,7 +150,7 @@ The modification proposed by Belardinelli et al. is more complex and introduces 
 %	\label{t_algorithm}
 %\end{figure}
 
-Despite this, the WL method has become the go-to method for DoS and JDoS estimation, because of its efficiency and ability to sample the whole phase space even if the estimation of the JDoS is not the most precise \cite{Zhou2005, Belardinelli2007}. It has been applied to magnetic systems like the Ising model, Lennard-Jones fluid simulations, biologic processes, etc \cite{Maerzke2014, Yan2002,Yan2003}.
+Either in its original forms, or using these more recent improvements, the WL method has become the go-to method for DoS and JDoS estimation, because of its efficiency and ability to sample the whole phase space even if the estimation of the JDoS is not the most precise \cite{Zhou2005, Belardinelli2007}. It has been applied to magnetic systems like the Ising model, Lennard-Jones fluid simulations, biologic processes, etc \cite{Maerzke2014, Yan2002,Yan2003}.
 
 
 
