@@ -1,0 +1,7 @@
+writematrix(E_list, './thermodynamic_variables/SS/L16/energies.txt')
+writematrix(M_list, './thermodynamic_variables/SS/L16/magnetizations.txt')
+writematrix(T, './thermodynamic_variables/SS/L16/temperatures.txt')
+writematrix(M_minG', './thermodynamic_variables/SS/L16/MminF.txt')
+writematrix(avg_abs_M', './thermodynamic_variables/SS/L16/mod_M.txt')
+writematrix(avg_C', './thermodynamic_variables/SS/L16/C_mean.txt')
+writematrix(C_minG', './thermodynamic_variables/SS/L16/C.txt')
