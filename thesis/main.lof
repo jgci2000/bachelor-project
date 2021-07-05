@@ -12,17 +12,29 @@
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {3.1}{\ignorespaces Scheme of how the Random Path Sampling method works.\relax }}{11}{}%
 \contentsline {figure}{\numberline {3.2}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{12}{}%
-\contentsline {figure}{\numberline {3.3}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{14}{}%
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{14}{}%
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{15}{}%
-\contentsline {figure}{\numberline {3.6}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{15}{}%
-\contentsline {figure}{\numberline {3.7}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{16}{}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Joint density of states for an L4 Ising system in a simple square lattice computed by the Flat Scan Sampling method. \relax }}{14}{}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces (a) Mean value of the absolute error for the L4 SS JDoS, Equation \ref {mean_error}, computed by the Flat Scan Sampling method. (b) Variance of the error of the configurations as a function of REP. The inset is the fit from which the variance was taken from. Both of the plots, (a) and (b), feature various skip values, $0$, $N/4$, $N/2$, $N$ and $2N$. The results were average between 1000 simulations to reduce statistical errors.\relax }}{15}{}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{15}{}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{15}{}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Mean deviation as a function of the inverse square-root of REP.\relax }}{16}{}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces (a) Mean absolute error of the L4 SS Ising JDoS computed by FSS method as a function of the skip parameter for various REP values. (b) Normalized wall time as a function of the skip parameter with a linear fit for the wall time of REP $=\ 10^4$. The results were averaged over 1000 simulations in order to reduce statistical errors.\relax }}{17}{}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{17}{}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{17}{}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces (a) LogLog plot of the single core wall time of FSS as a function of the number of samples per each energy point, REP. (b) LogLog plot of the time spent sampling for each energy value, $q_{time}/E$.These are computations for a system with 16 spins. Data was averaged over 1000 computations to reduce statistical error.\relax }}{18}{}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{18}{}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{18}{}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Speedup from Amdahl's Law as a function of the number of cores for five different values of the parallel portion of the code $p$.\relax }}{21}{}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Speedup from Amdahl's Law as a function of the number of cores for five different values of the parallel portion of the code $p$.\relax }}{20}{}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces (a) LogLog plot of the single core wall time of FSS as a function of the number of samples per each energy point, REP. (b) LogLog plot of the time spent sampling for each energy value, $q_{time}/E$.These are computations for a system with 16 spins. Data was averaged over 1000 computations to reduce statistical error.\relax }}{21}{}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{21}{}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{21}{}%
 \contentsline {figure}{\numberline {4.3}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{22}{}%
 \contentsline {figure}{\numberline {4.4}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{23}{}%
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{24}{}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{25}{}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{25}{}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{25}{}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{25}{}%
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {}}}{25}{}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{25}{}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{25}{}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{25}{}%
 \addvspace {10\p@ }

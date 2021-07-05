@@ -1,15 +1,62 @@
-\chapter{Parallel Implementation}
+\chapter{Parallel Programming and Performance}
 
-\subsection{Parallel Implementation}
+	A short introduction to parallel programming and scalability will be given,along with the writers parallel implementation of FSS, a performance and scaling overview and a short comparison with WL.
 
-	Before addressing the approach used, a small introduction to two different parallel para-\\digms will be given. As the majority of modern CPUs have at least 4 physical processing cores, CPU code parallelization has become more important then ever to exploit all of the performance provided by modern CPUs. Not only that but as the problem that we are trying to solve becomes more complex or when we want to simulate bigger systems, single core computations may not be able to solve the problem in a reasonable amount of time. This way there is a need for parallelization. GPU computing is also an alternative but, generally, is a more complex approach.
-	
-%	A program is executed in a process. A process has its own code, data, memory space (stack and a heap), and other specific sets of data. Other processes do not have access to another process data or memory space. A process is executed in only one CPU core. Within a process there is at least one thread, meaning that a process can be single-threaded or multi-threaded. A thread is a sequence of code that is being executed. Each thread has its own stack, and data, however they share the data that is common to the main thread and the heap between them.
-	
-	In computer science there are two main paradigms for parallel applications. One based on threads, shared memory parallel programming, and another based on processes, distributed memory parallel programming. 
+\section{Parallel Programming}
+
+		A small introduction to two different parallel para-\\digms will be given. As the majority of modern CPUs have at least 4 physical processing cores, CPU code parallelization has become more important then ever to exploit all of the performance provided by modern CPUs. Not only that but as the problem that we are trying to solve becomes more complex or when we want to simulate bigger systems, single core computations may not be able to solve the problem in a reasonable amount of time. This way there is a need for parallelization. GPU computing is also an alternative but, generally, is a more complex approach.
+
+	A program is executed in a process. A process has its own code, data, memory space (stack and a heap), and other specific sets of data. Other processes do not have access to another process data or memory space. A process is executed in only one CPU core. Within a process there is at least one thread, meaning that a process can be single-threaded or multi-threaded. A thread is a sequence of code that is being executed. Each thread has its own stack, and data, however they share the data that is common to the main thread and the heap between them.
+
+
+		In computer science there are two main paradigms for parallel applications. One based on threads, shared memory parallel programming, and another based on processes, distributed memory parallel programming. 
 A shared memory program is executed in multiple threads that coexist in the same memory space. Thus each one has access to the other memory and vice-versa. Therefore communication between concurrent executions of the code within the process is easy. However with multi-threading the code can only be executed in the same computer since it is only run in a single process. Multiple threads running within the same process can reduce parallel performance,. In C/C++, there are many libraries that implement this style of programming, the ones worth mentioning are OpenMP and PThreads. 
 On the other hand, a distributed memory concurrent program is executed through various processes each in their own memory space. Communication between processes is harder than thread communication. Multi process communication is more performance taxing since they live in different memory spaces. Excessive communication can lead to performance downfalls, known as communication overhead. This downside, however, comes with better parallel performance and the ability to execute computations in various computing nodes. The default C/C++ library for distributed memory parallel programming is the message passing interface (MPI) having many implementations, such as OpenMPI, MPICH or MVAPICH.
- 
+
+
+\subsection{Parallel Scalability and Amdahl's Law}
+
+	Consider a certain task that takes a time $T$ to be solved sequentially by one core. Using $N$ workers, ideally, it would only take $T / N$ to complete the task. This is called a speedup on $N$. Ideally, this division of the task assumes that the task can be divided into $N$ pieces of equal complexity, that take the same amount of time to finish. In reality this is not true, the $N$ pieces could have little differences in complexity resulting in some workers having to wait for the other to finish. This is known as load imbalance and induces serialization in the computations.
+	
+	Let us now construct a model for scalability. Considering the overall problem size is $s + p = 1$, where $s$ is the nonparallelizable part and $p$ is the perfectly parallelizable part.In theory, we would want $s=0$ and $p=1$. In reality, there are many reasons for a nonvanishing serial part. There can be algorithmic limitations meaning that there might be operations that can just not be performed in parallel, bottlenecks in the computer system, such as shared paths to memory between different cores, and communications overhead meaning that in order for workers to inter-communicate there must be some serialization. This last point is often the cause for poor parallel performance. 
+		
+	The serial wall time can be written as
+\begin{equation}
+	T_s = s + p,
+\end{equation}	
+while the wall time of solving the same problem with $N$ workers comes to
+\begin{equation}
+	T_p = s + \frac{p}{N}.
+\end{equation}
+This way, application speedup or parallel scalability can be define as the quotient of parallel and serial performance. Serial performance is the serial work done over time
+\begin{equation}
+	P_s = \frac{s+p}{T_s} = 1,
+\end{equation} 
+and parallel performance is
+\begin{equation}
+	P_p = \frac{p+s}{T_p} = \frac{1}{1-p+\frac{p}{N}}.
+\end{equation}
+The application speedup is now
+\begin{equation}
+	S = \frac{P_p}{P_s} = \frac{1}{1-p+\frac{p}{N}}.
+\end{equation}
+This last equation is known as Amdahl's Law, derived by Gene Amdhal in 1967. This limits the speeup when $N \rightarrow \infty$ to $1/(1-p)$. This famous equations tells us how much faster can a program run when using $N$ CPU cores. In Figure \ref{amd_law} the Amdahl's Law speedup is plotted against the number of cores for different values of $p$.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.6]{performance/speedup_03.pdf}
+	\caption{Speedup from Amdahl's Law as a function of the number of cores for five different values of the parallel portion of the code $p$.}
+	\label{amd_law}
+\end{figure}
+
+	There are modifications to this law to accommodate system bottlenecks, parallel synchronization and inter-core communications. The most noteworthy is the Hill and Marty's model, which introduces a new way of defining the work and performance. An asymmetric architecture has one manager that does not work and a symmetric architecture has a manager that also does work. The performance of the Hill and Marty's model depends on the type of architecture considered. 
+\begin{equation}
+		P(N, r) = \twopartdef { \frac{N-r}{r} \sqrt{r} } {\text{symmetric}} {n-r} {\text{assymetric}}
+\end{equation}
+where $r$ is the size of the sequential core used during the parallel execution.
+
+
+\section{Implementation}
+
 	Due to the nature of FSS algorithm we can have various independent walkers sampling their own histogram. Each walker performs an independent random walk with access to the whole energy space and constructs a histogram for a magnetization $M_q$. All of the sampled histograms are combined to compute the DoS at $M_{q+1}$. The next iteration is performed using the computed DoS by joining all of the histogram contributions in the last iteration.
 This way, in one iteration there is only need for 2 communications. One is the broadcasting of the computed DoS in the last iteration to all of the walkers, the other is the collection of the sampled histograms by all of the walkers. There is a need for one walker to execute all of the serial computations such as the outputting to the terminal and to files, and performing the computations of the DoS at the end of an iteration and broadcasting it to all of the other walkers. Considering this approach, distributed memory parallelism was the better option for a high performant implementation and MPI was used to carry the process to process communications.
 
@@ -19,9 +66,10 @@ This way, in one iteration there is only need for 2 communications. One is the b
  
 	Two scenarios of this implementation were explored. One where the manager also performed is own random walk through the energy space, acting like a manager and a walker, and another were the manager only performed the single core operations.Here the advantage is on the side of the first scenario, since there is one more walker and having that walker also performing single core tasks gives an overall better performance than having one idle processes during 95\% of the computation.
 
-\section{Performance}
 
-	Now let us discuss the performance of FSS method of both implementations. The following single core benchmarks were performed in a computer equipped with a Ryzen 9 5950X at stock speeds.  
+\section{Method Performance}
+
+	Now let us discuss the performance of FSS method of both implementations starting by the single core performance and moving on to scaling tests. The following single core benchmarks were performed in a computer equipped with a Ryzen 9 5950X at stock speeds.  
 	
 	In the following figure, we can observe the wall time and the time spent sampling per energy value as a function of the parameter REP. We can see that the method scales linearly with the parameter REP. 
 	
@@ -65,49 +113,11 @@ FCC     & 256 & 197633                      & $20s$           &$ 871118s$   & $6
 \label{wall_time_table}
 \end{table}
 
-\subsection{Parallel Scalability}
+
+\subsection{Parallel Scaling}
 
 	Tests for parallel scalability were performed in the LIP super computer.... 
 	
-	Consider a certain task that takes a time $T$ to be solved sequentially by one core. Using $N$ workers, ideally, it would only take $T / N$ to complete the task. This is called a speedup on $N$. Ideally, this division of the task assumes that the task can be divided into $N$ pieces of equal complexity, that take the same amount of time to finish. In reality this is not true, the $N$ pieces could have little differences in complexity resulting in some workers having to wait for the other to finish. This is known as load imbalance and induces serialization in the computations.
-	
-	Let us now construct a model for scalability. Considering the overall problem size is $s + p = 1$, where $s$ is the nonparallelizable part and $p$ is the perfectly parallelizable part.In theory, we would want $s=0$ and $p=1$. In reality, there are many reasons for a nonvanishing serial part. There can be algorithmic limitations meaning that there might be operations that can just not be performed in parallel, bottlenecks in the computer system, such as shared paths to memory between different cores, and communications overhead meaning that in order for workers to inter-communicate there must be some serialization. This last point is often the cause for poor parallel performance. 
-	
-	\pagebreak
-	
-	The serial wall time can be written as
-\begin{equation}
-	T_s = s + p,
-\end{equation}	
-while the wall time of solving the same problem with $N$ workers comes to
-\begin{equation}
-	T_p = s + \frac{p}{N}.
-\end{equation}
-This way, application speedup or parallel scalability can be define as the quotient of parallel and serial performance. Serial performance is the serial work done over time
-\begin{equation}
-	P_s = \frac{s+p}{T_s} = 1,
-\end{equation} 
-and parallel performance is
-\begin{equation}
-	P_p = \frac{p+s}{T_p} = \frac{1}{1-p+\frac{p}{N}}.
-\end{equation}
-The application speedup is now
-\begin{equation}
-	S = \frac{P_p}{P_s} = \frac{1}{1-p+\frac{p}{N}}.
-\end{equation}
-This last equation is known as Amdahl's Law, derived by Gene Amdhal in 1967. This limits the speeup when $N \rightarrow \infty$ to $1/(1-p)$. This famous equations tells us how much faster can a program run when using $N$ CPU cores. In Figure \ref{amd_law} the Amdahl's Law speedup is plotted against the number of cores for different values of $p$.
-\begin{figure}[h]
-	\centering
-	\includegraphics[scale=0.6]{performance/speedup_03.pdf}
-	\caption{Speedup from Amdahl's Law as a function of the number of cores for five different values of the parallel portion of the code $p$.}
-	\label{amd_law}
-\end{figure}
-
-	There are modifications to this law to accommodate system bottlenecks, parallel synchronization and inter-core communications. The most noteworthy is the Hill and Marty's model, which introduces a new way of defining the work and performance. An asymmetric architecture has one manager that does not work and a symmetric architecture has a manager that also does work. The performance of the Hill and Marty's model depends on the type of architecture considered. 
-\begin{equation}
-		P(N, r) = \twopartdef { \frac{N-r}{r} \sqrt{r} } {\text{symmetric}} {n-r} {\text{assymetric}}
-\end{equation}
-where $r$ is the size of the sequential core used during the parallel execution.
 
 	We can now fit this model to the wall time versus core count data taken from the computations at ...
 
@@ -125,6 +135,9 @@ where $r$ is the size of the sequential core used during the parallel execution.
 \end{figure}
 
 
+\section{Comparison with Wang-Landau - Performance}
 
-\section{Comparison with Wang-Landau Sampling}
+
+
+
 
