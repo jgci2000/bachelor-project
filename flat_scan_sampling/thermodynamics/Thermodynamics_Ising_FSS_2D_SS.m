@@ -109,6 +109,7 @@ disp('Free Energy calculations completed')
 avg_M = nan(length(H),length(T));
 avg_abs_M = nan(length(H),length(T));
 avg_M2 = nan(length(H),length(T));
+M4 = nan(length(H),length(T));
 %
 for i=1:length(T)
     %
@@ -117,12 +118,14 @@ for i=1:length(T)
         avg_M(j,i) = 0;
         avg_abs_M(j,i) = 0;
         avg_M2(j,i) = 0;
+        M4(j,i) = 0;
         %
         for q = 1:length(M_list(:,1)) %index_M0
             %
             avg_M(j,i) = avg_M(j,i) + M_list(q)*exp(log_Z_M(j,i,q) - log_Z(j,i));
             avg_abs_M(j,i) = avg_abs_M(j,i) + abs(M_list(q))*exp(log_Z_M(j,i,q) - log_Z(j,i));
             avg_M2(j,i) = avg_M2(j,i) + (M_list(q)^2)*exp(log_Z_M(j,i,q) - log_Z(j,i));
+            M4(j,i) = M4(j,i) + (M_list(q)^4)*exp(log_Z_M(j,i,q) - log_Z(j,i));
         end
         %
     end
@@ -151,7 +154,7 @@ end
 %
 avg_abs_M = avg_abs_M/N_atm;
 avg_M = avg_M/N_atm;
-avg_M2 = avg_M2/(N_atm^2);
+%avg_M2 = avg_M2/(N_atm^2);
 M_minG = M_minG/N_atm;
 minG = minG/N_atm;
 G = G/N_atm;
@@ -603,4 +606,7 @@ writematrix(M_minG', ['./thermodynamic_variables/SS/L', int2str(L), '/MminF.txt'
 writematrix(avg_abs_M', ['./thermodynamic_variables/SS/L', int2str(L), + '/mod_M.txt'])
 writematrix(avg_C', ['./thermodynamic_variables/SS/L', int2str(L), '/C_mean.txt'])
 writematrix(C_minG', ['./thermodynamic_variables/SS/L', int2str(L), '/C.txt'])
+writematrix(avg_M2', ['./thermodynamic_variables/SS/L', int2str(L), + '/M2.txt'])
+writematrix(M4', ['./thermodynamic_variables/SS/L', int2str(L), + '/M4.txt'])
+
 
