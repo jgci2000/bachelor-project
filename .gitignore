@@ -3,10 +3,10 @@
 *.zip
 *.tar.gz
 *.tar.xz
-.Ds_Store
+.DS_Store
 .vscode
 .miscellaneous
-
+*/.DS_Store
 # Latex stuff
 *.log
 *.aux
