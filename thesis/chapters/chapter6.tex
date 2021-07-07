@@ -1,2 +1,10 @@
 \chapter{Conclusion and Future Work}
 
+	A new method to estimate the Joint Density of States for the Ising was presented. It's validation, convergence and single core performance were shown and studied in great detail, finding that the method produces very precise and exact results in a small time frame. Efforts to make the simulations more presented in the form of the parameter skip. 
+	
+	A single core and parallel implementation based on communicating processes using MPI were developed in an high performance language. The parallel performance and scalability was studied in detail arriving to the conclusion that about 98\% of code is perfectly parallelized.
+	
+	A final application of the method was shown along with the comparison of mean and exact thermodynamic variables and three different methods for the estimation of the Curie temperature for the infinite lattice.
+	
+	This method can be generalized for the SpinS Ising model, where instead of considering spin-1/2 particles, we can consider spin-S particles. In theory this should provide better results for real materials as the total angular momentum of the composing atoms might not be 1/2.
+	

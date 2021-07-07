@@ -109,6 +109,12 @@ with
 The modification factor controls the accuracy and the steps taken to reach a flat histogram in our computations. As it approaches unity, the number of iterations goes to infinity. This way, at the beginning of the simulation, when the modification factor is large, the estimation of the DoS is quite bad, since there we are taking fewer samples with a high weight. At the later stages, the modification factor is lower therefore we have more samples of each macrostate with a lower overall weight. 
 Therefore, the initial stages of the simulation are characterized by the accumulation of low precision statistics and the later stages by the refining of the firsts samples. 
 
+
+
+	A few modifications to the original WL were proposed throughout the years, but the most noteworthy  are the modifications from Chenggang Zhou et al. \cite{Zhou2005} and Belardinelli et al. \cite{Belardinelli2007}. Zhou has studied the method in great detail \cite{Zhou2005} and was a co-author of the global updates method \cite{WL_Cont}. He proposed the introduction of a parameter $S$, defined as the separation between successive records in the histogram. Meaning that in our random walk we would only update the histogram each $S$ steps. This will diminish the correlation between successive samples and improve accuracy.  
+The modification proposed by Belardinelli et al. is more complex and introduces a new way of changing the modification parameter during the computations, they called it the $1/t$ time-dependent algorithm. The method starts as the WL does, however, if $f_{i+1} \leqslant 1/t$, where $t$ is the MC time, the modification factor becomes $f_{i+1} = f(t) = 1/t$ and we discard the histogram and update $f$ each MC time step. The simulation only stops when $f(t) < f_{final}$. This ensures that the mean error vanishes, Figure \ref{t_algorithm}.
+
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.4, height=5cm]{wl_mean_error_f.pdf}
@@ -117,17 +123,6 @@ Therefore, the initial stages of the simulation are characterized by the accumul
 \end{figure}
 
 Due to the biased samples at the initial stages of the computations, the final estimation of the JDoS will converge, with high precision, to a wrong solution independent of the flatness criteria and $f_{final}$ value used, shown in Figure \ref{error_abs_wl}. 
-
-A few modifications to the original WL were proposed throughout the years, but the most noteworthy  are the modifications from Chenggang Zhou et al. \cite{Zhou2005} and Belardinelli et al. \cite{Belardinelli2007}. Zhou has studied the method in great detail \cite{Zhou2005} and was a co-author of the global updates method \cite{WL_Cont}. He proposed the introduction of a parameter $S$, defined as the separation between successive records in the histogram. Meaning that in our random walk we would only update the histogram each $S$ steps. This will diminish the correlation between successive samples and improve accuracy.  
-The modification proposed by Belardinelli et al. is more complex and introduces a new way of changing the modification parameter during the computations, they called it the $1/t$ time-dependent algorithm. The method starts as the WL does, however, if $f_{i+1} \leqslant 1/t$, where $t$ is the MC time, the modification factor becomes $f_{i+1} = f(t) = 1/t$ and we discard the histogram and update $f$ each MC time step. The simulation only stops when $f(t) < f_{final}$. This ensures that the mean error vanishes, Figure \ref{t_algorithm}.
-
-
-%\begin{figure}[h]
-%	\centering
-%	\includegraphics[scale=0.6, height=5.5cm]{S_paper_fig.png}
-%	\caption{$g(M)$, the density of states for magnetization $M$ of L4 SS Ising lattice normalized. The solid line connects the exact values, and the symbols were obtained with different parameters $f$ and $S$. Data was averaged over $100$ measurements, so the statistical errors are smaller than the symbols. Taken from \cite{Zhou2005}.}
-%	\label{S_parameter}
-%\end{figure}
 
 \begin{figure}[ht]
 \centering
@@ -142,6 +137,15 @@ The modification proposed by Belardinelli et al. is more complex and introduces 
 \caption{(a) $g(M)$, the density of states for magnetization $M$ of L4 SS Ising lattice normalized. The solid line connects the exact values, and the symbols were obtained with different parameters $f$ and $S$. Data was averaged over $100$ measurements, so the statistical errors are smaller than the symbols. Taken from \cite{Zhou2005}.  (b) Comparison between the mean error computed by the original WL for different flatness criteria and the mean error calculated using the $1/t$ time-dependent algorithm for a L8 SS Ising lattice. Taken from \cite{Belardinelli2007}.}
 
 \end{figure}
+
+%\begin{figure}[h]
+%	\centering
+%	\includegraphics[scale=0.6, height=5.5cm]{S_paper_fig.png}
+%	\caption{$g(M)$, the density of states for magnetization $M$ of L4 SS Ising lattice normalized. The solid line connects the exact values, and the symbols were obtained with different parameters $f$ and $S$. Data was averaged over $100$ measurements, so the statistical errors are smaller than the symbols. Taken from \cite{Zhou2005}.}
+%	\label{S_parameter}
+%\end{figure}
+
+
 
 %\begin{figure}[h]
 %	\centering
