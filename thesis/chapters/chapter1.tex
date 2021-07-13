@@ -73,12 +73,12 @@ $+8$   & 0  & 0  & 2 & 0 & 0
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.2, height=5cm]{JDOS_exact_L4_SS.jpeg}
+	\includegraphics[scale=0.2]{JDOS_exact_L4_SS.jpeg}
 	\caption{Plot of the exact JDoS for the SS L4 Ising Model with PBC. This was obtained by visiting each microstate available to the system.}
 	\label{exact_L4}
 \end{figure}
 
-%\pagebreak
+\pagebreak
 
 There are three configurations worth noting.The first is the zero energy and zero magnetization state. This is the state with the most micro configurations since it represents the macrostate in which is likely to find the system in, when $T\gg T_C$(has the highest entropy). The second is the macrostate with the highest energy and zero magnetization. For every system size and lattice this macrostate has always $2$ microstates, since the spins are sorted in a chess/checker board pattern. The last configuration is the state with the least energy and zero magnetization. Its value is always going to be equal to $2L$, since the spins are sorted in rows and columns of alternating positive and negative spins, similar to slices. Throughout this work these configurations will appear again and they will be referred as, Zero Zero, Checker Board and Slice, respectively. 
 
@@ -112,15 +112,15 @@ and finally to obtain the mean entropy we use the second law of thermodynamics,
 	\langle S \rangle= \int \frac{\langle C \rangle}{T} dT.
 \end{equation}
 
-%\pagebreak
+\pagebreak
 
 However there is another way to estimate thermodynamic properties, from the computed JDoS.  Using the Helmholtz free energy, defined as 
 \begin{equation}
-	F(T, M) = - k_B ln(Z(T, M)) \equiv U - TS
+	F(T, M) = - k_B \ln(Z(T, M)) \equiv U - TS,
 \end{equation}
 and the principle of minimum energy, we can extract $F_{min} (T) = \min(F(M, T))$, which is defined as the lowest temperature-dependent free energy that can be reached by the system.
 From it we can obtain the magnetization and energy for that value of free energy minima, $M_{F_{min}}$ and $E_{F_{min}}$, respectively.Through $F_{min}$ we can use the following thermodynamic relations to compute the specific heat and entropy of the system:
-\begin{equation}
+\begin{equation}\label{C_min}
 	C = - T \frac{\partial^2 F_{min}}{\partial T^2},
 \end{equation}
 

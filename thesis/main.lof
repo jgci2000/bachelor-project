@@ -1,39 +1,54 @@
 \babel@toc {english}{}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {1.1}{\ignorespaces (a) Magnetization curve for \ce {La_{0.67}Ca_{0.33}MnO3} as a function of temperature;(b) Spins diagram for the ferromagnetic phase (left) and for the paramagnetic phase (right).\relax }}{1}{}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{1}{}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{1}{}%
-\contentsline {figure}{\numberline {1.2}{\ignorespaces Plot of the exact JDoS for the SS L4 Ising Model with PBC. This was obtained by visiting each microstate available to the system.\relax }}{3}{}%
+\contentsline {figure}{\numberline {1.1}{\ignorespaces (a) Magnetization curve for \ce {La_{0.67}Ca_{0.33}MnO3} as a function of temperature;(b) Spins diagram for the ferromagnetic phase (left) and for the paramagnetic phase (right).\relax }}{1}{figure.caption.4}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{1}{figure.caption.4}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{1}{figure.caption.4}%
+\contentsline {figure}{\numberline {1.2}{\ignorespaces Plot of the exact JDoS for the SS L4 Ising Model with PBC. This was obtained by visiting each microstate available to the system.\relax }}{3}{figure.caption.6}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces Mean absolute error of the JDoS for the Ising model computed by the Wang-Landau sampling for a L4 SS lattice plotted against $f_{final}-1$. The values were averaged over $100$ simulations. \relax }}{10}{}%
-\contentsline {figure}{\numberline {2.2}{\ignorespaces (a) $g(M)$, the density of states for magnetization $M$ of L4 SS Ising lattice normalized. The solid line connects the exact values, and the symbols were obtained with different parameters $f$ and $S$. Data was averaged over $100$ measurements, so the statistical errors are smaller than the symbols. Taken from \cite {Zhou2005}. (b) Comparison between the mean error computed by the original WL for different flatness criteria and the mean error calculated using the $1/t$ time-dependent algorithm for a L8 SS Ising lattice. Taken from \cite {Belardinelli2007}.\relax }}{10}{}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{10}{}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{10}{}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Mean absolute error of the JDoS for the Ising model computed by the Wang-Landau sampling for a L4 SS lattice plotted against $f_{final}-1$. The values were averaged over $100$ simulations. \relax }}{10}{figure.caption.7}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces (a) $g(M)$, the density of states for magnetization $M$ of L4 SS Ising lattice normalized. The solid line connects the exact values, and the symbols were obtained with different parameters $f$ and $S$. Data was averaged over $100$ measurements, so the statistical errors are smaller than the symbols. Taken from \cite {Zhou2005}. (b) Comparison between the mean error computed by the original WL for different flatness criteria and the mean error calculated using the $1/t$ time-dependent algorithm for a L8 SS Ising lattice. Taken from \cite {Belardinelli2007}.\relax }}{10}{figure.caption.8}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{10}{figure.caption.8}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{10}{figure.caption.8}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Scheme of how the Random Path Sampling method works.\relax }}{11}{}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{12}{}%
-\contentsline {figure}{\numberline {3.3}{\ignorespaces Joint density of states for an L4 Ising system in a simple square lattice computed by the Flat Scan Sampling method. \relax }}{14}{}%
-\contentsline {figure}{\numberline {3.4}{\ignorespaces (a) Mean value of the absolute error for the L4 SS JDoS, Equation \ref {mean_error}, computed by the Flat Scan Sampling method. (b) Variance of the error of the configurations as a function of REP. The inset is the fit from which the variance was taken from. Both of the plots, (a) and (b), feature various skip values, $0$, $N/4$, $N/2$, $N$ and $2N$. The results were average between 1000 simulations to reduce statistical errors.\relax }}{15}{}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{15}{}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{15}{}%
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Mean deviation as a function of the inverse square-root of REP.\relax }}{16}{}%
-\contentsline {figure}{\numberline {3.6}{\ignorespaces (a) Mean absolute error of the L4 SS Ising JDoS computed by FSS method as a function of the skip parameter for various REP values. (b) Normalized wall time as a function of the skip parameter with a linear fit for the wall time of REP $=\ 10^4$. The results were averaged over 1000 simulations in order to reduce statistical errors.\relax }}{17}{}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{17}{}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{17}{}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Scheme of how the Random Path Sampling method works.\relax }}{11}{figure.caption.9}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Scheme of how the Flat Scan Sampling works.\relax }}{12}{figure.caption.10}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Joint density of states for an L4 Ising system in a simple square lattice computed by the Flat Scan Sampling method. \relax }}{14}{figure.caption.11}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces (a) Mean value of the absolute error for the L4 SS JDoS, Equation \ref {mean_error}, computed by the Flat Scan Sampling method. (b) Variance of the error of the configurations as a function of REP. The inset is the fit from which the variance was taken from. Both of the plots, (a) and (b), feature various skip values, $0$, $N/4$, $N/2$, $N$ and $2N$. The results were average between 1000 simulations to reduce statistical errors.\relax }}{15}{figure.caption.12}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{15}{figure.caption.12}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{15}{figure.caption.12}%
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Mean deviation as a function of the inverse square-root of REP.\relax }}{16}{figure.caption.13}%
+\contentsline {figure}{\numberline {3.6}{\ignorespaces (a) Mean absolute error of the L4 SS Ising JDoS computed by FSS method as a function of the skip parameter for various REP values. (b) Normalized wall time as a function of the skip parameter with a linear fit for the wall time of REP $=\ 10^4$. The results were averaged over 1000 simulations in order to reduce statistical errors.\relax }}{17}{figure.caption.14}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{17}{figure.caption.14}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{17}{figure.caption.14}%
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Mean absolute error and standard deviation as a function of the method parameter for the Checker Board configuration (a) and (c) and for the Slice configuration (b) and (d). Red lines represent the results for the Flat Scan Sampling and blue lines for the Wang-Landau sampling. Results were averaged through 1000 simulations to reduce statistical error.\relax }}{18}{figure.caption.15}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{18}{figure.caption.15}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{18}{figure.caption.15}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{18}{figure.caption.15}%
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {}}}{18}{figure.caption.15}%
+\contentsline {figure}{\numberline {3.8}{\ignorespaces Mean deviation as a function of the inverse square-root of the number of steps taken in the random walk during the simulation. (a) FSS (b) WL\relax }}{18}{figure.caption.16}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{18}{figure.caption.16}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{18}{figure.caption.16}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Speedup from Amdahl's Law as a function of the number of cores for five different values of the parallel portion of the code $p$.\relax }}{20}{}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces (a) LogLog plot of the single core wall time of FSS as a function of the number of samples per each energy point, REP. (b) LogLog plot of the time spent sampling for each energy value, $q_{time}/E$.These are computations for a system with 16 spins. Data was averaged over 1000 computations to reduce statistical error.\relax }}{21}{}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{21}{}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{21}{}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Extrapolation of the speedup for an infinite number of cores.\relax }}{22}{}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Amdahl's law fitted for the wall time data.\relax }}{23}{}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Speedup from Amdahl's Law as a function of the number of cores for five different values of the parallel portion of the code $p$.\relax }}{21}{figure.caption.17}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces (a) LogLog plot of the single core wall time of FSS as a function of the number of samples per each energy point, REP. (b) LogLog plot of the time spent sampling for each energy value, $q_{time}/E$.These are computations for a system with 16 spins. Data was averaged over 1000 computations to reduce statistical error.\relax }}{22}{figure.caption.18}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{22}{figure.caption.18}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{22}{figure.caption.18}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces (a) Extrapolation of the speedup for an infinite number of cores. (b) Amdahl's law fitted for the wall time data.\relax }}{24}{figure.caption.20}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{24}{figure.caption.20}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{24}{figure.caption.20}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Wall time in seconds as a function of REP for FSS (a) and as a function of $f_{final}$ and the steps taken during the simulation for WL sampling (b).\relax }}{24}{figure.caption.21}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{24}{figure.caption.21}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{24}{figure.caption.21}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Standard deviation as a function of the wall time for the Checker Board configuration (a) and the Slice configuration (b).\relax }}{25}{figure.caption.22}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{25}{figure.caption.22}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{25}{figure.caption.22}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Thermodynamics for 3 different lattice sizes compared with the exact solution by Onsager.\relax }}{25}{}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{25}{}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{25}{}%
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{25}{}%
-\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {}}}{25}{}%
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Estimation of the $T_C$ for the infinite lattice.\relax }}{25}{}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{25}{}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{25}{}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Thermodynamics for 3 different lattice sizes compared with the exact solution by Onsager. (a) $\langle |M| \rangle $. (b) $M_{minF}$. (c) $\langle C \rangle $. (d) $C_{minF}$.\relax }}{27}{figure.caption.23}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{27}{figure.caption.23}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{27}{figure.caption.23}%
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {}}}{27}{figure.caption.23}%
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {}}}{27}{figure.caption.23}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces (a) Linear regression of the $T_C(L)$ from $\langle |M| \rangle $ and $M_{minF}$ as function of $1/L$. (b) Binder cumulant for different system sizes.\relax }}{28}{figure.caption.25}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{28}{figure.caption.25}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{28}{figure.caption.25}%
 \addvspace {10\p@ }

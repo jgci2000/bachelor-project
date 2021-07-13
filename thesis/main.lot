@@ -1,9 +1,10 @@
 \babel@toc {english}{}
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {1.1}{\ignorespaces Joint Density of States for the SS lattice with $L=2$ Ising Model. The rows are the values of energy, $E$, and the columns the values of magnetization, $M$.\relax }}{3}{}%
+\contentsline {table}{\numberline {1.1}{\ignorespaces Joint Density of States for the SS lattice with $L=2$ Ising Model. The rows are the values of energy, $E$, and the columns the values of magnetization, $M$.\relax }}{3}{table.caption.5}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {4.1}{\ignorespaces Wall Time of some Ising systems with their respective estimations by Equation \ref {estimation} with two different values for the fraction of non-zero energy points.\relax }}{22}{}%
+\contentsline {table}{\numberline {4.1}{\ignorespaces Wall Time of some Ising systems with their respective estimations by Equation \ref {estimation} with two different values for the fraction of non-zero energy points.\relax }}{23}{table.caption.19}%
 \addvspace {10\p@ }
+\contentsline {table}{\numberline {5.1}{\ignorespaces Curie temperature estimated by the $\langle |M| \rangle $ and $M_{minF}$ for the three different lattice sizes and their respective error. The first derivative of the magnetization has a curve with a shape of a Gaussian function. Thus the error can be estimated considering the half height width.\relax }}{27}{table.caption.24}%
 \addvspace {10\p@ }

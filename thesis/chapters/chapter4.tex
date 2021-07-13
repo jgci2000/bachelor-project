@@ -4,12 +4,11 @@
 
 \section{Parallel Programming}
 
-		A small introduction to two different parallel para-\\digms will be given. As the majority of modern CPUs have at least 4 physical processing cores, CPU code parallelization has become more important then ever to exploit all of the performance provided by modern CPUs. Not only that but as the problem that we are trying to solve becomes more complex or when we want to simulate bigger systems, single core computations may not be able to solve the problem in a reasonable amount of time. This way there is a need for parallelization. GPU computing is also an alternative but, generally, is a more complex approach.
+		A small introduction to two different parallel paradigms will be given. As the majority of modern CPUs have at least 4 physical processing cores, CPU code parallelization has become more important then ever to exploit all of the performance provided by modern CPUs. Not only that but as the problem that we are trying to solve becomes more complex or when we want to simulate bigger systems, single core computations may not be able to solve the problem in a reasonable amount of time. This way there is a need for parallelization. GPU computing is also an alternative but, generally, is a more complex approach.
 
 	A program is executed in a process. A process has its own code, data, memory space (stack and a heap), and other specific sets of data. Other processes do not have access to another process data or memory space. A process is executed in only one CPU core. Within a process there is at least one thread, meaning that a process can be single-threaded or multi-threaded. A thread is a sequence of code that is being executed. Each thread has its own stack, and data, however they share the data that is common to the main thread and the heap between them.
 
-
-		In computer science there are two main paradigms for parallel applications. One based on threads, shared memory parallel programming, and another based on processes, distributed memory parallel programming. 
+		In computer science there are two main paradigms for parallel applications \cite{Hager2011}. One based on threads, shared memory parallel programming, and another based on processes, distributed memory parallel programming. 
 A shared memory program is executed in multiple threads that coexist in the same memory space. Thus each one has access to the other memory and vice-versa. Therefore communication between concurrent executions of the code within the process is easy. However with multi-threading the code can only be executed in the same computer since it is only run in a single process. Multiple threads running within the same process can reduce parallel performance,. In C/C++, there are many libraries that implement this style of programming, the ones worth mentioning are OpenMP and PThreads. 
 On the other hand, a distributed memory concurrent program is executed through various processes each in their own memory space. Communication between processes is harder than thread communication. Multi process communication is more performance taxing since they live in different memory spaces. Excessive communication can lead to performance downfalls, known as communication overhead. This downside, however, comes with better parallel performance and the ability to execute computations in various computing nodes. The default C/C++ library for distributed memory parallel programming is the message passing interface (MPI) having many implementations, such as OpenMPI, MPICH or MVAPICH.
 
@@ -18,7 +17,7 @@ On the other hand, a distributed memory concurrent program is executed through v
 
 	Consider a certain task that takes a time $T$ to be solved sequentially by one core. Using $N$ workers, ideally, it would only take $T / N$ to complete the task. This is called a speedup on $N$. Ideally, this division of the task assumes that the task can be divided into $N$ pieces of equal complexity, that take the same amount of time to finish. In reality this is not true, the $N$ pieces could have little differences in complexity resulting in some workers having to wait for the other to finish. This is known as load imbalance and induces serialization in the computations.
 	
-	Let us now construct a model for scalability. Considering the overall problem size is $s + p = 1$, where $s$ is the nonparallelizable part and $p$ is the perfectly parallelizable part.In theory, we would want $s=0$ and $p=1$. In reality, there are many reasons for a nonvanishing serial part. There can be algorithmic limitations meaning that there might be operations that can just not be performed in parallel, bottlenecks in the computer system, such as shared paths to memory between different cores, and communications overhead meaning that in order for workers to inter-communicate there must be some serialization. This last point is often the cause for poor parallel performance. 
+	Let us now construct a model for scalability \cite{Hager2011}. Considering the overall problem size is $s + p = 1$, where $s$ is the nonparallelizable part and $p$ is the perfectly parallelizable part.In theory, we would want $s=0$ and $p=1$. In reality, there are many reasons for a nonvanishing serial part. There can be algorithmic limitations meaning that there might be operations that can just not be performed in parallel, bottlenecks in the computer system, such as shared paths to memory between different cores, and communications overhead meaning that in order for workers to inter-communicate there must be some serialization. This last point is often the cause for poor parallel performance. 
 		
 	The serial wall time can be written as
 \begin{equation}
@@ -37,22 +36,22 @@ and parallel performance is
 	P_p = \frac{p+s}{T_p} = \frac{1}{1-p+\frac{p}{N}}.
 \end{equation}
 The application speedup is now
-\begin{equation}
+\begin{equation}\label{amd_law}
 	S = \frac{P_p}{P_s} = \frac{1}{1-p+\frac{p}{N}}.
 \end{equation}
-This last equation is known as Amdahl's Law, derived by Gene Amdhal in 1967. This limits the speeup when $N \rightarrow \infty$ to $1/(1-p)$. This famous equations tells us how much faster can a program run when using $N$ CPU cores. In Figure \ref{amd_law} the Amdahl's Law speedup is plotted against the number of cores for different values of $p$.
+This last equation is known as Amdahl's Law, derived by Gene Amdhal in 1967 \cite{Amdahl1967}. This limits the speeup when $N \rightarrow \infty$ to $1/(1-p)$. This famous equations tells us how much faster can a program run when using $N$ CPU cores. In Figure \ref{amd_law} the Amdahl's Law speedup is plotted against the number of cores for different values of $p$.
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.6]{performance/speedup_03.pdf}
+	\includegraphics[scale=0.5]{performance/speedup_03.pdf}
 	\caption{Speedup from Amdahl's Law as a function of the number of cores for five different values of the parallel portion of the code $p$.}
 	\label{amd_law}
 \end{figure}
 
-	There are modifications to this law to accommodate system bottlenecks, parallel synchronization and inter-core communications. The most noteworthy is the Hill and Marty's model, which introduces a new way of defining the work and performance. An asymmetric architecture has one manager that does not work and a symmetric architecture has a manager that also does work. The performance of the Hill and Marty's model depends on the type of architecture considered. 
+	There are modifications to this law \cite{On2014} to accommodate system bottlenecks, parallel synchronization and inter-core communications. The most noteworthy is the Hill and Marty's model \cite{Hill2008}, which introduces a new way of defining the work and performance. An asymmetric architecture has one manager that does not work and a symmetric architecture has a manager that also does work. The performance of the Hill and Marty's model depends on the type of architecture considered. 
 \begin{equation}
 		P(N, r) = \twopartdef { \frac{N-r}{r} \sqrt{r} } {\text{symmetric}} {n-r} {\text{assymetric}}
 \end{equation}
-where $r$ is the size of the sequential core used during the parallel execution.
+where $r$ is the size of the sequential core used during the parallel execution. 
 
 
 \section{Implementation}
@@ -62,7 +61,7 @@ This way, in one iteration there is only need for 2 communications. One is the b
 
 	There are two ways of dividing the computations between $n$ walkers. Each performs a random walk with $\text{REP}_{walker} = \text{REP} / n$ giving us the wall time of a single core computation with REP samples per energy divided by the number of walkers or having each walker sample REP configurations per energy giving us the wall time of a single core REP computation.
 	
-	The MPI implementation starts by assigning each walker a different seed for the RNG, so the results come from different streams of random numbers. This is achieved by multiplying a defined seed by the number assigned to that walker. Then, the first iteration is computed by the manager process and broadcasted to all of the walkers. When all of the walkers have sampled the assigned number of configurations, they send the histogram to the manager and it computes the DoS at the third magnetization finally broadcasts it to the walkers. This is repeated until $q \geqslant q_{max}$. At the end, the manager writes the output files.
+	The MPI implementation starts by assigning each walker a different seed for the RNG, so the results come from different streams of random numbers. This is achieved by multiplying a defined seed by the number assigned to that walker. Then, the first iteration is computed by the manager process and broadcasted to all of the walkers. When all of the walkers have sampled the assigned number of configurations, they send the histogram to the manager and it computes the DoS at the third magnetization finally broadcasts it to the walkers. This is repeated until $q \geqslant q_{max}$. At the end, the manager writes the output files. As the only serial operations is the output to the terminal and the normalization of the JDoS at the end of an iteration we can expect a close to linear parallel scalability.
  
 	Two scenarios of this implementation were explored. One where the manager also performed is own random walk through the energy space, acting like a manager and a walker, and another were the manager only performed the single core operations.Here the advantage is on the side of the first scenario, since there is one more walker and having that walker also performing single core tasks gives an overall better performance than having one idle processes during 95\% of the computation.
 
@@ -104,40 +103,89 @@ In Table \ref{wall_time_table} different wall times for single core computations
 \caption{Wall Time of some Ising systems with their respective estimations by Equation \ref{estimation} with two different values for the fraction of non-zero energy points.} 
 \begin{tabular}{c|c|c|c|c|c|c}
 Lattice & $N$   & $NE \times NM$ & $q_{time}/E$ & Wall Time & Estimation $1/3$ & Estimation $1/2$ \\ \hline
-SS      & 16  & 289                         & $0.11s $        & $4s$        &$ 5s$                  & $8s$                  \\
-SS      & 64  & 4225                        & $0.85s$         & $728s$      & $600s $               & $900s    $ \\
-SS      & 256 & 66049                       & $1s$            & $18942s$    & $10898s $             & $16512s  $ \\
-SC      & 64  & 6305                        & $1.1s $         & $1148s$     & $1144s$              & $1733s $           \\
-FCC     & 256 & 197633                      & $20s$           &$ 871118s$   & $652188s$      & $988165s$            
+SS      & $16$  & $289$                         & $0.11s $        & $4s$        &$ 5s$                  & $8s$                  \\
+SS      & $64$  & $4225$                        & $0.85s$         & $728s$      & $600s $               & $900s    $ \\
+SS      & $256$ & $66049$                       & $1s$            & $18942s$    & $10898s $             & $16512s  $ \\
+SC      & $64$  & $6305$                        & $1.1s $         & $1148s$     & $1144s$              & $1733s $           \\
+FCC     & $256$ & $197633$                      & $20s$           &$ 871118s$   & $652188s$      & $988165s$            
 \end{tabular}
 \label{wall_time_table}
 \end{table}
 
 
 \subsection{Parallel Scaling}
-
-	Tests for parallel scalability were performed in the LIP super computer.... 
 	
+	The tests for parallel scaling were performed on the Cirrus-A computing cluster on INCD facilities under the Advanced Computing Projects reference CPCA/A1/7252/2020 with support from FCT. In this project tests with a maximum of 320 cores were performed to better understand the parallel scalability of the Flat Scan Sampling method.
 
-	We can now fit this model to the wall time versus core count data taken from the computations at ...
+	Having constructed a model for parallel scalability, Equation \ref{amd_law}, we can fit Amdahl's Law to experimental wall time values as a function of the number of cores $n$. For this we need to solve Equation \ref{amd_law} for $p$ since our interest is to gain an insight about the portion of the algorithm that is perfectly parallelized.
+\begin{equation}
+	p_n = \frac{n}{n-1} \left( 1 - \frac{1}{S(n)} \right),
+\end{equation}
+where $S(n) = T_1 / T_n$. The mean value of $p$ is then
+\begin{equation}
+	p = \frac{1}{N-1} \sum_{i=2}^{N} p_i.
+\end{equation}
+This is the standard method to estimate $p$ given the wall time per number of cores. Through this method we find  $p=0.9655\approx 0.97$.
 
+	Another method to estimate $p$ is to find the speedup for and infinite number of cores $S(\infty)$ and by using the relation
+\begin{equation}
+	S(\infty) = \frac{1}{1-p},
+\end{equation}
+we can estimate $p$. The best way to find the speedup of infinite cores is to plot $S(1/n)$ do a linear extrapolation for $1/n=0$, Figure \ref{inf_S}.Here we obtain a limiting speedup of 48 and a value for $p$ of 0.98, very close to the valued found by the standard method.
+
+%\pagebreak
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.5]{performance/speedup_04.pdf}
-	\caption{Extrapolation of the speedup for an infinite number of cores.}
+	\subfigure[]{
+	\includegraphics[scale=0.27]{performance/speedup_04.pdf}
+	\label{inf_S}
+	}
+	\subfigure[]{
+	\includegraphics[scale=0.38]{performance/speedup_05.pdf}
+	\label{amd_fits}
+	}
+	\caption{(a) Extrapolation of the speedup for an infinite number of cores. (b) Amdahl's law fitted for the wall time data.}
 \end{figure}
+
+	In Figure \ref{amd_fits}, the Amdahl's Law curves for the two values of $p$ estimated are shown along with the experimental data from the cluster. Neither of the methods of estimating $p$ give accurate results, since in our model we are not considering communications overhead nor architectural constrains. A more in depth study could be done, considering for example the Hill and Marty's model. 
+
+	However some strong conclusions can still be drawn.The standard method for estimating $p$ acts as a lower bound for the speedup while the $S(\infty)$ method acts as an upper bound, since the experimental data is bounded by these two fits. We have found that $0.96<p<0.97$. This is a remarkable result, since it means that 96 to 97\% of the algorithm can be perfectly parallelized. In other words, if we split the between $N$ walkers, 97\% of the single core wall time will be divided by the $N$ walkers. Thus we can conclude that Flat Scan Sampling is a highly parallelizable algorithm and can have performance gains upto 48 times the single core wall time.
+
+\section{Comparison with Wang-Landau - Performance}
+
+	In the previous Chapter we have already look at the differences in precision and accuracy between Flat Scan Sampling and Wang Landau. Now a comparison of the performance will be given. This Section will use the same L8 SS results from the last comparison Section.
+		
+\begin{figure}[h]
+	\centering
+	\subfigure[]{
+	\includegraphics[scale=0.4]{comparison/wl_comp_01.pdf}
+	\label{fss_time}
+	}
+	\subfigure[]{
+	\includegraphics[scale=0.4]{comparison/wl_comp_02.pdf}
+	\label{wl_time}
+	}
+	\caption{Wall time in seconds as a function of REP for FSS (a) and as a function of $f_{final}$ and the steps taken during the simulation for WL sampling (b).}
+\end{figure}
+
+	The single core wall time of FSS scales linearly with the parameter REP, Figure \ref{fss_time}, however for the WL sampling, the wall time is not linear with the parameter $f_{final}$. Our interest in this Section is to study the performance of WL as a function of the steps in the simulation. In the inset of Figure \ref{wl_time} we can see that WL also scales linearly with the steps in the simulation.
+	
+	One important point to highlight is that the wall time of FSS is very predictable as shown in Table \ref{wall_time_table}. The wall time of WL sampling can not be that easily predicted. Due to the real time estimation of the JDoS, Wang-Landau's random walk is very unforeseeable and it can get stranded, for a while, between a few point in the phase space, wasting a lot of time. Thus we can have faster than average simulations or very lastingly simulations. 
+	On the other hand, we have seen if the value of REP is not high enough, Flat Scan Sample's random walk can get stuck and never finish. With Wang-Landau we are assured that the computation will always finish, even if it takes a very long time.
+
+	A critical advantage of Flat Scan Sampling is the power of parallelization. Since FSS is an embarrassingly parallel algorithm and, if well implemented and optimized, $0.96<p<0.97$, Figure \ref{amd_fits}, we can achieve parallelization very effortlessly with up to 48 times performance gains. This also means that a GPU implementation is in reach. Although it is possible to parallelize Wang-Landau algorithm, it is much harder than FSS, since we have to divide the phase space between different walkers and have them communicate at the barriers \cite{Yin2012}.
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.5]{performance/speedup_05.pdf}
-	\caption{Amdahl's law fitted for the wall time data.}
+	\subfigure[]{
+	\includegraphics[scale=0.47]{comparison/wl_comp_05.pdf}
+	}
+	\subfigure[]{
+	\includegraphics[scale=0.47]{comparison/wl_comp_06.pdf}
+	}
+	\caption{Standard deviation as a function of the wall time for the Checker Board configuration (a) and the Slice configuration (b).}
 \end{figure}
-
-
-%\section{Comparison with Wang-Landau - Performance}
-
-
 
 
 

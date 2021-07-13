@@ -1,10 +1,10 @@
 \chapter{Flat Scan Sampling}
 
-	Background for the Flat Scan Sampling (FSS) method and a general description are presented along with the writer's C++ single core implementation details,the method's validation and proof of convergence, a short analysis of the skip parameter and the comparison with WL sampling.
+	Background for the Flat Scan Sampling (FSS) method and a general description are presented along with the writer's C++ single core implementation details,the method's validation and proof of convergence, a short analysis of the skip parameter and a comparison with WL sampling.
 
 \section{Background}
 
-	The author of FSS, João Amaral, had previously, in 2014, proposed a new method to estimate the JDoS, Random Path Sampling (RPS).  The RPS was implemented in high performance languages and extensively studied by Nuno Fortunato.  (citar)
+	The author of FSS, João Amaral, had previously, in 2014, proposed a new method to estimate the JDoS, Random Path Sampling (RPS) \cite{Amaral2014}.  The RPS was implemented in high performance languages and extensively studied by Nuno Fortunato \cite{Fortunato2015,Fortunato2016,Korotana2016}. 
 	
 \begin{figure}[h]
 	\centering
@@ -35,7 +35,7 @@ The value of $g(E_j, M_{q+1})$ is then computed through the value of $g(E_i, M_q
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.55]{fss_diagram.pdf}
+	\includegraphics[scale=0.5]{fss_diagram.pdf}
 	\caption{Scheme of how the Flat Scan Sampling works.}
 	\label{fss_dia}
 \end{figure}
@@ -114,14 +114,15 @@ Here $g_e(E, M)$ represents the exact joint density of states.As the largest sys
 	During the flat energy random walk, there is no guarantee that the method will  be able to find all of the energies correctly. For low enough values of REP, the random walk might end before the whole energy space is discovered. When just one point in the energy space during one iteration of the method is not discovered, the wall time of each iteration will be much longer than the last and the method might not even converge to a stable solution. For reasonable REP values, the method does explore the whole phase space available to the system.
 \begin{figure}[h]
 	\centering
-	\label{jdos_est}
 	\includegraphics[scale=0.15]{convergence_validation/JDOS_L4_SS_FSS.jpg}
+			
 	\caption{Joint density of states for an L4 Ising system in a simple square lattice computed by the Flat Scan Sampling method. }
+	\label{jdos_est}
 \end{figure}	
 
 \pagebreak
 	
-	In Figure 3.3, we can see the JDoS computed by the FSS method for an L4 Ising square lattice. At this first step of the validation it is not important whether the method gives an approximate estimate of the JDoS. We now focus on whether the method was able to explore the entire phase space or not. 
+	In Figure \ref{jdos_est}, we can see the JDoS computed by the FSS method for an L4 Ising square lattice. At this first step of the validation it is not important whether the method gives an approximate estimate of the JDoS. We now focus on whether the method was able to explore the entire phase space or not. 
 Comparing with the phase space of the exact solution for L4 SS Ising system, Figure \ref{exact_L4}, we can see that, in fact, the whole phase space was correctly explored meaning that the FSS method is able to correctly discover all of the macrostates available to the system. 
 
 	Since the method can find all of the points in the phase space correctly, let us now study how exact and precise those estimations are. For the second part of the validation of the method, let us study how the mean absolute error, Equation \ref{mean_error}, changes with different REP and skip values. From this we will be able to check whether the estimation of the JDoS computed by FSS is exact, i.e. close to the exact solution.
@@ -145,8 +146,8 @@ Moreover, for different values of skip, the tendency is for the error to get sma
 In the case of Monte Carlo computations, the variance can be interpreted as the range of values for the error of a computation. As we increase the accuracy of the method, i.e. increasing the number of sample configurations, REP, we would expect, not only that the values converge to the exact solution, but also the values should be very precise. 
 In Figure \ref{sgima_error}, we can observe just that. As we increase the value of REP the variance seems to approach, meaning that the method is getting more and more precise. 
 	
-	A typical behaviour of the mean deviation $\sigma$ for a Monte Carlo method is to be proportional to the inverse square-root of number of samples taken to construct the solution. For the FSS method, the number of steps has a linear relationship with the value of REP, since for each point in the phase space we have to sample REP microstates. So, for this method the relationship should follow 
-\begin{equation}
+	A typical behaviour of the mean deviation $\sigma$ for a Monte Carlo method is to be proportional to the inverse square-root of number of samples taken to construct the solution \cite{Landau_Book}. For the FSS method, the number of steps has a linear relationship with the value of REP, since each point in the phase space has to be sampled REP times. So, for this method the relationship should follow 
+\begin{equation}\label{standard_mc}
 	\sigma \propto \frac{1}{\sqrt{REP}}.
 \end{equation}
 
@@ -183,10 +184,58 @@ However, when we increase REP thus taking much more samples per point in the pha
 
 	Knowing that after skip $\approx\ N/2$ we will have diminishing returns and that the wall time is linear with skip, then the most advantageous value for skip is $N/2$. Therefore the simulations in Chapter 5 will have $N/2$ as the skip value.
 
-%\section{Comparison with Wang-Landau - Accuracy}
+\section{Comparison with Wang-Landau - Accuracy}
 
+	Having validated Flat Scan Sampling, study it's convergence and skip parameter, let us now compare FSS to the widely accepted and studied Wang-Landau Sampling. In this section we will only compare accuracy and precision in the computations and in the next chapter after analysing the performance of FSS we will compare it to WL's performance. 
+	We will be comparing results from simulations of the Ising model on a L8 simple square lattice. As we do not have the exact solutions for this lattice size, we will resort to study the two known points in the phase space, the Checker Board and the Slice. 
+	
+	Knowing that the Checker Board has exactly 2 configurations and that the Slice has $16\ (2 \times 8)$ configurations we can compare the precision and accuracy of both methods. In Figures \ref{ep_ch} and \ref{ep_sl} we can see the medium value of the absolute error for the two configurations. The error of the Wang-Landau computations never vanishes, therefore it converges to the wrong solution, while with Flat Scan Sampling we can get a really accurate estimation of the JDoS. 
+	
+	Another important aspect worth noting is the difference between the FSS precision in the Checker Board and Slice configurations. The WL computations have roughly the same error in the two configurations, instead the FSS method is less accurate in the Slice configuration. This is due to the nature of the method. As FSS estimates the JDoS in a sequential manner, and the computed JDoS is used to estimate the new one, errors are more susceptible to propagate through each iteration.
+	
+	\pagebreak
+	
+\begin{figure}[h]
+	\centering
+	\subfigure[]{
+	\includegraphics[scale=0.37]{comparison/wl_comp_07.pdf}
+	\label{ep_ch}
+	}
+	\subfigure[]{
+	\includegraphics[scale=0.37]{comparison/wl_comp_08.pdf}
+	\label{ep_sl}
+	}
 
+	\subfigure[]{
+	\includegraphics[scale=0.37]{comparison/wl_comp_09.pdf}
+	\label{sg_ch}
+	}
+	\subfigure[]{
+	\includegraphics[scale=0.37]{comparison/wl_comp_10.pdf}
+	\label{sg_sl}
+	}
+	
+	\caption{Mean absolute error and standard deviation as a function of the method parameter for the Checker Board configuration (a) and (c) and for the Slice configuration (b) and (d). Red lines represent the results for the Flat Scan Sampling and blue lines for the Wang-Landau sampling. Results were averaged through 1000 simulations to reduce statistical error.}
+\end{figure}
 
+	As shown in the previous section the error follows a normal distribution so we can analyse it's mean deviation. In Figures \ref{sg_ch} and \ref{sg_sl} we can see the sigma values of both methods for the Checker Board and Slice configurations, respectively.For the WL sampling, the mean deviation follows the same pattern as the mean absolute error, it never vanishes, instead it converges to a non-zero small positive value. This is illustrated in Figure \ref{fit_comp}, as we can clearly see, from an extrapolation, that the mean deviation of FSS at infinite samples is zero and, at infinite steps in the random walk, the sigma for WL does not vanish but converges to a small enough value that can be ignored.
+
+	In Figure \ref{fit_comp} we can observe that the mean deviation Flat Scan Sampling results goes to zero while being linear with REP and the WL's does not. This indicates that WL does not behave like a standard Monte-Carlo method, Equation \ref{standard_mc}. 
+
+\begin{figure}[h]
+	\centering
+	\subfigure[]{
+	\includegraphics[scale=0.29]{comparison/wl_comp_03.pdf}
+	}
+	\subfigure[]{
+	\includegraphics[scale=0.29]{comparison/wl_comp_04.pdf}
+	}
+	
+	\caption{Mean deviation as a function of the inverse square-root of the number of steps taken in the random walk during the simulation. (a) FSS (b) WL}
+	\label{fit_comp}
+\end{figure}
+
+	In Figure \ref{fit_comp} we can also see that the mean deviation Flat Scan Sampling results converges to zero while being linear with REP and the WL's does not. This shows that WL does not behave like a standard Monte-Carlo method, Equation \ref{standard_mc}.
 
 
 
