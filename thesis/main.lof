@@ -29,19 +29,17 @@
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{18}{figure.caption.16}%
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{18}{figure.caption.16}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Speedup from Amdahl's Law as a function of the number of cores for five different values of the parallel portion of the code $p$.\relax }}{21}{figure.caption.17}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Speedup from Amdahl's Law as a function of the number of cores for five different values of the parallel portion of the code $p$.\relax }}{20}{figure.caption.17}%
 \contentsline {figure}{\numberline {4.2}{\ignorespaces (a) LogLog plot of the single core wall time of FSS as a function of the number of samples per each energy point, REP. (b) LogLog plot of the time spent sampling for each energy value, $q_{time}/E$.These are computations for a system with 16 spins. Data was averaged over 1000 computations to reduce statistical error.\relax }}{22}{figure.caption.18}%
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{22}{figure.caption.18}%
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{22}{figure.caption.18}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces (a) Extrapolation of the speedup for an infinite number of cores. (b) Amdahl's law fitted for the wall time data.\relax }}{24}{figure.caption.20}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{24}{figure.caption.20}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{24}{figure.caption.20}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces (a) Extrapolation of the speedup for an infinite number of cores. We have a limiting speedup of 48 and an $p \approx 0.98$ (b) Amdahl's law fitted for the wall time data. The fit from Amdahl's Law and from the speedup at infinite cores create a lower and upper bound, respectively.\relax }}{23}{figure.caption.20}%
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{23}{figure.caption.20}%
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{23}{figure.caption.20}%
 \contentsline {figure}{\numberline {4.4}{\ignorespaces Wall time in seconds as a function of REP for FSS (a) and as a function of $f_{final}$ and the steps taken during the simulation for WL sampling (b).\relax }}{24}{figure.caption.21}%
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{24}{figure.caption.21}%
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{24}{figure.caption.21}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Standard deviation as a function of the wall time for the Checker Board configuration (a) and the Slice configuration (b).\relax }}{25}{figure.caption.22}%
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{25}{figure.caption.22}%
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {}}}{25}{figure.caption.22}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Standard deviation as a function of the wall time for the Checker Board configuration.\relax }}{25}{figure.caption.22}%
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {5.1}{\ignorespaces Thermodynamics for 3 different lattice sizes compared with the exact solution by Onsager. (a) $\langle |M| \rangle $. (b) $M_{minF}$. (c) $\langle C \rangle $. (d) $C_{minF}$.\relax }}{27}{figure.caption.23}%
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {}}}{27}{figure.caption.23}%

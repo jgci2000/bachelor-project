@@ -2,19 +2,18 @@
 
 	In this Chapter,  a comparison between mean and exact thermodynamic variables is presented along with the estimation of the Curie temperature for the infinite lattice.
 
-\section{Avoiding Overflow in Thermodynamic Computations}
-
-	Extracting thermodynamic information from the JDoS can be a difficult process, specially when trying to study large systems. Although the formulas from Chapter 1 are easy to understand, the problem arrives when trying to actually compute the partition function and consequent Boltzmann factors for the ensemble average variables. For large systems, the values from the JDoS are very large, for instance, for an L16 SS Ising system, some of the values of the JDoS are of the order $10^{74}$. We can not keep summing and multiplying these values to compute $Z$, since we run into overflow errors. For low temperatures we run into the same error, since the exponential gets very large. Instead we have to work with the logarithms of these functions to extract the thermodynamics out of the JDoS. We can use the following observation,
+	Firstly one important note on thermodynamic calculations. Extracting thermodynamic information from the JDoS can be a difficult process, specially when trying to study large systems. Although the formulas from Chapter 1 are easy to understand, the problem arrives when trying to actually compute the partition function and consequent Boltzmann factors for the ensemble average variables. 
+	
+	For large systems, the values from the JDoS are very large, for instance, for an L16 SS Ising system, some of the values of the JDoS are of the order $10^{74}$. We can not keep summing and multiplying these values to compute $Z$, since we run into overflow errors. For low temperatures we run into the same error, since the exponential gets very large. Instead we have to work with the logarithms of these functions to extract the thermodynamics out of the JDoS. We can use the following observation,
 \begin{equation}
-	\ln \left(  \sum_i a_i \right) = \ln(a_0) + \ln\left( 1 + \sum_{i \neq 0} \frac{a_i}{a_0} \right)
+	\ln \left[  \sum_i a_i \right] = \ln(a_0) + \ln\left[ 1 + \sum_{i \neq 0} \frac{a_i}{a_0} \right]
 \end{equation}
 
 \section{Mean and Exact Thermodynamic Variables}
 
-	
 	As previously mentioned in Chapter 1, we can calculate thermodynamic variables from the JDoS in two different ways. One by using the ensemble averages through the partition function and Boltzmann factor and another by using the minimum of the Helmholtz free energy. For three different square lattice system sizes, these thermodynamic quantities can be seen in Figure \ref{thermo_4}. For the $C_{minF}$, there is only one size since smaller sizes give very inaccurate results due to numerical differentiation, Equation \ref{C_min}.
 	
-	We would expect that the thermodynamic quantities computed by these two equivalent ways would yield similar results. If we kept increasing the number of spin particles in our simulations, eventually these two ways would give us very similar results, and, for the infinite lattice, they would be equivalent and equal to the Onsager solution. By a quick analysis of Figure \ref{mod_M} and \ref{M} we can see that the magnetization curves computed by the two methods are not that similar. The $\langle |M| \rangle$ has a flatter curve while the $M_{minF}$ has a more pronounced curve, where you can better see the phase transition. 
+	We would expect that the thermodynamic quantities computed by these two equivalent ways would yield similar results. By a quick analysis of Figure \ref{mod_M} and \ref{M} we can see that the magnetization curves computed by the two methods are not that similar. The $\langle |M| \rangle$ has a flatter curve while the $M_{minF}$ has a more pronounced curve, where you can better see the phase transition. If we kept increasing the number of spin particles in our simulations, eventually these two ways would give us very similar results, and, for the infinite lattice, they would be equivalent and equal to the Onsager solution. 
 \begin{figure}[h]
 	\centering
 	\subfigure[]{
@@ -51,14 +50,15 @@ L  & $T_C\ \langle |M| \rangle$ & $\Delta -$ & $\Delta +$ & $T_C\ M_{minF}$ & $\
 \label{TC_table}
 \end{table}
 
-	The $\langle |M| \rangle$ has a smoother convergence to the real solution while being less accurate. The $M_{minF}$ has a more abrupt convergence to the infinite lattice solution while having much more accurate results than $\langle |M| \rangle$. In the next section  a more in depth study of the critical temperatures will be given.
+	The Curie temperatures taken from the average and exact thermodynamic variables are much different. The $T_C \langle |M| \rangle$ is closer to the $T_C$ for the infinite lattice but $T_C\ M_{minF}$ has much less statistical error thus it is a more precise value, since the magnetization curve is more pronounced.
 	
 	The mean specific heat and the specific heat obtained from the minimum of $F$, Figure \ref{mean_C} and \ref{C},respectively, have similar properties as the magnetization. The mean heat capacity has a smoother curve compared to the Onsager solution while the exact specific heat has a curve similar to the Onsager solution where the phase transition and Curie temperature are more pronounced.
 
+\pagebreak
 
 \section{Estimating $T_C$ for the Infinite Lattice}
 
-	The estimation the the Curie temperate for the infinite system can be obtained by two different methods \cite{Landau_Book}. The first method relies on knowing the Curie temperature for each $L$ for example the peak on the heap capacity of by the differentiation of the magnetization. This $T_C(L)$ defines a phase transition in the finite lattice. Thus we can use the linear relation
+	The estimation the Curie temperate for the infinite system can be obtained by two different methods \cite{Landau_Book}. The first method relies on knowing the Curie temperature for each $L$ for example the peak on the heap capacity of by the differentiation of the magnetization. This $T_C(L)$ defines a phase transition in the finite lattice. Thus we can use the linear relation
 \begin{equation}\label{TC_reg_exp}
 	T_C(L) = T_C(\infty) + cL^{-1/\nu},
 \end{equation}
@@ -85,13 +85,9 @@ Plotting the Binder cumulant for different system sizes, the curves all cross a 
 \end{figure}
 
 	For the first method, a linear regression with the $T_C(L)$ values from Table \ref{TC_table} for the two magnetization curves is presented in Figure \ref{TC_reg}. As we are only interest in the $T_C(\infty)$ from Equation \ref{TC_reg_exp}, for the the $\langle |M| \rangle$ curve the estimated critical temperature for the infinite lattice is approximately $2.31$ while for the $M_{minF}$ is approximately $2.10$. 
-	For the second method, the Binder cumulant for different L values is displayed in Figure \ref{binder}. The critical point is the point in which the curves intersect each other. This yields an estimation $T_C \approx 2.18$.
+	For the second method, the Binder cumulant for different L values is displayed in Figure \ref{binder}. The critical point is the point in which the curves intersect each other. This yields an estimation $T_C \approx 2.25$.
 	
-	For the presented system sizes, linear regression of the $T_C$ values form the mean value of the absolute magnetization and the Binder cumulant gives the better results, meaning that the estimations are close to the exact solution by Onsager $T_C=2.269\approx2.27$. All of these estimation could be improved by considering larger systems, for example the L32 simple square.
-	
-	
-	
-
+	For the available system sizes, the Binder cumulant gave the best results with $T_C \approx 2.25$. This is a great method of estimating the $T_C$ for the infinite lattice when we do not have results from bigger lattices, L32 or L64. The critical temperatures estimated from linear fitting the $T_C$ values form magnetizations is a good method to estimate the $T_C$ for the infinite if we have a JDoS for a bigger system.All of these estimation could be improved by considering larger systems, for example the L32 simple square.
 
 
 

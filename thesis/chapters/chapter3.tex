@@ -105,27 +105,25 @@ The algorithm can be written in the following steps:
 	
 \section{Validation and Convergence}
 
-	The validation of FSS will be done in two steps. The first is to show that the method is able to explore the phase space of the system correctly as it is imperative that it does, since not finding all of the macrostates would yield wrong results. The second is to verify that the values sampled phase space give a reasonable estimate. This can be verified by computing the mean absolute error of the estimated JDoS against the exact JDoS, given by the formula
+	We will validate FSS in two steps. The first is to show that the method is able to explore the phase space of the system correctly as it is imperative that it does. The second is to verify that the values sampled phase space give a reasonable estimate. This can be verified by computing the mean absolute error of the estimated JDoS against the exact JDoS, given by the formula
 \begin{equation}\label{mean_error}
 	  \langle |\epsilon|\rangle = \sum_{E, M} \frac{|g(E, M) - g_e(E, M)|}{g_e(E, M)}.
 \end{equation} 
 Here $g_e(E, M)$ represents the exact joint density of states.As the largest system that we have access to the exact solution is the L4 SS lattice, all of the following studies will be done for that system.
 
-	During the flat energy random walk, there is no guarantee that the method will  be able to find all of the energies correctly. For low enough values of REP, the random walk might end before the whole energy space is discovered. When just one point in the energy space during one iteration of the method is not discovered, the wall time of each iteration will be much longer than the last and the method might not even converge to a stable solution. For reasonable REP values, the method does explore the whole phase space available to the system.
+	During the flat energy random walk, there is no guarantee that the method will  be able to find all of the energies correctly. For low enough values of REP, the random walk might end before the whole energy space is discovered. When just one point in the energy space, during one iteration of the method, is not discovered, the method might not converge to a stable solution, since we use the DoS computed in the last iteration to estimate the new DoS for $M_{q+1}$. For reasonable REP values, the method does explore the whole phase space available to the system.
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.15]{convergence_validation/JDOS_L4_SS_FSS.jpg}
-			
 	\caption{Joint density of states for an L4 Ising system in a simple square lattice computed by the Flat Scan Sampling method. }
 	\label{jdos_est}
 \end{figure}	
 
 \pagebreak
 	
-	In Figure \ref{jdos_est}, we can see the JDoS computed by the FSS method for an L4 Ising square lattice. At this first step of the validation it is not important whether the method gives an approximate estimate of the JDoS. We now focus on whether the method was able to explore the entire phase space or not. 
-Comparing with the phase space of the exact solution for L4 SS Ising system, Figure \ref{exact_L4}, we can see that, in fact, the whole phase space was correctly explored meaning that the FSS method is able to correctly discover all of the macrostates available to the system. 
+	In Figure \ref{jdos_est}, we can see the JDoS computed by the FSS method for an L4 Ising square lattice. Comparing with the phase space of the exact solution for L4 SS Ising system, Figure \ref{exact_L4}, we can see that, in fact, the whole phase space was correctly explored meaning that the FSS method is able to correctly discover all of the macrostates available to the system. 
 
-	Since the method can find all of the points in the phase space correctly, let us now study how exact and precise those estimations are. For the second part of the validation of the method, let us study how the mean absolute error, Equation \ref{mean_error}, changes with different REP and skip values. From this we will be able to check whether the estimation of the JDoS computed by FSS is exact, i.e. close to the exact solution.
+	Since the method can find all of the points in the phase space correctly, let us now study how exact and precise those estimations are. For the second part of the validation of the method, let us study how the mean absolute error, Equation \ref{mean_error}, changes with different REP and skip values.
 
 \begin{figure}[h]
 	\centering
@@ -140,13 +138,11 @@ Comparing with the phase space of the exact solution for L4 SS Ising system, Fig
 \end{figure}
 
 	The mean absolute error from the JDoS for and L4 SS Ising system computed by FSS for different skip and REP values is represented in the Figure \ref{mean_abs_error}. As we increase REP, the absolute error of the JDoS converges to zero, linearly with the value of REP. Thus we can have very accurate results from the method at the cost of computing time. 
-Moreover, for different values of skip, the tendency is for the error to get smaller. Later a more in depth study of skip will be given, however by the analysis of this plot, for small REP values, as we increase skip the the estimated JDoS becomes more exact while for larger REP values, this increase in accuracy is not as noticeable.
+Moreover, for different values of skip, the tendency is for the error to get smaller and for small REP values, as we increase skip, the the estimated JDoS becomes more exact while for larger REP values, this increase in accuracy is not as noticeable.
 
-	Another crucial aspect when performing a statistical analysis of a Monte Carlo is to study the convergence of the solution. We can study this by determining the mean deviation of the error. There are many ways to find the mean deviation. For this case, as the error as a normal distribution, the mean deviation is the width of the normal distribution curve, or the variance, inset of Figure \ref{sgima_error}. The variance of a data set gives us the possible spread of randomly selecting a sample. 
-In the case of Monte Carlo computations, the variance can be interpreted as the range of values for the error of a computation. As we increase the accuracy of the method, i.e. increasing the number of sample configurations, REP, we would expect, not only that the values converge to the exact solution, but also the values should be very precise. 
-In Figure \ref{sgima_error}, we can observe just that. As we increase the value of REP the variance seems to approach, meaning that the method is getting more and more precise. 
+	Another crucial aspect when performing a statistical analysis of a Monte Carlo is to study the convergence of the solution. We can study this by determining the mean deviation of the error. There are many ways to find the mean deviation. For this case, as the error follows a normal distribution, inset Figure \ref{sgima_error}, the mean deviation is the width of the normal distribution curve. In this case the mean deviation gives us the range of values for the error of a random FSS simulation. In Figure \ref{sgima_error}, we can see that as we increase the number of samples, the mean  deviation of the error of Flat Scan Sampling computations diminish to a value that seams close to zero.
 	
-	A typical behaviour of the mean deviation $\sigma$ for a Monte Carlo method is to be proportional to the inverse square-root of number of samples taken to construct the solution \cite{Landau_Book}. For the FSS method, the number of steps has a linear relationship with the value of REP, since each point in the phase space has to be sampled REP times. So, for this method the relationship should follow 
+	A typical behaviour of the mean deviation $\sigma$ for a Monte Carlo method is to be linearly proportional to the inverse square-root of number of samples taken to construct the solution \cite{Landau_Book}. For the FSS method, the number of steps is proportional to the value of REP, since each point in the phase space has to be sampled REP times. So, for this method the relationship should follow 
 \begin{equation}\label{standard_mc}
 	\sigma \propto \frac{1}{\sqrt{REP}}.
 \end{equation}
@@ -160,13 +156,17 @@ In Figure \ref{sgima_error}, we can observe just that. As we increase the value 
 	\label{sigma_rep}
 \end{figure}
 
-	After this study there are two three conclusions to be taken. Flat Scan Sampling method is able to, correctly, find all of the macrostates available to the system, the mean absolute error vanishes as the value of REP is increased and that the method converges to the exact solution with a deviation proportional to the inverse of the square-root of REP.
-
+	After this study there are three main conclusions to be taken. Flat Scan Sampling method is able to, correctly, find all of the macrostates available to a given system, the method is very accurate as we increase REP, i.e. the error in the estimated results vanishes, and that FSS converges to the exact solution with a mean deviation proportional to the inverse square-root of REP, in other words, it behaves like a standard Monte Carlo method and as we increase REP we expect the range of values for the error to vanish.
+	
 \subsection{Effect of Skip}
 
-	By the analysis of Figure \ref{mean_abs_error_skip} the mean absolute error of the JDoS computed by FSS does not vanish when skip is increased, like it does when plotted against REP. Instead it plateaus for skip $\approx\ N/2$ when REP is low, and it does not have a significant effect when the REP value is high. This is expected since the function of skip is to reduce correlation between different samples and at some point we will have diminishing returns since we can not keep reducing when it has reached zero. 
-When REP is low for the system, in this case $10^2$, skip does it's function and reduces correlation between successive samples therefore reducing the mean absolute error. 
-However, when we increase REP thus taking much more samples per point in the phase space, the correlation between them does not have much effect on the accuracy of the computation. 
+	Figure \ref{mean_abs_error} was hinting about the behaviour of the parameter skip, with the effect of skip being more noticeable for small values of REP and being phased out when REP is high. In this section a more in depth study of the skip parameter will be given.
+
+	The function of skip is to reduce correlation between sequent samples. This naturally leads to less statistical errors when the number of samples (REP in this case) is small. However when the number of samples is high, reducing the correlation won't yield significant results. 
+	Analysing Figure \ref{mean_abs_error_skip}, we can see that the mean absolute error of the JDoS computed by FSS does not vanish when skip is increased, like it does when plotted against REP. Instead it plateaus for skip$\approx N/2$ when REP is low, and it does not have a significant effect when the REP value is high. 
+	When REP is low for the system, in this case $10^2$, skip does it's function and reduces correlation between successive samples therefore reducing the mean absolute error. However, when we increase REP thus taking much more samples per point in the phase space, the correlation between them does not have much effect on the accuracy of the computation. 
+	
+	\pagebreak
 
 \begin{figure}[h]
 	\centering
@@ -181,8 +181,8 @@ However, when we increase REP thus taking much more samples per point in the pha
 \end{figure}
 
 	In the next section a more in depth look at the performance of FSS will be given, but it is worth noting that the wall time is linear with the skip value, Figure \ref{wall_time_skip}. The linear relation can be approximated by $y=0.45x + 0.12$. 
-
-	Knowing that after skip $\approx\ N/2$ we will have diminishing returns and that the wall time is linear with skip, then the most advantageous value for skip is $N/2$. Therefore the simulations in Chapter 5 will have $N/2$ as the skip value.
+	
+	With the insertion of the parameter skip in the FSS implementation, we can have less statistical errors while not increasing the wall time by a big margin. For skip$> N/2$ we will have diminishing returns, so the most advantageous value for skip is $N/2$ or at most $N/4$. 
 
 \section{Comparison with Wang-Landau - Accuracy}
 
