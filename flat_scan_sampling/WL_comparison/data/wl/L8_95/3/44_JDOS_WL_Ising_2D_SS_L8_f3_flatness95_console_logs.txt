@@ -1,0 +1,11 @@
+run: 44 | L: 8 | f_final: 1+1E-3 | flatness: 95 | dim: 2D | lattice: SS
+Wed Jul 14 14:33:30 2021 | f: 1+1E0.235094/1+1E-3 | sweeps: 160000 | flat time: 0.811120s
+Wed Jul 14 14:33:30 2021 | f: 1+1E-0.187942/1+1E-3 | sweeps: 40000 | flat time: 0.203853s
+Wed Jul 14 14:33:30 2021 | f: 1+1E-0.546643/1+1E-3 | sweeps: 40000 | flat time: 0.204376s
+Wed Jul 14 14:33:30 2021 | f: 1+1E-0.875664/1+1E-3 | sweeps: 40000 | flat time: 0.204102s
+Wed Jul 14 14:33:31 2021 | f: 1+1E-1.190478/1+1E-3 | sweeps: 90000 | flat time: 0.455671s
+Wed Jul 14 14:33:31 2021 | f: 1+1E-1.498346/1+1E-3 | sweeps: 110000 | flat time: 0.556818s
+Wed Jul 14 14:33:32 2021 | f: 1+1E-1.802783/1+1E-3 | sweeps: 130000 | flat time: 0.657925s
+Wed Jul 14 14:33:33 2021 | f: 1+1E-2.105512/1+1E-3 | sweeps: 180000 | flat time: 0.910772s
+Wed Jul 14 14:33:34 2021 | f: 1+1E-2.407391/1+1E-3 | sweeps: 260000 | flat time: 1.316353s
+Wed Jul 14 14:33:35 2021 | f: 1+1E-2.708846/1+1E-3 | sweeps: 260000 | flat time: 1.316187s
