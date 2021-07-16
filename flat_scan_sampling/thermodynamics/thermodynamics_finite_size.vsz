@@ -1,5 +1,5 @@
 # Veusz saved document (version 3.3.1)
-# Saved at 2021-07-14T14:14:53.048832
+# Saved at 2021-07-16T11:31:19.746120
 
 AddImportPath(u'/Users/jgci/code/project/flat_scan_sampling/thermodynamics')
 ImportFileCSV(u'binder_cumulant_L16.txt', delimiter=u' ', linked=True, dsprefix=u'16_binder_')
@@ -80,9 +80,9 @@ Set('Line/style', u'dash-dot')
 To('..')
 Add('function', name=u'function4', autoadd=False)
 To(u'function4')
-Set('function', u'2.18')
+Set('function', u'2.25')
 Set('key', u'Tc Binder Cumulant')
-Set('Line/color', u'grey')
+Set('Line/color', u'darkred')
 Set('Line/style', u'solid')
 To('..')
 Add('key', name=u'key1', autoadd=False)

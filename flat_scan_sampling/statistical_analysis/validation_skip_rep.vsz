@@ -1,5 +1,5 @@
 # Veusz saved document (version 3.3.1)
-# Saved at 2021-07-03T11:16:51.850764
+# Saved at 2021-07-16T10:29:56.882600
 
 AddImportPath(u'/Users/jgci/code/project/flat_scan_sampling/statistical_analysis')
 ImportFileCSV(u'error_distrib_L4_SS_R1E4.txt', linked=True)
@@ -26,6 +26,7 @@ To('..')
 Add('axis', name=u'y', autoadd=False)
 To(u'y')
 Set('label', u'<|\\epsilon|>')
+Set('log', False)
 Set('direction', u'vertical')
 Set('Label/size', u'20pt')
 Set('TickLabels/size', u'18pt')

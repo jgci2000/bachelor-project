@@ -1,5 +1,5 @@
 # Veusz saved document (version 3.3.1)
-# Saved at 2021-07-14T14:14:22.456124
+# Saved at 2021-07-16T10:38:57.277903
 
 AddImportPath(u'/Users/jgci/code/project/flat_scan_sampling/performance')
 ImportFileCSV(u'wall_time_vs_rep_L8_SS.txt', delimiter=u' ', linked=True, dsprefix=u'L8_wall_')
