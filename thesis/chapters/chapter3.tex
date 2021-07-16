@@ -1,6 +1,6 @@
 \chapter{Flat Scan Sampling}
 
-	Background for the Flat Scan Sampling (FSS) method and a general description are presented along with the writer's C++ single core implementation details,the method's validation and proof of convergence, a short analysis of the skip parameter and a comparison with WL sampling.
+	Background for the Flat Scan Sampling (FSS) method and a general description are presented along with a C++ single core implementation details,the method's validation and proof of convergence, a short analysis of the skip parameter and a comparison with WL sampling.
 
 \section{Background}
 
@@ -13,7 +13,7 @@
 	\label{rps_dia}
 \end{figure}
 	
-	The RPS method departs from the premise that by starting on an extreme magnetization point in the phase space, generally all spins up $(M)$, and successively flipping one spin down at each step of the random walk, we arrive at the other end of the phase space $(-M)$. Process illustrated in Figure \ref{rps_dia}. Performing $R$ sweeps of the phase space generate a histogram that is flat in magnetization and we can obtain the JDoS by 
+	The RPS method departs from the premise that by starting on an extreme magnetization point in the phase space, generally all spins up $(M)$, and successively flipping one spin down at each step of the random walk, we arrive at the other end of the phase space $(-M)$, as illustrated in Figure \ref{rps_dia}. Performing $R$ sweeps of the phase space generate a histogram that is flat in magnetization and we can obtain the JDoS by 
 \begin{align}
 	H(E, M)/R &= P(E, M), \\
 	\Omega(M) \times P(E, M) &= g(E, M).
@@ -56,7 +56,7 @@ The algorithm can be written in the following steps:
 
 \section{Implementation}
 
-	C++ was the preferred language because of it's speed and optimization over python or Mat Lab, and modularity, over C. The random number generator (RNG) used was the xoshrio256**.
+	C++ was the preferred language because of it's speed and optimization over python or Matlab, and modularity, over C. The random number generator (RNG) used was the xoshrio256**.
 
 	Before the description of the implementation let us define the function that handles the scan. This should be performed each step of the simulation. The scan is defined as flipping each spin in the configuration, measuring the new energy and registering the change in state $E_i \rightarrow E_j$ in the histogram. Thus, this operation can be implemented with a for cycle running from $0$ to $N$, the number of spins.
 \begin{algorithm}
@@ -101,11 +101,11 @@ The algorithm can be written in the following steps:
 	\end{algorithmic} 
 \end{algorithm}
 
-	This implementation has the same problem as the original WL method. We sample successive configurations, thus reducing statistical accuracy and increasing correlation between scans. This way, a new parameter that reduces correlation between scanned configurations is proposed. It is called skip and acts the same way as the parameter $S$ in the WL. We only sample configurations that are distanced by skip steps in the random walk. Only line 17 is modified by the addition of "and \texttt{k \% skip = 0}". Usually this value is set equal to the number of spins in the system, $N$, since, in theory, given $N$ steps in the random walk it might be enough to shuffle the whole configuration. As we will see in the next section, this might not be the best case, and keeping increasing this value might have diminishing returns.
+	We sample successive configurations, thus reducing statistical accuracy and increasing correlation between scans. This way, similar to the use of the S parameter in the WL method, we can improve sampling correlation by introducing a new parameter called skip. This way, we only sample configurations that are distanced by skip steps in the random walk. Only line 17 is modified by the addition of "and \texttt{k \% skip = 0}". Usually this value is set equal to the number of spins in the system, $N$, since, in theory, given $N$ steps in the random walk it might be enough to shuffle the whole configuration. As we will see in the next section, this might not be the best case, and keeping increasing this value might have diminishing returns.
 	
 \section{Validation and Convergence}
 
-	We will validate FSS in two steps. The first is to show that the method is able to explore the phase space of the system correctly as it is imperative that it does. The second is to verify that the values sampled phase space give a reasonable estimate. This can be verified by computing the mean absolute error of the estimated JDoS against the exact JDoS, given by the formula
+	We will validate FSS in two steps. The first is to show that the method is able to explore the phase space of the system correctly as it is imperative that it does. The second is to verify that JDOS values and sampled (E,M) phase space are reasonable estimation. This can be verified by computing the mean absolute error of the estimated JDoS against the exact JDoS, given by the formula
 \begin{equation}\label{mean_error}
 	  \langle |\epsilon|\rangle = \sum_{E, M} \frac{|g(E, M) - g_e(E, M)|}{g_e(E, M)}.
 \end{equation} 
@@ -137,7 +137,7 @@ Here $g_e(E, M)$ represents the exact joint density of states.As the largest sys
 	\caption{(a) Mean value of the absolute error for the L4 SS JDoS, Equation \ref{mean_error}, computed by the Flat Scan Sampling method. (b) Variance of the error of the configurations as a function of REP. The inset is the fit from which the variance was taken from. Both of the plots, (a) and (b), feature various skip values, $0$, $N/4$, $N/2$, $N$ and $2N$. The results were average between 1000 simulations to reduce statistical errors.}
 \end{figure}
 
-	The mean absolute error from the JDoS for and L4 SS Ising system computed by FSS for different skip and REP values is represented in the Figure \ref{mean_abs_error}. As we increase REP, the absolute error of the JDoS converges to zero, linearly with the value of REP. Thus we can have very accurate results from the method at the cost of computing time. 
+	The mean absolute error from the JDoS for and L4 SS Ising system computed by FSS for different skip and REP values is represented in the Figure \ref{mean_abs_error}. As we increase REP, the absolute error of the JDoS converges to zero as we increase the value of REP. Thus we can have very accurate results from the method at the cost of computing time. 
 Moreover, for different values of skip, the tendency is for the error to get smaller and for small REP values, as we increase skip, the the estimated JDoS becomes more exact while for larger REP values, this increase in accuracy is not as noticeable.
 
 	Another crucial aspect when performing a statistical analysis of a Monte Carlo is to study the convergence of the solution. We can study this by determining the mean deviation of the error. There are many ways to find the mean deviation. For this case, as the error follows a normal distribution, inset Figure \ref{sgima_error}, the mean deviation is the width of the normal distribution curve. In this case the mean deviation gives us the range of values for the error of a random FSS simulation. In Figure \ref{sgima_error}, we can see that as we increase the number of samples, the mean  deviation of the error of Flat Scan Sampling computations diminish to a value that seams close to zero.
@@ -162,7 +162,7 @@ Moreover, for different values of skip, the tendency is for the error to get sma
 
 	Figure \ref{mean_abs_error} was hinting about the behaviour of the parameter skip, with the effect of skip being more noticeable for small values of REP and being phased out when REP is high. In this section a more in depth study of the skip parameter will be given.
 
-	The function of skip is to reduce correlation between sequent samples. This naturally leads to less statistical errors when the number of samples (REP in this case) is small. However when the number of samples is high, reducing the correlation won't yield significant results. 
+	The function of skip is to reduce correlation between sequential samples. This naturally leads to less statistical errors when the number of samples (REP in this case) is small. However when the number of samples is high, reducing the correlation won't yield significant results. 
 	Analysing Figure \ref{mean_abs_error_skip}, we can see that the mean absolute error of the JDoS computed by FSS does not vanish when skip is increased, like it does when plotted against REP. Instead it plateaus for skip$\approx N/2$ when REP is low, and it does not have a significant effect when the REP value is high. 
 	When REP is low for the system, in this case $10^2$, skip does it's function and reduces correlation between successive samples therefore reducing the mean absolute error. However, when we increase REP thus taking much more samples per point in the phase space, the correlation between them does not have much effect on the accuracy of the computation. 
 	
@@ -182,14 +182,14 @@ Moreover, for different values of skip, the tendency is for the error to get sma
 
 	In the next section a more in depth look at the performance of FSS will be given, but it is worth noting that the wall time is linear with the skip value, Figure \ref{wall_time_skip}. The linear relation can be approximated by $y=0.45x + 0.12$. 
 	
-	With the insertion of the parameter skip in the FSS implementation, we can have less statistical errors while not increasing the wall time by a big margin. For skip$> N/2$ we will have diminishing returns, so the most advantageous value for skip is $N/2$ or at most $N/4$. 
+	With the insertion of the parameter skip in the FSS implementation, we can have less statistical errors while not increasing the wall time by a big margin. For skip$> N/2$ we will have diminishing returns, so the most advantageous value for skip is $N/2$ or even $N/4$. 
 
 \section{Comparison with Wang-Landau - Accuracy}
 
-	Having validated Flat Scan Sampling, study it's convergence and skip parameter, let us now compare FSS to the widely accepted and studied Wang-Landau Sampling. In this section we will only compare accuracy and precision in the computations and in the next chapter after analysing the performance of FSS we will compare it to WL's performance. 
+	Having validated Flat Scan Sampling, studied its convergence and the effect of the skip parameter, let us now compare FSS to the widely accepted and studied Wang-Landau Sampling. In this section we will only compare accuracy and precision in the computations and in the next chapter after analysing the performance of FSS we will compare it to WL's performance. 
 	We will be comparing results from simulations of the Ising model on a L8 simple square lattice. As we do not have the exact solutions for this lattice size, we will resort to study the two known points in the phase space, the Checker Board and the Slice. 
 	
-	Knowing that the Checker Board has exactly 2 configurations and that the Slice has $16\ (2 \times 8)$ configurations we can compare the precision and accuracy of both methods. In Figures \ref{ep_ch} and \ref{ep_sl} we can see the medium value of the absolute error for the two configurations. The error of the Wang-Landau computations never vanishes, therefore it converges to the wrong solution, while with Flat Scan Sampling we can get a really accurate estimation of the JDoS. 
+	Knowing that the Checker Board has exactly 2 configurations and that the Slice has $16\ (2 \times 8)$ configurations we can compare the precision and accuracy of both methods. In Figures \ref{ep_ch} and \ref{ep_sl} we can see the medium value of the absolute error for the two configurations. The error of the Wang-Landau computations never vanishes, therefore it converges to an inexact solution, while with Flat Scan Sampling we can obtain a really accurate estimation of the JDoS. 
 	
 	Another important aspect worth noting is the difference between the FSS precision in the Checker Board and Slice configurations. The WL computations have roughly the same error in the two configurations, instead the FSS method is less accurate in the Slice configuration. This is due to the nature of the method. As FSS estimates the JDoS in a sequential manner, and the computed JDoS is used to estimate the new one, errors are more susceptible to propagate through each iteration.
 	
@@ -218,7 +218,7 @@ Moreover, for different values of skip, the tendency is for the error to get sma
 	\caption{Mean absolute error and standard deviation as a function of the method parameter for the Checker Board configuration (a) and (c) and for the Slice configuration (b) and (d). Red lines represent the results for the Flat Scan Sampling and blue lines for the Wang-Landau sampling. Results were averaged through 1000 simulations to reduce statistical error.}
 \end{figure}
 
-	As shown in the previous section the error follows a normal distribution so we can analyse it's mean deviation. In Figures \ref{sg_ch} and \ref{sg_sl} we can see the sigma values of both methods for the Checker Board and Slice configurations, respectively.For the WL sampling, the mean deviation follows the same pattern as the mean absolute error, it never vanishes, instead it converges to a non-zero small positive value. This is illustrated in Figure \ref{fit_comp}, as we can clearly see, from an extrapolation, that the mean deviation of FSS at infinite samples is zero and, at infinite steps in the random walk, the sigma for WL does not vanish but converges to a small enough value that can be ignored.
+	As shown in the previous section the error follows a normal distribution so we can analyse its mean deviation. In Figures \ref{sg_ch} and \ref{sg_sl} we can see the sigma values of both methods for the Checker Board and Slice configurations, respectively.For the WL sampling, the mean deviation follows the same pattern as the mean absolute error, it never vanishes, instead it converges to a non-zero small positive value. This is illustrated in Figure \ref{fit_comp}, as we can clearly see, from an extrapolation, that the mean deviation of FSS at infinite samples is zero and, at infinite steps in the random walk, the sigma for WL does not vanish but converges to a small enough value that can be ignored.
 
 	In Figure \ref{fit_comp} we can observe that the mean deviation Flat Scan Sampling results goes to zero while being linear with REP and the WL's does not. This indicates that WL does not behave like a standard Monte-Carlo method, Equation \ref{standard_mc}. 
 

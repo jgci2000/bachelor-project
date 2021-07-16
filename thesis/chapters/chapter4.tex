@@ -4,12 +4,12 @@
 
 \section{Parallel Programming}
 
-		A small introduction to two different parallel paradigms will be given. As the majority of modern CPUs have at least 4 physical processing cores, CPU code parallelization has become more important then ever to exploit all of the performance provided by modern CPUs. Not only that but as the problem that we are trying to solve becomes more complex or when we want to simulate bigger systems, single core computations may not be able to solve the problem in a reasonable amount of time. This way there is a need for parallelization. GPU computing is also an alternative but, generally, is a more complex approach.
+	As the majority of modern CPUs have at least 4 physical processing cores, CPU code parallelization has become more important then ever to exploit all of the performance provided by modern CPUs. Not only that but as the problem that we are trying to solve becomes more complex or when we want to simulate bigger systems, single core computations may not be able to solve the problem in a reasonable amount of time. This way there is a need for parallelization. GPU computing is also an alternative but, generally, is a more complex approach.
 
 %	A program is executed in a process. A process has its own code, data, memory space (stack and a heap), and other specific sets of data. Other processes do not have access to another process data or memory space. A process is executed in only one CPU core. Within a process there is at least one thread, meaning that a process can be single-threaded or multi-threaded. A thread is a sequence of code that is being executed. Each thread has its own stack, and data, however they share the data that is common to the main thread and the heap between them.
 
 	In computer science there are two main paradigms for parallel applications \cite{Hager2011}. One based on threads, shared memory parallel programming, and another based on processes, distributed memory parallel programming. 
-	A shared memory program is executed in multiple threads that coexist in the same memory space. Thus each one has access to the other memory and vice-versa. Therefore communication between concurrent executions of the code within the process is easy. However with multi-threading the code can only be executed in the same computer since it is only run in a single process. Multiple threads running within the same process can reduce parallel performance,. In C/C++, there are many libraries that implement this style of programming, the ones worth mentioning are OpenMP and PThreads. 
+	A shared memory program is executed in multiple threads that coexist in the same memory space. Thus each one has access to the other memory and vice-versa. Therefore communication between concurrent executions of the code within the process is easy. However with multi-threading the code can only be executed in the same computer since it is only run in a single process. Multiple threads running within the same process can reduce parallel performance,. In C/C++, there are many libraries that implement this style of programming, such as OpenMP and PThreads. 
 	On the other hand, a distributed memory concurrent program is executed through various processes each in their own memory space. Communication between processes is harder than thread communication. Multi process communication is more performance taxing since they live in different memory spaces. Excessive communication can lead to performance downfalls This downside, however, comes with better parallel performance and the ability to execute computations in various computing nodes. The default C/C++ library for distributed memory parallel programming is the message passing interface (MPI) having many implementations, such as OpenMPI, MPICH or MVAPICH.
 
 
@@ -17,7 +17,7 @@
 
 	Consider a certain task that takes a time $T$ to be solved sequentially by one core. Using $N$ workers, ideally, it would only take $T / N$ to complete the task. This is called a speedup of $N$. Ideally, this division assumes that the task can be divided into $N$ pieces of equal complexity, that take the same amount of time to finish. In reality this is not true, the $N$ pieces could have little differences in complexity resulting in some workers having to wait for the other to finish. This is known as load imbalance and induces serialization in the computations.
 	
-	Let us now construct a model for scalability \cite{Hager2011}. Considering the overall problem size is $s + p = 1$, where $s$ is the nonparallelizable part and $p$ is the perfectly parallelizable part.In theory, we would want $s=0$ and $p=1$. In reality, there are many reasons for a nonvanishing serial part. There can be algorithmic limitations meaning that there might be operations that can just not be performed in parallel, bottlenecks in the computer system, such as shared paths to memory between different cores, and communications overhead meaning that in order for workers to inter-communicate there must be some serialization. This last point is often the cause for poor parallel performance. 
+	Let us now construct a model for scalability \cite{Hager2011}. Considering the overall problem size is $s + p = 1$, where $s$ is the nonparallelizable part and $p$ is the perfectly parallelizable part.In theory, we would want $s=0$ and $p=1$. In reality, there are many reasons for a nonvanishing serial part. There can be algorithmic limitations meaning that there might be operations that can not be performed in parallel, bottlenecks in the computer system, such as shared paths to memory between different cores, and communications overhead meaning that in order for workers to inter-communicate there must be some serialization. This last point is often the cause for poor parallel performance. 
 		
 	The serial wall time can be written as
 \begin{equation}
@@ -59,20 +59,20 @@ where $r$ is the size of the sequential core used during the parallel execution.
 \section{Implementation}
 
 	Due to the nature of FSS algorithm we can have various independent walkers sampling their own histogram. Each walker performs an independent random walk with access to the whole energy space and constructs a histogram for a magnetization $M_q$. All of the sampled histograms are combined to compute the DoS at $M_{q+1}$. The next iteration is performed using the computed DoS by joining all of the histogram contributions in the last iteration.
-This way, in one iteration there is only need for 2 communications, one is the broadcasting of the computed DoS in the last iteration to all of the walkers, the other is the collection of the sampled histograms by all of the walkers. There is a need for one walker to execute all of the serial computations such as the outputting to the terminal and to files, and joining all of the DoS at the end of an iteration and broadcasting it to all of the other walkers. Considering this approach, distributed memory parallelism was the better option for a high performant implementation and MPI was used to carry the process to process communications.
+This way, in one iteration there is only need for 2 communications, one is the broadcasting of the computed DoS in the last iteration to all of the walkers, the other is the collection of the sampled histograms by all of the walkers. There is a need for one walker to execute all of the serial computations such as the outputting to the terminal and to files, and joining all of the DoS at the end of an iteration and broadcasting it to all of the other walkers. Considering this approach, distributed memory parallelism was the better option for a high performance implementation and MPI was used to carry the process to process communications.
 	
-	The MPI implementation starts by assigning each walker a different seed for the RNG, so the results come from different streams of random numbers. This is achieved by multiplying a defined seed by the number assigned to that walker. Then, the first iteration is computed by the manager process and broadcasted to all of the walkers. When all of the walkers have sampled the assigned number of configurations, they send the histogram to the manager and it computes the DoS at the third magnetization finally broadcasts it to the walkers. This is repeated until $q \geqslant q_{max}$. At the end, the manager writes the output files. As the only serial operations is the output to the terminal and the normalization of the JDoS at the end of an iteration we can expect a close to linear parallel scalability.
+	The MPI implementation starts by assigning each walker a different seed for the RNG, so the results come from different streams of random numbers. This is achieved by multiplying a defined seed by the number assigned to that walker. Then, the first iteration is computed by the manager process and broadcasted to all of the walkers. When all of the walkers have sampled the assigned number of configurations, they send the histogram to the manager and it computes the DoS at the third magnetization finally broadcasts it to the walkers. This is repeated until $q = q_{max}$. At the end, the manager writes the output files. As the only serial operations is the output to the terminal and the normalization of the JDoS at the end of an iteration we can expect a close to linear parallel scalability.
 
-	There are two ways of dividing the computations between $n$ walkers. Each performs a random walk with $\text{REP}_{walker} = \text{REP} / n$ giving us the wall time of a single core computation with REP samples per energy divided by the number of walkers or having each walker sample REP configurations per energy giving us the wall time of a single core REP computation. 
+%	There are two ways of dividing the computations between $n$ walkers. Each performs a random walk with $\text{REP}_{walker} = \text{REP} / n$ giving us the wall time of a single core computation with REP samples per energy divided by the number of walkers or having each walker sample REP configurations per energy giving us the wall time of a single core REP computation. 
  
 	Two scenarios of this implementation were explored. One where the manager also performed is own random walk through the energy space, acting like a manager and a walker, and another were the manager only performed the single core operations.Here the advantage is on the side of the first scenario, since there is one more walker and having that walker also performing single core tasks gives an overall better performance than having one idle processes during 95\% of the computation.
-
+\pagebreak
 
 \section{Method Performance}
 
 	Now let us discuss the performance of FSS method of both implementations starting by the single core performance and moving on to scaling tests. The following single core benchmarks were performed in a computer equipped with a Ryzen 9 5950X at stock speeds.  
 	
-	In Figure \ref{L4_wall_time}, we can observe the wall time and the time spent sampling per energy value as a function of the parameter REP. We can see that the method scales linearly with the parameter REP. 
+	In Figure \ref{L4_wall_time}, we can observe the wall time and the time spent sampling per energy value as a function of the parameter REP. We can see as we increase REP by 10x, the wall time is also increased by 10x.
 	
 \begin{figure}[ht]
 \centering
@@ -90,21 +90,22 @@ This way, in one iteration there is only need for 2 communications, one is the b
 \label{wall_time_L4}
 \end{figure}
 
-	The time spent sampling configurations for each energy value, $q_{time}/E$, is a very important metric, Figure \ref{L4_q_time}. This value is computed by dividing the wall time spent on that iteration by the number of sampled energy points. Each iteration of the simulation we should keep tentative on the behaviour of $q_{time}/E$, since it can tell us if the computations are stable or the number of samples, REP, must be increased. 
-For a stable calculation, this time must remain approximately the same throughout the computation. If $q_{time}/E$ keeps increasing each iteration then the value of REP is insufficient to correctly explore the energy space for a given magnetization. This causes the JDoS estimate to be less accurate or in the worse cases to be wrong.The obvious solution would be to increase the value of REP, but increasing the skip value is enough, sometimes.
+	The time spent sampling configurations for each energy value, $q_{time}/E$, is a very important metric, Figure \ref{L4_q_time}. This value is computed by dividing the wall time spent on that iteration by the number of sampled energy points. Each iteration of the simulation we should be attentive to the behaviour of $q_{time}/E$, since it can tell us if the computations are stable or the number of samples, REP, must be increased. 
+For a stable calculation, this time must remain approximately the same throughout the computation. If $q_{time}/E$ keeps increasing each iteration then the value of REP is insufficient to correctly explore the energy space for a given magnetization. This causes the JDoS estimate to be less accurate or in the worse cases to be wrong.The obvious solution would be to increase the value of REP, but increasing the skip value can be enough in some cases.
 
 	The FSS method scales linearly with the repetitions,Figure \ref{wall_time_L4}, so given the wall time of that system with a certain REP value we can easily estimate how much time the computations will take for a another REP value.
-When running the algorithm for a new system we can not have a precise estimation for the wall time. However, knowing only the $q_{time}/E$ for the first iterations and assuming that the REP value is sufficient so that this time does not increase, we can estimate the wall time. Assume that the system has $NE$ values of energy and $NM$ values of magnetizations available.The JDoS will have $NE \times NM$ points, but since we only compute half of the JDoS, $( NE \times NM ) / 2$. About $1/3$ to $1/2$ of those points will be different than 0, so the estimation for the wall time comes as 
+When running the algorithm for a new system we can not have a precise estimation for the wall time. However, knowing only the $q_{time}/E$ for the first iterations and assuming that the REP value is sufficient so that this time does not increase, we can estimate the full wall time to estimate the complete JDOS. Assume that the system has $NE$ values of energy and $NM$ values of magnetizations available.The JDoS will have $NE \times NM$ points, but since we only compute half of the JDoS, $( NE \times NM ) / 2$. Considering the typical shape of the (E,M) phase space of the Ising model, about $1/3$ to $1/2$ of those points will be different than 0, so the estimation for the wall time comes as 
 \begin{equation}\label{estimation}
 	\text{Wall Time} \approx (q_{time}/E) \frac{NE \times NM}{2} \times \text{fraction of non-zero points} .
 \end{equation}
-In Table \ref{wall_time_table} different wall times for single core computations can be seen with the respective estimation through Equation \ref{estimation} for two different fractions of non-zero energy points, $1/3$ and $1/2$. 
+
+\pagebreak
 
 \begin{table}[h]
 \centering
-\caption{Wall Time of some Ising systems with their respective estimations by Equation \ref{estimation} with two different values for the fraction of non-zero energy points.} 
+\caption{Wall Time of some Ising systems with their respective wall time estimates by Equation \ref{estimation} with two different values for the fraction of non-zero energy points.} 
 \begin{tabular}{c|c|c|c|c|c|c}
-Lattice & $N$   & $NE \times NM$ & $q_{time}/E$ & Wall Time & Estimation $1/3$ & Estimation $1/2$ \\ \hline
+Lattice & $N$   & $NE \times NM$ & $q_{time}/E$ & Wall Time & Estimate $1/3$ & Estimate $1/2$ \\ \hline
 SS      & $16$  & $289$                         & $0.11s $        & $4s$        &$ 5s$                  & $8s$                  \\
 SS      & $64$  & $4225$                        & $0.85s$         & $728s$      & $600s $               & $900s    $ \\
 SS      & $256$ & $66049$                       & $1s$            & $18942s$    & $10898s $             & $16512s  $ \\
@@ -113,6 +114,8 @@ FCC     & $256$ & $197633$                      & $20s$           &$ 871118s$   
 \end{tabular}
 \label{wall_time_table}
 \end{table}
+
+	Table \ref{wall_time_table} presents different wall times for single core computations and their respective estimation through Equation \ref{estimation} for two different fractions of non-zero energy points, $1/3$ and $1/2$. For larger Ising systems in 3D lattices, computation times can get very large. As we will see in the next Section, we can greatly reduce them through parallelism. 
 
 
 \subsection{Parallel Scaling}
@@ -142,7 +145,7 @@ This is the standard method to estimate $p$ given the wall time per number of co
 	\caption{(a) Extrapolation of the speedup for an infinite number of cores. We have a limiting speedup of 48 and an $p \approx 0.98$ (b) Amdahl's law fitted for the wall time data. The fit from Amdahl's Law and from the speedup at infinite cores create a lower and upper bound, respectively.}
 \end{figure}
 
-\pagebreak
+%\pagebreak
 
 	Another method to estimate $p$ is to find the speedup for and infinite number of cores $S(\infty)$ and by using the relation
 \begin{equation}
@@ -156,7 +159,7 @@ we can estimate $p$. The best way to find the speedup of infinite cores is to pl
 
 \section{Comparison with Wang-Landau - Performance}
 
-	In the previous Chapter we have already look at the differences in precision and accuracy between Flat Scan Sampling and Wang Landau. Now a comparison of the performance will be given. This Section will use the same L8 SS results from the last comparison Section.
+	In the previous Chapter we have already look at the differences in precision and accuracy between Flat Scan Sampling and Wang Landau. Now a comparison of the performance will be given. In this Section will use the same L8 SS results from the last comparison Section.
 		
 \begin{figure}[h]
 	\centering
@@ -173,21 +176,21 @@ we can estimate $p$. The best way to find the speedup of infinite cores is to pl
 
 	The single core wall time of FSS scales linearly with the parameter REP, Figure \ref{fss_time}, however for the WL sampling, the wall time is not linear with the parameter $f_{final}$. Our interest in this Section is to study the performance of WL as a function of the steps in the simulation. In the inset of Figure \ref{wl_time} we can see that WL also scales linearly with the steps in the simulation.
 	
-	One important point to highlight is that the wall time of FSS is very predictable as shown in Table \ref{wall_time_table}. The wall time of WL sampling can not be that easily predicted. Due to the real time estimation of the JDoS, Wang-Landau's random walk is very unforeseeable and it can get stranded, for a while, between a few point in the phase space, wasting a lot of time. Thus we can have faster than average simulations or very lastingly simulations. 
+	One important point to highlight is that the wall time of FSS is very predictable as shown in Table \ref{wall_time_table}. The wall time of WL sampling can not be that easily predicted. Due to the real time estimation of the JDoS, Wang-Landau's random walk is very unforeseeable and it can get stranded, for a while, between a few points in the phase space, wasting a lot of time, Figure 4 and 5 in \cite{Nguyen2006}. Thus we can have faster than average simulations or very long simulations. 
 	On the other hand, we have seen if the value of REP is not high enough, Flat Scan Sample's random walk can get stuck and never finish. With Wang-Landau we are assured that the computation will always finish, even if it takes a very long time.
 
-	A critical advantage of Flat Scan Sampling is the power of parallelization. Since FSS is an embarrassingly parallel algorithm and, if well implemented and optimized, $0.97<p<0.98$, Figure \ref{amd_fits}, we can achieve parallelization very effortlessly with up to 48 times performance gains. This also means that a GPU implementation is easily in reach. Although it is possible to parallelize Wang-Landau algorithm, it is much harder than FSS, since we have to divide the phase space between different walkers and have them communicate at the barriers \cite{Yin2012}.
+	A critical advantage of Flat Scan Sampling is the power of parallelization. Since FSS is an embarrassingly parallel algorithm and, if well implemented and optimized, $0.97<p<0.98$, Figure \ref{amd_fits}, we can achieve parallelization with up to 48 times performance gains. This also means that a GPU implementation is easily in reach. Although it is possible to parallelize the Wang-Landau algorithm, it is much harder than FSS, since we have to divide the phase space between different walkers and have them communicate at the barriers \cite{Yin2012}.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.5]{comparison/wl_comp_05.pdf}
-	\caption{Standard deviation as a function of the wall time for the Checker Board configuration.}
+	\caption{Standard deviation as a function of the wall time for the Checker Board configuration for an L8 SS Ising system.}
 	\label{time_std}
 \end{figure}
 
 	To finalize this comparison, let us shift our focus to Figure \ref{time_std}. Here we can see the standard deviation as a function of wall time for the FSS and the WL method for two flatness conditions. For the Wang-Landau with $p=90$, we can get a more precise solution with Flat Scan Sampling int the same or less computing time with REP$\ =10^4$ (second point).In order to get a more refined solution with WL sampling, we need to increase the flatness condition, green line in Figure \ref{time_std}. Flat Scan Sampling still has more precision with less or equal computing time with a value of REP between $10^4$ and $10^5$. Therefore,  we can conclude that FSS will have better precision in the calculations per computing time than the WL method.
 
-	Having done this comparison we can take a few important and string conclusions. Flat Scan Sampling and Wang-Landau method are two vastly different methods. FSS can be as accurate at the cost of computing time, while WL's accuracy and precision plateaus or all flatness criteria.WL's precision per simulation time is worse in most cases than FSS's. Thus, Flat Scan Sampling is a better method to obtain fairly quick and very precise computations while with Wang-Landau we can get an inaccurate solution very quickly.
+	Having done this comparison we can take a few important and string conclusions. Flat Scan Sampling and Wang-Landau method are two vastly different methods. FSS can be as accurate at the cost of computing time, while WL's accuracy and precision plateaus for all flatness criteria.WL's precision per simulation time is worse in most cases than FSS's. Thus, FSS is a better method to obtain fairly quick and very precise computations while with WL we can get an inaccurate solution very quickly.
 
 
 
