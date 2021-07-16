@@ -36,7 +36,7 @@ and parallel performance is
 	P_p = \frac{p+s}{T_p} = \frac{1}{1-p+\frac{p}{N}}.
 \end{equation}
 The application speedup is now
-\begin{equation}\label{amd_law}
+\begin{equation}\label{eq:amd_law}
 	S = \frac{P_p}{P_s} = \frac{1}{1-p+\frac{p}{N}}.
 \end{equation}
 
@@ -47,7 +47,7 @@ The application speedup is now
 	\label{amd_law}
 \end{figure}
 
-Equation \ref{amd_law} is known as Amdahl's Law, derived by Gene Amdhal in 1967 \cite{Amdahl1967}. This limits the speeup when $N \rightarrow \infty$ to $1/(1-p)$. This famous equations tells us how much faster can a program run when using $N$ CPU cores. In Figure \ref{amd_law} the Amdahl's Law speedup is plotted against the number of cores for different values of $p$.
+Equation \ref{eq:amd_law} is known as Amdahl's Law, derived by Gene Amdhal in 1967 \cite{Amdahl1967}. This limits the speeup when $N \rightarrow \infty$ to $1/(1-p)$. This famous equations tells us how much faster can a program run when using $N$ CPU cores. In Figure \ref{amd_law} the Amdahl's Law speedup is plotted against the number of cores for different values of $p$.
 
 	There are modifications to this law \cite{On2014} to accommodate system bottlenecks, parallel synchronization and inter-core communications. The most noteworthy is the Hill and Marty's model \cite{Hill2008}, which introduces a new way of defining the work and performance. An asymmetric architecture has one manager that does not work and a symmetric architecture has a manager that also does work. The performance of the Hill and Marty's model depends on the type of architecture considered. 
 \begin{equation}
