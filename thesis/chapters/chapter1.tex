@@ -42,15 +42,16 @@ The Ising Hamiltonian describes a system of lattice of atomic spins which can ha
 \end{equation}
 where $J$ is the interaction for constant between two neighbouring particles, $S_i$ is the spin value of the particle at the site $i$, $<i,j>$ denotes that the sum is conducted over all neighbouring particles. The second term represents the interaction with an external magnetic field, $H$, which may be zero. If $J>0$, at $T=0K$, the system will have a ferromagnetic behaviour since parallel spins are energetically more favourable, and if $J<0$, the system will behave in an anti-ferromagnetic way.
 
-In this work, I will not evaluate the Ising Model with an applied magnetic field, $H=0$, and consider $J_{ij}=1$ to simplify the computations. With this being said, the Hamiltonian treated in this work goes as follows,where $ij$ represent the sum over all lattice sites. 
+In this work, I will not evaluate the Ising Model with an applied magnetic field, $H=0$, and consider $J_{ij}=1$ to simplify the computations. With this being said, the Hamiltonian treated in this work goes as follows,where $i,j$ represent the sum over all lattice sites near $i$. 
 \begin{equation}
-	\mathcal{H} = -\sum_{<i,j>} S_i  S_j \equiv -\frac{1}{2} \sum_{ij} S_i S_j
+	\mathcal{H} = -\sum_{<i,j>} S_i  S_j \equiv -\frac{1}{2} \sum_{i,j} S_i S_j
 \end{equation}
 	To simulate real materials we can obtain the values of the interaction constant for each atom in our lattice through Density Functional Theory (DFT) calculations \cite{DFT_book, Marzari2021}.
 
 \subsection{Joint Density of States}
 
-It is mentioned in any undergraduate course in statistical mechanics that the density of states (DoS), $g(E)dE$, is the number of states that have a certain energy between $E$ and $E+dE$ \cite{stat_mech}. For discrete systems, like the Ising Model, the DoS evaluated at a certain energy is the exact number of microstates that have a specific energy $E$. Through the DoS we can obtain the partition function $Z(T)$, as a function of temperature, and then compute energy related thermodynamic variables, such as the mean energy $E(T)$, specific heat $C(T)$, Helmholtz free energy, $F(T)$.  
+It is mentioned in any undergraduate course in statistical mechanics that the density of states (DoS), $g(E)dE$, is the number of microstates that have a certain energy between $E$ and $E+dE$ \cite{stat_mech}. For discrete systems, like the Ising Model, the DoS evaluated at a certain energy is the exact number of microstates that have a specific energy $E$. Through the DoS we can obtain the partition function $Z(T)$, as a function of temperature, and then compute energy related thermodynamic variables, such as the mean energy $E(T)$, specific heat $C(T)$, Helmholtz free energy, $F(T)$.  
+
 As we are dealing with magnetic systems, our natural interest is to study the magnetization throughout various temperatures and applied magnetic field intensity. For this, we need the number of microstates with a certain pair $(E,M)$. This is the exact description of the Joint Density of States (JDoS), a multi-variable histogram with information about the number of microstates with a certain energy and another parameter, like density, $\rho$, number of particles, $N$, or, in this case, magnetization, $M$. This way we can compute the partition function as a function of both temperature and magnetization, $Z(T,M)$ and the Helmholtz free energy as $F(T,M)$.
 
 Table \ref{exact_L2} represents the JDoS for the Ising Model in a simple square (SS) lattice with length $2$ and periodic boundary conditions (PBC). The extreme magnetization configurations appear only once in the JDoS, no matter the size of the lattice, since they represent all up or all down spins configurations. 
@@ -71,22 +72,22 @@ $+8$   & 0  & 0  & 2 & 0 & 0
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.2]{JDOS_exact_L4_SS.jpeg}
+	\includegraphics[scale=0.15, height=7cm]{JDOS_exact_L4_SS.jpeg}
 	\caption{Plot of the exact JDoS for the SS L4 Ising Model with PBC. This was obtained by visiting each microstate available to the system.}
 	\label{exact_L4}
 \end{figure}
 
 \pagebreak
 
-There are three configurations worth noting.The first is the zero energy and zero magnetization state. This is the state with the most micro configurations since it represents the macrostate in which is likely to find the system in, when $T\gg T_C$ (has the highest entropy). The second is the macrostate with the highest energy and zero magnetization. For every system size and lattice this macrostate has always $2$ microstates, since the spins are sorted in a chess/checker board pattern. The last configuration is the state with the least energy and zero magnetization. Its value is always going to be equal to $2L$, since the spins are sorted in rows and columns of alternating positive and negative spins, similar to slices. Throughout this work these configurations will appear again and they will be referred as Zero Zero, Checker Board and Slice, respectively. 
+There are three macrostates worth noting.The first is the zero energy and zero magnetization macrostate. This is the macrostate with the most micro configurations since it represents the macrostate in which is likely to find the system in, when $T\gg T_C$ (has the highest entropy). The second is the macrostate with the highest energy and zero magnetization. For every system size and lattice this macrostate has always $2$ microstates, since the spins are sorted in a chess/checker board pattern. The last is the macrostate with the least energy and zero magnetization. Its value is always going to be equal to $2L$, since the spins are sorted in rows and columns of alternating positive and negative spins, similar to slices. Throughout this work these configurations will appear again and they will be referred as Zero Zero, Checker Board and Slice, respectively. 
 
-The simplest way to compute the JDoS is to visit all of the possible microstates. It is easy to do this when we have $16$ spins ($L=4$ in a SS lattice, Figure \ref{exact_L4}), since the number of possible configurations is still quite small, $2^{16} \approx 65E3$ configurations. But, for instance, for systems with $256$ spins ($L=8$ in a SS lattice) it becomes computationally impossible to randomly or sequentially visit all of the microstates since we have to sample $2^{256} \approx	 1E77$ configurations. 
+The simplest way to compute the JDoS is to visit all of the possible microstates. It is easy to do this when we have $16$ spins ($L=4$ in a SS lattice, Figure \ref{exact_L4}), since the number of possible configurations is still quite small, $2^{16} \approx 65E3$ configurations. But, for instance, for systems with $256$ spins ($L=16$ in a SS lattice) it becomes computationally impossible to randomly or sequentially visit all of the microstates since we have to sample $2^{256} \approx	 1E77$ configurations. 
 Instead we can use various clever numerical methods methods to get an estimation of the JDoS in a much more reasonable time with fairly good precision. I will present widely studied methods in the next Chapter and a new unpublished method in the third Chapter.
 
 \subsection{Thermodynamics}
 
 From the JDoS we can obtain all of the thermodynamic quantities when the system is in an equilibrium state. In this section I will present some useful formulas to compute those variables from the JDoS. 
-The probability of a given state with energy $E_i$, is given by
+The probability of a given microstate with energy $E_i$, is given by
 \begin{equation}
 	P_i = \frac{\sum_q g(E_i, M_q) e^{-\beta E_i}}{Z},
 \end{equation}

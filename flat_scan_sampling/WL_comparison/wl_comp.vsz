@@ -1,5 +1,5 @@
 # Veusz saved document (version 3.3.1)
-# Saved at 2021-07-15T08:29:01.537547
+# Saved at 2021-07-27T13:03:57.935284
 
 AddImportPath(u'/Users/jgci/code/project/flat_scan_sampling/WL_comparison')
 ImportFileCSV(u'error_fss.txt', delimiter=u' ', linked=True, dsprefix=u'error_fss_')
@@ -215,7 +215,7 @@ Set('topMargin', u'0.694cm')
 Set('bottomMargin', u'9.567cm')
 Add('axis', name=u'x', autoadd=False)
 To(u'x')
-Set('label', u'1/\\sqrt{REP}')
+Set('label', u'1/\\sqrt{steps}')
 Set('min', 0.0)
 Set('max', 0.0004)
 Set('log', False)

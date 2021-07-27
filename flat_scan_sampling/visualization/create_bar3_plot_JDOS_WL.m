@@ -9,14 +9,15 @@ NN=4;
 E_list=-32:4:32;
 M_list=-16:2:16;
 
-% load("JDOS_L4_2D_SS_exact")
+load("JDOS_L4_2D_SS_exact")
+JDOS_exact(1:end, :) = JDOS_exact(end:-1:1, :);
 
 subplot(1, 2, 2)
 
 b = bar3(JDOS_exact);
 zlabel('JDOS')
 view(0, 90) % top
-% view(133,33)
+%view(133,33)
 axis([0 length(M_list)+1 0 length(E_list)+1])
 xticks([1 (N_atm/4+1) (N_atm/2+1) (3*N_atm/4+1) N_atm+1])
 yticks([1 ((length(E_list)-1)/4 + 1) ((length(E_list)-1)/2+1) (3*(length(E_list)-1)/4+1) length(E_list)])
@@ -61,3 +62,8 @@ end
 %
 cbh = colorbar;
 cbh.Label.String = 'JDOS';
+
+saveas(gcf,'JDOS_exact_L4_SS.jpeg')
+
+
+

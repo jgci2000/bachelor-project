@@ -17,7 +17,7 @@
 
 	Consider a certain task that takes a time $T$ to be solved sequentially by one core. Using $N$ workers, ideally, it would only take $T / N$ to complete the task. This is called a speedup of $N$. Ideally, this division assumes that the task can be divided into $N$ pieces of equal complexity, that take the same amount of time to finish. In reality this is not true, the $N$ pieces could have little differences in complexity resulting in some workers having to wait for the other to finish. This is known as load imbalance and induces serialization in the computations.
 	
-	Let us now construct a model for scalability \cite{Hager2011}. Considering the overall problem size is $s + p = 1$, where $s$ is the nonparallelizable part and $p$ is the perfectly parallelizable part.In theory, we would want $s=0$ and $p=1$. In reality, there are many reasons for a nonvanishing serial part. There can be algorithmic limitations meaning that there might be operations that can not be performed in parallel, bottlenecks in the computer system, such as shared paths to memory between different cores, and communications overhead meaning that in order for workers to inter-communicate there must be some serialization. This last point is often the cause for poor parallel performance. 
+	Let us now construct a model for scalability \cite{Hager2011}. Considering the overall problem size is $s + p = 1$, where $s$ is the nonparallelizable part and $p$ is the perfectly parallelizable part. In theory, we would want $s=0$ and $p=1$. In reality, there are many reasons for a nonvanishing serial part. There can be algorithmic limitations meaning that there might be operations that can not be performed in parallel, bottlenecks in the computer system, such as shared paths to memory between different cores, and communications overhead meaning that in order for workers to inter-communicate there must be some serialization. This last point is often the cause for poor parallel performance. 
 		
 	The serial wall time can be written as
 \begin{equation}
@@ -47,7 +47,7 @@ The application speedup is now
 	\label{amd_law}
 \end{figure}
 
-Equation \ref{eq:amd_law} is known as Amdahl's Law, derived by Gene Amdhal in 1967 \cite{Amdahl1967}. This limits the speeup when $N \rightarrow \infty$ to $1/(1-p)$. This famous equations tells us how much faster can a program run when using $N$ CPU cores. In Figure \ref{amd_law} the Amdahl's Law speedup is plotted against the number of cores for different values of $p$.
+Equation \ref{eq:amd_law} is known as Amdahl's Law, derived by Gene Amdhal in 1967 \cite{Amdahl1967}. This limits the speeup when $N \rightarrow \infty$ to $1/(1-p)$. This famous equation tells us how much faster can a program run when using $N$ CPU cores. In Figure \ref{amd_law} the Amdahl's Law speedup is plotted against the number of cores for different values of $p$.
 
 	There are modifications to this law \cite{On2014} to accommodate system bottlenecks, parallel synchronization and inter-core communications. The most noteworthy is the Hill and Marty's model \cite{Hill2008}, which introduces a new way of defining the work and performance. An asymmetric architecture has one manager that does not work and a symmetric architecture has a manager that also does work. The performance of the Hill and Marty's model depends on the type of architecture considered. 
 \begin{equation}
@@ -65,7 +65,7 @@ This way, in one iteration there is only need for 2 communications, one is the b
 
 %	There are two ways of dividing the computations between $n$ walkers. Each performs a random walk with $\text{REP}_{walker} = \text{REP} / n$ giving us the wall time of a single core computation with REP samples per energy divided by the number of walkers or having each walker sample REP configurations per energy giving us the wall time of a single core REP computation. 
  
-	Two scenarios of this implementation were explored. One where the manager also performed is own random walk through the energy space, acting like a manager and a walker, and another were the manager only performed the single core operations.Here the advantage is on the side of the first scenario, since there is one more walker and having that walker also performing single core tasks gives an overall better performance than having one idle processes during 95\% of the computation.
+	Two scenarios of this implementation were explored. One where the manager also performed is own random walk through the energy space, acting like a manager and a walker, and another were the manager only performed the single core operations.Here the advantage is on the side of the first scenario, since there is one more walker and having that walker also performing single core tasks gives an overall better performance than having one idle process during 95\% of the computation.
 \pagebreak
 
 \section{Method Performance}
@@ -93,7 +93,7 @@ This way, in one iteration there is only need for 2 communications, one is the b
 	The time spent sampling configurations for each energy value, $q_{time}/E$, is a very important metric, Figure \ref{L4_q_time}. This value is computed by dividing the wall time spent on that iteration by the number of sampled energy points. Each iteration of the simulation we should be attentive to the behaviour of $q_{time}/E$, since it can tell us if the computations are stable or the number of samples, REP, must be increased. 
 For a stable calculation, this time must remain approximately the same throughout the computation. If $q_{time}/E$ keeps increasing each iteration then the value of REP is insufficient to correctly explore the energy space for a given magnetization. This causes the JDoS estimate to be less accurate or in the worse cases to be wrong.The obvious solution would be to increase the value of REP, but increasing the skip value can be enough in some cases.
 
-	The FSS method scales linearly with the repetitions,Figure \ref{wall_time_L4}, so given the wall time of that system with a certain REP value we can easily estimate how much time the computations will take for a another REP value.
+	The FSS method scales linearly with the repetitions, Figure \ref{wall_time_L4}, so given the wall time of that system with a certain REP value we can easily estimate how much time the computations will take for a another REP value.
 When running the algorithm for a new system we can not have a precise estimation for the wall time. However, knowing only the $q_{time}/E$ for the first iterations and assuming that the REP value is sufficient so that this time does not increase, we can estimate the full wall time to estimate the complete JDOS. Assume that the system has $NE$ values of energy and $NM$ values of magnetizations available.The JDoS will have $NE \times NM$ points, but since we only compute half of the JDoS, $( NE \times NM ) / 2$. Considering the typical shape of the (E,M) phase space of the Ising model, about $1/3$ to $1/2$ of those points will be different than 0, so the estimation for the wall time comes as 
 \begin{equation}\label{estimation}
 	\text{Wall Time} \approx (q_{time}/E) \frac{NE \times NM}{2} \times \text{fraction of non-zero points} .
@@ -120,7 +120,7 @@ FCC     & $256$ & $197633$                      & $20s$           &$ 871118s$   
 
 \subsection{Parallel Scaling}
 	
-	The tests for parallel scaling were performed on the Cirrus-A computing cluster on INCD facilities under the Advanced Computing Projects grant, reference CPCA/A1/7252/2020 with support from FCT. In this project tests with a maximum of 320 cores were performed to better understand the parallel scalability of the Flat Scan Sampling method.
+	The tests for parallel scaling were performed on the Cirrus-A computing cluster on INCD facilities under the Advanced Computing Projects grant, reference CPCA/A1/7252/2020, with support from FCT. In this project tests with a maximum of 320 cores were performed to better understand the parallel scalability of the Flat Scan Sampling method.
 
 	Having constructed a model for parallel scalability, Equation \ref{amd_law}, we can fit Amdahl's Law to experimental wall time values as a function of the number of cores $n$. For this we need to solve Equation \ref{amd_law} for $p$ since our interest is to gain an insight about the portion of the algorithm that is perfectly parallelized.
 \begin{equation}
@@ -177,7 +177,7 @@ we can estimate $p$. The best way to find the speedup of infinite cores is to pl
 	The single core wall time of FSS scales linearly with the parameter REP, Figure \ref{fss_time}, however for the WL sampling, the wall time is not linear with the parameter $f_{final}$. Our interest in this Section is to study the performance of WL as a function of the steps in the simulation. In the inset of Figure \ref{wl_time} we can see that WL also scales linearly with the steps in the simulation.
 	
 	One important point to highlight is that the wall time of FSS is very predictable as shown in Table \ref{wall_time_table}. The wall time of WL sampling can not be that easily predicted. Due to the real time estimation of the JDoS, Wang-Landau's random walk is very unforeseeable and it can get stranded, for a while, between a few points in the phase space, wasting a lot of time, Figure 4 and 5 in \cite{Nguyen2006}. Thus we can have faster than average simulations or very long simulations. 
-	On the other hand, we have seen if the value of REP is not high enough, Flat Scan Sample's random walk can get stuck and never finish. With Wang-Landau we are assured that the computation will always finish, even if it takes a very long time.
+	On the other hand, we have seen if the value of REP is not high enough, Flat Scan Sampling's random walk can get stuck and never finish. With Wang-Landau we are assured that the computation will always finish, even if it takes a very long time.
 
 	A critical advantage of Flat Scan Sampling is the power of parallelization. Since FSS is an embarrassingly parallel algorithm and, if well implemented and optimized, $0.97<p<0.98$, Figure \ref{amd_fits}, we can achieve parallelization with up to 48 times performance gains. This also means that a GPU implementation is easily in reach. Although it is possible to parallelize the Wang-Landau algorithm, it is much harder than FSS, since we have to divide the phase space between different walkers and have them communicate at the barriers \cite{Yin2012}.
 
@@ -190,7 +190,7 @@ we can estimate $p$. The best way to find the speedup of infinite cores is to pl
 
 	To finalize this comparison, let us shift our focus to Figure \ref{time_std}. Here we can see the standard deviation as a function of wall time for the FSS and the WL method for two flatness conditions. For the Wang-Landau with $p=90$, we can get a more precise solution with Flat Scan Sampling int the same or less computing time with REP$\ =10^4$ (second point).In order to get a more refined solution with WL sampling, we need to increase the flatness condition, green line in Figure \ref{time_std}. Flat Scan Sampling still has more precision with less or equal computing time with a value of REP between $10^4$ and $10^5$. Therefore,  we can conclude that FSS will have better precision in the calculations per computing time than the WL method.
 
-	Having done this comparison we can take a few important and string conclusions. Flat Scan Sampling and Wang-Landau method are two vastly different methods. FSS can be as accurate at the cost of computing time, while WL's accuracy and precision plateaus for all flatness criteria.WL's precision per simulation time is worse in most cases than FSS's. Thus, FSS is a better method to obtain fairly quick and very precise computations while with WL we can get an inaccurate solution very quickly.
+	Having done this comparison we can take a few important and strong conclusions. Flat Scan Sampling and Wang-Landau method are two vastly different methods. FSS can be as accurate at the cost of computing time, while WL's accuracy and precision plateaus for all flatness criteria.WL's precision per simulation time is worse in most cases than FSS's. Thus, FSS is a better method to obtain fairly quick and very precise computations while with WL we can get an inaccurate solution very quickly.
 
 
 

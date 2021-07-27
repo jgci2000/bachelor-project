@@ -1,6 +1,6 @@
 \chapter{Monte Carlo Methods Applied to the Ising Model}
 
-A short review of the Monte Carlo (MC) methods used to solve the Ising Model in the current paradigm is presented. There will be a focus on the famous Metropolis Method and the Wang-Landau sampling. 
+A short review of the Monte Carlo (MC) methods used to solve the Ising Model in the current paradigm is presented. There will be a focus on the famous Metropolis method and the Wang-Landau sampling. 
 
 \section{Metropolis Method}
 
@@ -16,9 +16,9 @@ where $W(S_i \rightarrow S_j) \equiv W_{ij}$ is the transition probability to mo
 \end{equation}
 The master equation considers the change of the probability of the next state with time, $t$,
 \begin{equation}
-	\frac{dP(S_j, t)}{dt} = \sum_i \left[ W_{ij}P(S_i, t) - W_{ji} P(S_j,t)  \right].
+	\frac{d}{dt} P(S_j, t) = \sum_i \left[ W_{ij}P(S_i, t) - W_{ji} P(S_j,t)  \right].
 \end{equation}
-In the equilibrium regime, the master equation has to equal $0$, and we get the detailed balance condition for the equilibrium probability $P_{eq}(S_j)$,
+In the equilibrium regime, the master equation has to equal $0$ and we get the detailed balance condition for the equilibrium probability $P_{eq}(S_j)$,
 \begin{equation}
 	W_{ji}P_{eq}(S_j) = W_{ij}P_{eq}(S_i).
 \end{equation}
@@ -27,7 +27,7 @@ The objective of Metropolis sampling is to generate canonical configurations wit
 \begin{equation} \label{eq:met_prob_eq}
 	P_{eq}(E_i) = \frac{\exp(-\beta E_i)}{Z}.
 \end{equation}
-Here $Z$ is the partition function, however this is usually not know before hand. When considering a Markovian process we generate each new configuration from the preceding one avoiding this problem. As a result the difference of energy between the two states is needed, $\Delta E = E_i - E_j$ and the transition probability of given as
+Here $Z$ is the partition function, however this is usually not know before hand. When considering a Markovian process we generate each new configuration from the preceding one avoiding this problem. As a result the difference of energy between the two configurations is needed, $\Delta E = E_i - E_j$ and the transition probability of given as
 
 \begin{equation}
 	W_{ij} = \twopartdef { \tau_0^{-1} \exp(-\beta \Delta E) } {\Delta E \geq 0} {\tau_0^{-1}} {\Delta E < 0}
@@ -37,7 +37,7 @@ where $\tau_0^{-1}$ is the time required to attempt a spin-flip.  We often set t
 This way the Metropolis method applied to the Ising Model \cite{Landau_Book}, with a fixed external magnetic field and a fixed temperature, goes as follows:
 
 \begin{enumerate}
-\item Choose an initial state;
+\item Choose an initial configuration;
 \item Choose a spin $i$ and perform a spin-flip;                                                                                                                                       
 \item Calculate the energy change from that spin-flip, $\Delta E$;
 \item Accept the flip with a probability $\min \left( 1, \exp(-\beta \Delta E) \right)$; 
@@ -48,13 +48,13 @@ Note that we accept the spin flip if a given uniformly random number $r, r \in [
 
 \subsection{Success and Limitations}
 
-The Metropolis sampling proposed by Metropolis et al. \cite{Metropolis1953}, can be successfully applied to an array of models, ranging from widely studied quantum ensembles and gases simulations to state-of-the-art protein and peptide simulations and to machine learning and neural networks. The following paragraphs will be directed to magnetic systems, like the Ising model, but they can be extrapolated to others physical systems. 
+The Metropolis sampling proposed by Metropolis et al. \cite{Metropolis1953} can be successfully applied to an array of models, ranging from widely studied quantum ensembles and gases simulations to state-of-the-art protein and peptide simulations and to machine learning and neural networks. The following paragraphs will be directed to magnetic systems, like the Ising model, but they can be extrapolated to others physical systems. 
 
 When estimating thermodynamic variables the simulation must reach the equilibrium stage, where the probability distribution takes the form of Equation \ref{eq:met_prob_eq}. Then we take a measurement at  each MC time, resulting in $R$ total values for that variable. At the end the average of that variable, $A$, is taken $\langle A \rangle = \frac{1}{R} \sum_i A_i$. 
 For large systems the time taken to reach equilibrium stage is often very long thus making the simulation time consuming. 
 This is worsened by the fact that to study how some thermodynamic variable $A$ changes over a wide range of temperatures or applied fields intensities, we need to run multiple Metropolis simulations for each temperature and field intensity values, making this process very time-consuming.
 
-Lastly there is another shortcoming known as critical slowing down. In short, for computations where the temperature is near the critical temperature, $T_C$, the sampling slows down, meaning that it is more time-consuming for the computations to reach the equilibrium stage, thus slowing down the overall simulation \cite{Landau_Book}.
+Lastly there is another shortcoming known as critical slowing down. In short, for computations where the temperature is near the critical temperature, $T_C$, sequential configurations have a high correlation, thus we need more samples to get a high quality solution \cite{Landau_Book}. Therefore the computations take considerably more time.
 
 \section{Wang-Landau Sampling}
 
@@ -66,7 +66,7 @@ In 2001, Fugao Wang and David P. Landau \cite{WL_Original, WL_Edu} proposed a ne
 \end{equation}
 through the estimation of the density of states $g(E)$ from a flat histogram in the phase space.
 
-The main difficulty of a simple random walk in the energy space is that the walker would spend most of its time in the highest probable states thus making the random walk ineffective. The idea of the Wang-Landau sampling is to do a random walk,Metropolis like, and accepting the new states with a probability proportional to the inverse to their DoS $\frac{1}{g(E)}$. Doing this we obtain a flat histogram meaning that each macrostate has the same probability of being visited.  
+The main difficulty of a simple random walk in the energy space is that the walker would spend most of its time in the highest probable macrostates thus making the random walk ineffective. The idea of the Wang-Landau sampling is to do a random walk,Metropolis like, and accepting the new configurations with a probability proportional to the inverse to their DoS $\frac{1}{g(E)}$. Doing this we obtain a flat histogram meaning that each macrostate has the same probability of being visited.  
 Since $g(E)$ is unknown \textit{à priori}, in each step of the random walk, $g(E)$ is also being constructed.
 
 The proposed algorithm computed the DoS but, it can also estimate the JDoS by performing the random walk in the phase space composed by energy, $E$, and the second order parameter, in our case, the magnetization of the system, $M$. This comes with a downside, since the JDoS has much more information than the DoS it takes much longer compute.
